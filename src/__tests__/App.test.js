@@ -1,12 +1,11 @@
 import React from 'react';
 import App from '../App';
-import {configure, mount, shallow} from "enzyme";
+import {configure, mount} from "enzyme";
 import Adapter from 'enzyme-adapter-react-16';
 import LoginPage from "../LoginPage";
 import {MemoryRouter} from "react-router-dom";
 import HomePage from "../HomePage";
-import RegisterPage from "../../RegisterPage";
-import axios from 'axios';
+import RegisterForm from "../../RegisterForm";
 
 configure({ adapter: new Adapter() });
 
@@ -26,17 +25,20 @@ it('registerPage at /register', () => {
             <App/>
         </MemoryRouter>
     );
-    expect(wrapper.find(RegisterPage)).toHaveLength(1);
+    expect(wrapper.find(RegisterForm)).toHaveLength(1);
 });
 
-it('register api call', ()=>{
-    let wrapper = mount(<RegisterPage/>);
-    wrapper.find({'id': 'loginInput'}).simulate('change', {target: {value: 'name'}});
-    wrapper.find({'id': 'passwordInput'}).simulate('change', {target: {value: 'password'}});
+it('register form', ()=>{
+    const mockFunction = jest.fn();
 
-    let mock = jest.mock('axios');
-    axios.post.mockResolvedValue({body: "true"});
-    expect(wrapper.findWhere({})).toBe(1);
+    let wrapper = mount(<RegisterForm registerFunction={mockFunction}/>);
+    wrapper.find({'id': 'loginInput'}).getDOMNode()["value"] = "name";
+    wrapper.find({'id': 'passwordInput'}).getDOMNode()["value"] = "password";
+    wrapper.find({'id': "registerButton"}).simulate('click');
+
+    expect(mockFunction.mock.calls.length).toEqual(1);
+    expect(mockFunction.mock.calls[0][0]).toEqual("name");
+    expect(mockFunction.mock.calls[0][1]).toEqual("password");
 });
 
 it('homePage at /', ()=>{

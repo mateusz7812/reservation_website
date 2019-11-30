@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8c516cda-05ee-4681-b7c4-649db2904bc6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RegisterPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Header.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HomePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LoginPage.js" afterDir="false" />
+    <list default="true" id="8c516cda-05ee-4681-b7c4-649db2904bc6" name="Default Changelist" comment="homePage and loginPage created">
+      <change afterPath="$PROJECT_DIR$/src/ApiMethods.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__tests__/ApiMethods.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/App.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/App.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -69,7 +63,17 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Jest.register api call">
+  <component name="RunManager" selected="Jest.App.test.js">
+    <configuration name="ApiMethods.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/src/__tests__/ApiMethods.test.js" />
+      <method v="2" />
+    </configuration>
     <configuration name="App.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -80,7 +84,7 @@
       <test-file value="$PROJECT_DIR$/src/__tests__/App.test.js" />
       <method v="2" />
     </configuration>
-    <configuration name="loginPage at /login" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="api register user" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -89,20 +93,7 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/src/__tests__/App.test.js" />
       <test-names>
-        <test-name value="loginPage at /login" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="redirect to /home if cookie account exist" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/__tests__/App.test.js" />
-      <test-names>
-        <test-name value="redirect to /home if cookie account exist" />
+        <test-name value="api register user" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -145,13 +136,22 @@
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.Debug Application" />
+      <item itemvalue="Jest.App.test.js" />
+      <item itemvalue="Jest.register api call" />
+      <item itemvalue="Jest.registerPage at /register" />
+      <item itemvalue="Jest.api register user" />
+      <item itemvalue="Jest.ApiMethods.test.js" />
+      <item itemvalue="npm.npm start" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.App.test.js" />
+        <item itemvalue="Jest.ApiMethods.test.js" />
+        <item itemvalue="Jest.api register user" />
         <item itemvalue="Jest.register api call" />
         <item itemvalue="Jest.registerPage at /register" />
-        <item itemvalue="Jest.loginPage at /login" />
-        <item itemvalue="Jest.App.test.js" />
-        <item itemvalue="Jest.redirect to /home if cookie account exist" />
       </list>
     </recent_temporary>
   </component>
@@ -167,8 +167,17 @@
       <updated>1574877540209</updated>
       <workItem from="1574877541631" duration="5777000" />
       <workItem from="1574940911148" duration="18853000" />
-      <workItem from="1575031458942" duration="799000" />
+      <workItem from="1575031458942" duration="6504000" />
+      <workItem from="1575118895575" duration="8766000" />
     </task>
+    <task id="LOCAL-00001" summary="homePage and loginPage created">
+      <created>1575039324396</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1575039324397</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,16 +196,8 @@
       </map>
     </option>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/__tests__/App.test.js</url>
-          <line>37</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="homePage and loginPage created" />
+    <option name="LAST_COMMIT_MESSAGE" value="homePage and loginPage created" />
   </component>
 </project>
