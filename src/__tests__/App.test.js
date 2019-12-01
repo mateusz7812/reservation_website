@@ -1,11 +1,12 @@
 import React from 'react';
 import App from '../App';
-import {configure, mount} from "enzyme";
+import {configure, mount, shallow} from "enzyme";
 import Adapter from 'enzyme-adapter-react-16';
 import LoginPage from "../LoginPage";
-import {MemoryRouter} from "react-router-dom";
+import {MemoryRouter, Redirect} from "react-router-dom";
 import HomePage from "../HomePage";
-import RegisterForm from "../../RegisterForm";
+import RegisterForm from "../RegisterForm";
+import RegisterPage from "../RegisterPage";
 
 configure({ adapter: new Adapter() });
 
@@ -39,6 +40,43 @@ it('register form', ()=>{
     expect(mockFunction.mock.calls.length).toEqual(1);
     expect(mockFunction.mock.calls[0][0]).toEqual("name");
     expect(mockFunction.mock.calls[0][1]).toEqual("password");
+});
+
+it('registerAccount on 200 status', (done)=> {
+    let response = {"status": 200, "data": {
+            "id": "49241151-fb8c-4cb3-a551-85408cb4fe66",
+            "reservations": [],
+            "login": "user",
+            "password": "password"
+        }};
+
+    const apiMethods = require('../ApiService.js');
+    apiMethods.register = jest.fn(() => Promise.resolve(response));
+
+    shallow(<RegisterPage />).instance().registerAccount("user", "password").then(
+        r => {
+            expect(apiMethods.register.mock.calls.length).toEqual(1);
+            expect(apiMethods.register.mock.calls[0][0]).toEqual("user");
+            expect(apiMethods.register.mock.calls[0][1]).toEqual("password");
+            expect(r).toMatchObject(<Redirect to='/login'/>);
+            done();
+        }
+    );
+});
+
+it('registerAccount on other than 200 status', (done)=> {
+    let response = {"status": 400};
+
+    const apiMethods = require('../ApiService.js');
+    apiMethods.register = jest.fn(() => Promise.resolve(response));
+
+    let instance = shallow(<RegisterPage />).instance();
+    instance.registerAccount("user", "password").then(
+        () => {
+            expect(instance.state.message).toBe("error");
+            done();
+        }
+    );
 });
 
 it('homePage at /', ()=>{

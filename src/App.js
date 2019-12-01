@@ -3,7 +3,7 @@ import './App.css';
 import {Switch, Route} from 'react-router-dom';
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
-import RegisterForm from "../RegisterForm";
+import RegisterForm from "./RegisterForm";
 
 const App = () => {
   return (

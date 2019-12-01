@@ -1,13 +1,11 @@
 import moxios from "moxios";
-import {register} from "../ApiMethods";
+import {register} from "../ApiService";
 
 beforeEach(function () {
-    // import and pass your custom axios instance to this method
     moxios.install()
 });
 
 afterEach(function () {
-    // import and pass your custom axios instance to this method
     moxios.uninstall()
 });
 
