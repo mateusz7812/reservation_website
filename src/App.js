@@ -1,16 +1,18 @@
 import React from 'react';
 import './App.css';
-import {Switch, Route} from 'react-router-dom';
+import {Switch} from 'react-router-dom';
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
-import RegisterForm from "./RegisterForm";
+import RegisterPage from "./RegisterPage";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "../PublicRoute";
 
 const App = () => {
   return (
         <Switch>
-          <Route path="/login" component={LoginPage}/>
-          <Route path="/register" component={RegisterForm}/>
-          <Route path="/" component={HomePage}/>
+          <PublicRoute path="/login" component={LoginPage}/>
+          <PublicRoute path="/register" component={RegisterPage}/>
+          <PrivateRoute path="/" component={HomePage}/>
         </Switch>
   )
 };
