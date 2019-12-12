@@ -1,9 +1,8 @@
 import React from 'react';
-import './App.css';
 import {Switch} from 'react-router-dom';
-import LoginPage from "./LoginPage";
-import HomePage from "./HomePage";
-import RegisterPage from "./RegisterPage";
+import LoginPage from "./components/LoginPage";
+import HomePage from "./components/HomePage";
+import RegisterPage from "./components/RegisterPage";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "../PublicRoute";
 

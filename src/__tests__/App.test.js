@@ -2,19 +2,20 @@ import React from 'react';
 import App from '../App';
 import {configure, mount, shallow} from "enzyme";
 import Adapter from 'enzyme-adapter-react-16';
-import LoginPage from "../LoginPage";
+import LoginPage from "../components/LoginPage";
 import {MemoryRouter, Redirect, Switch} from "react-router-dom";
-import HomePage from "../HomePage";
-import RegisterForm from "../RegisterForm";
-import RegisterPage from "../RegisterPage";
-import LoginForm from "../LoginForm";
+import HomePage from "../components/HomePage";
+import RegisterForm from "../components/RegisterForm";
+import RegisterPage from "../components/RegisterPage";
+import LoginForm from "../components/LoginForm";
 import PrivateRoute from "../PrivateRoute";
+import EventList from "../components/EventList";
 
 configure({ adapter: new Adapter() });
 
-it('loginPage at /login', ()=>{
+it('loginPage at /getTokenForAccount', ()=>{
   let wrapper = mount(
-      <MemoryRouter initialEntries={[ '/login']}>
+      <MemoryRouter initialEntries={[ '/getTokenForAccount']}>
         <App/>
       </MemoryRouter>
   );
@@ -26,7 +27,7 @@ it('loginForm in loginPage', ()=>{
     expect(wrapper.find(LoginForm)).toHaveLength(1);
 });
 
-it('login form', ()=>{
+it('getTokenForAccount form', ()=>{
     const mockFunction = jest.fn();
 
     let wrapper = mount(<LoginForm loginFunction={mockFunction}/>);
@@ -47,13 +48,13 @@ it('loginAccount on 200 status', (done)=>{
             "account":"decf9766-f9ac-4ff5-a21e-36deb31b4104"
     }};
 
-    const cookieService = require('../CookieService.js');
+    const cookieService = require('../services/CookieService');
     cookieService.addCookie = jest.fn((key, value)=>{
         expect(key).toBe("token");
         expect(value).toBe("BZ3BL34T3FrSJJP0Pmm7O");
     });
 
-    const apiMethods = require('../ApiService.js');
+    const apiMethods = require('../domain/ApiRequests');
     apiMethods.login = jest.fn((user, password) => {
         expect(user).toEqual("user");
         expect(password).toEqual("password");
@@ -73,7 +74,7 @@ it('loginAccount on 200 status', (done)=>{
 it('loginAccount on other than 200 status', (done)=> {
     let response = {"status": 400};
 
-    const cookieService = require('../CookieService.js');
+    const cookieService = require('../domain/CookieService.js');
     cookieService.addCookie = jest.fn();
 
     const apiMethods = require('../ApiService.js');
@@ -90,9 +91,9 @@ it('loginAccount on other than 200 status', (done)=> {
     );
 });
 
-it('registerPage at /register', () => {
+it('registerPage at /addAccount', () => {
     let wrapper = mount(
-        <MemoryRouter initialEntries={[ '/register']}>
+        <MemoryRouter initialEntries={[ '/addAccount']}>
             <App/>
         </MemoryRouter>
     );
@@ -104,7 +105,7 @@ it('registerForm in registerPage', ()=>{
     expect(wrapper.find(RegisterForm)).toHaveLength(1);
 });
 
-it('register form', ()=>{
+it('addAccount form', ()=>{
     const mockFunction = jest.fn();
 
     let wrapper = mount(<RegisterForm registerFunction={mockFunction}/>);
@@ -161,7 +162,7 @@ it('homePage at /', ()=>{
       </MemoryRouter>
   );
 
-    const cookieService = require('../CookieService.js');
+    const cookieService = require('../domain/CookieService.js');
     cookieService.getCookie = jest.fn((value)=>{
         if(value === "token"){
             return "BZ3BL34T3FrSJJP0Pmm7O";
@@ -180,8 +181,8 @@ it('homePage at /', ()=>{
 });
 
 
-it('redirecting to /login if account cookie dont exist', ()=>{
-    const cookieService = require('../CookieService.js');
+it('redirecting to /getTokenForAccount if account cookie dont exist', ()=>{
+    const cookieService = require('../domain/CookieService.js');
     cookieService.getCookie = jest.fn(()=> undefined );
 
     let wrapper = mount(
@@ -195,15 +196,20 @@ it('redirecting to /login if account cookie dont exist', ()=>{
 
 
 it('redirect to /home if cookie account exist', ()=>{
-    const cookieService = require('../CookieService.js');
+    const cookieService = require('../services/CookieService.js');
     cookieService.getCookie = jest.fn(()=>  "BZ3BL34T3FrSJJP0Pmm7O" );
 
     let wrapper = mount(
-        <MemoryRouter initialEntries={[ '/login']}>
+        <MemoryRouter initialEntries={[ '/getTokenForAccount']}>
             <App/>
         </MemoryRouter>
     );
     expect(wrapper.find(HomePage)).toHaveLength(1);
     expect(wrapper.find(LoginPage)).toHaveLength(0);
 
+});
+
+it('eventList in homePage', ()=>{
+    let wrapper = shallow(<HomePage/>);
+    expect(wrapper.find(EventList)).toHaveLength(1);
 });

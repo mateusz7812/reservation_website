@@ -1,4 +1,4 @@
-import {addCookie, getCookie} from "../CookieService";
+import {addCookie, getCookie} from "../services/CookieService";
 
 it('cookie service', ()=>{
     addCookie("testName", "testValue");

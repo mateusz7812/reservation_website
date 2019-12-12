@@ -1,9 +1,10 @@
 import React from "react";
+import EventList from "./EventList";
 
 const HomePage = () => {
     return(
         <div>
-            home
+            <EventList/>
         </div>
     )
 };

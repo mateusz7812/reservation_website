@@ -1,7 +1,7 @@
 import React from "react";
-import {login as apiLoginAccount} from "./ApiService";
+import {getTokenForAccount as apiLoginAccount} from "../domain/ApiRequests";
 import {Redirect} from "react-router-dom";
-import {addCookie} from "./CookieService";
+import {addCookie} from "../services/CookieService";
 import LoginForm from "./LoginForm";
 
 class LoginPage extends React.Component{
