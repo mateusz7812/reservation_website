@@ -40,8 +40,10 @@
     ]
   },
   "devDependencies": {
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^24.0.23",
     "@types/moxios": "^0.4.9",
+    "@types/react-router-dom": "^5.1.3",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0"
   }

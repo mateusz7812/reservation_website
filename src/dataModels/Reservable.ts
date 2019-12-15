@@ -6,7 +6,7 @@ const getType = (typeName: reservableTypes)=> {
     return types[typeName]};
 
 abstract class Reservable{
-    private type!: reservableTypes;
+    type!: reservableTypes;
     id: string|undefined;
     name: string|undefined;
     space: string|undefined;

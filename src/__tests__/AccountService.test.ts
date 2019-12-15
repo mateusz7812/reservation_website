@@ -1,5 +1,26 @@
 import AccountService from "../services/AccountService";
 import Account from "../dataModels/Account";
+import EventService from "../services/EventService";
+import Event from "../dataModels/Event";
+
+describe('get token from api', ()=>{
+    it('correct', async ()=>{
+        const apiService = require('../domain/ApiRequests');
+        let account: Account = new Account({"login": "login", "password":"password"});
+        let tokenObject = {"account": "account id", "id": "token id", "token": "token key"};
+        apiService.getTokenFromApi = jest.fn((account: Account)=>
+        {
+            return Promise.resolve({
+                status: 200,
+                data: tokenObject
+            })
+        });
+        // @ts-ignore
+        await AccountService.getTokenForAccount(account).then((result: Account|undefined)=>{
+            expect(result).toBe("token key");
+        })
+    });
+});
 
 describe('add account ', ()=>{
     it('correct',async ()=>{
@@ -10,7 +31,7 @@ describe('add account ', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(addedAccount)
+                data: addedAccount
             })
         });
         // @ts-ignore
@@ -49,7 +70,7 @@ describe('get account filtered', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(gottenAccounts)
+                data: gottenAccounts
             })
         });
         // @ts-ignore
@@ -71,13 +92,28 @@ describe('get by id', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(gottenAccount)
+                data: gottenAccount
             })
         });
 
         // @ts-ignore
         await AccountService.getById("id").then((result: Account|undefined)=>{
             expect(result).toMatchObject(gottenAccount);
+        })
+    });
+
+    it('not found',async ()=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        const apiService = require('../domain/ApiRequests');
+
+        apiService.getAccountById=jest.fn((account: Account, token)=>
+        {
+            return Promise.reject({response: {status: 404, message: "not found"}});
+        });
+        // @ts-ignore
+        await AccountService.getById("id").then((result: Account|undefined)=>{
+            expect(result === undefined).toBeTruthy();
         })
     });
 });

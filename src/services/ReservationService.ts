@@ -2,7 +2,7 @@ import Reservation from "../dataModels/Reservation";
 import {
     addReservation,
     deleteReservationById,
-    getReservationById
+    getReservationById, updateReservation
 } from "../domain/ApiRequests";
 import {getToken} from "./CookieService";
 import {AxiosResponse} from "axios";
@@ -19,9 +19,13 @@ function addOne(reservation: Reservation): Promise<Reservation|undefined>|undefi
             reservation.reservable = Reservable.new({"type": reservation.reservable.type, "id": reservation.reservable.id});
         }
     }
-    return addReservation(reservation, token).then((response: AxiosResponse)=>{
+    return addReservation(reservation, token)
+        .catch((error)=>{
+            error.message
+        })
+        .then((response: AxiosResponse)=>{
         if (response.status === 200) {
-            let reservationDict = JSON.parse((response as any).response);
+            let reservationDict = response.data;
             let reservableDict = reservationDict.reservable;
             let reservable = Reservable.new({"type": reservableDict.type, "id": reservableDict.id});
             delete reservationDict.reservable;
@@ -39,7 +43,7 @@ function getById(id: string): Promise<Reservation|undefined>|undefined{
     }
     return getReservationById(id, token).then((response: AxiosResponse)=>{
         if (response.status === 200) {
-            let reservationDict = JSON.parse((response as any).response);
+            let reservationDict = response.data;
             let reservableDict = reservationDict.reservable;
             let reservable = Reservable.new(reservableDict);
             delete reservationDict.reservable;
@@ -51,6 +55,31 @@ function getById(id: string): Promise<Reservation|undefined>|undefined{
 
 }
 
+function updateOne(reservation: Reservation): Promise<Reservation|undefined>|undefined{
+    let token = getToken();
+    if( token === undefined){
+        return undefined;
+    }
+
+    if(reservation.id === undefined){
+        return undefined;
+    }
+
+    return updateReservation(reservation, token).catch(error =>{
+        throw error;
+    }).then((response: AxiosResponse)=>{
+        if (response.status === 200) {
+            let reservationDict = response.data;
+            let reservableDict = reservationDict.reservable;
+            let reservable = Reservable.new(reservableDict);
+            delete reservationDict.reservable;
+            let reservationFromResponse = new Reservation({"reservable": reservable});
+            return Object.assign(reservationFromResponse, reservationDict);
+        }
+        return undefined;
+    });
+}
+
 function deleteById(id: string): boolean{
     let token = getToken();
     if( token === undefined){
@@ -59,5 +88,5 @@ function deleteById(id: string): boolean{
     return deleteReservationById(id, token);
 }
 
-const ReservationService = {addOne, getById, deleteById};
+const ReservationService = {addOne, getById, updateOne, deleteById};
 export default ReservationService;

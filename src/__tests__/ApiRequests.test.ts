@@ -6,14 +6,14 @@ import {
     deleteReservationById,
     getAccountById,
     getReservationById,
-    getTokenForAccount,
+    getTokenFromApi,
     addAccount,
     updateReservation,
     getAccountFiltered,
     deleteAccountById,
     getReservableById,
     deleteReservableById,
-    getEventById, deleteEventById
+    getEventById, deleteEventById, updateEvent, getAllEvents
 } from "../domain/ApiRequests";
 import Account from "../dataModels/Account";
 import {AxiosResponse} from "axios";
@@ -34,8 +34,8 @@ describe('basic tests', ()=>{
     describe('account tests', ()=>{
         it('api addAccount user', async (done)=>{
 
-            let requestAccount = new Account(undefined, "user", "password");
-            let responseAccount: Account = new Account("f385e685-2933-4207-b945-a1198b4154c5", "user");
+            let requestAccount = new Account({"login": "user", "password": "password"});
+            let responseAccount: Account = new Account({"id": "f385e685-2933-4207-b945-a1198b4154c5", "login": "user"});
 
             moxios.wait(() => {
                 let request = moxios.requests.mostRecent();
@@ -43,7 +43,7 @@ describe('basic tests', ()=>{
                 expect(request.config.method).toBe("post");
                 expect(request.url).toContain("/api/account");
 
-                expect(Object.assign(new Account(), JSON.parse(request.config.data))).toMatchObject(requestAccount);
+                expect(new Account(JSON.parse(request.config.data))).toMatchObject(requestAccount);
 
                 request.respondWith({
                     status: 200,
@@ -52,15 +52,15 @@ describe('basic tests', ()=>{
             });
 
             await addAccount(requestAccount).then((response: AxiosResponse)=>{
-                expect(Object.assign(new Account(), response.data)).toMatchObject(responseAccount);
+                expect(new Account(response.data)).toMatchObject(responseAccount);
                 done();
             });
 
         });
 
-        it('api authenticate user',  async (done)=>{
+        it('get token from api',  async (done)=>{
 
-            let requestAccount = new Account(undefined, "user","password");
+            let requestAccount = new Account({"login": "user","password": "password"});
             let tokenResponse = {"id":"f385e685-2933-4207-b945-a1198b4154c5","token":"BZ3BL34T3FrSJJP0Pmm7O","account":"decf9766-f9ac-4ff5-a21e-36deb31b4104"};
 
             moxios.wait(() => {
@@ -79,7 +79,7 @@ describe('basic tests', ()=>{
                 }).finally(done())
             });
 
-            await getTokenForAccount(requestAccount).then((response: AxiosResponse)=>{
+            await getTokenFromApi(requestAccount).then((response: AxiosResponse)=>{
                 expect(response.data).toMatchObject(tokenResponse);
             });
 
@@ -89,7 +89,7 @@ describe('basic tests', ()=>{
             let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let expectedRequestAuthorization = "Bearer " + token;
-            let responseAccount = new Account("decf9766-f9ac-4ff5-a21e-36deb31b4104","user",undefined,  [], []);
+            let responseAccount = new Account({"id": "decf9766-f9ac-4ff5-a21e-36deb31b4104", "login": "user", "reservations": [], "roles": []});
 
             moxios.wait(()=>{
                 let requests = moxios.requests;
@@ -108,7 +108,7 @@ describe('basic tests', ()=>{
             });
 
             await getAccountById(id, token).then((response:AxiosResponse)=>{
-                expect(Object.assign(new Account(), response.data)).toMatchObject(responseAccount);
+                expect(new Account(response.data)).toMatchObject(responseAccount);
             });
 
         });
@@ -118,8 +118,8 @@ describe('basic tests', ()=>{
             let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let expectedRequestAuthorization = "Bearer " + token;
-            let accountFilter = new Account(undefined, "user");
-            let responseAccount = new Account(id,"user",undefined,  [], []);
+            let accountFilter = new Account({"login": "user"});
+            let responseAccount = new Account({"id": id,"login": "user", "reservations":  [], "roles": []});
 
             moxios.wait(()=>{
                 let requests = moxios.requests;
@@ -138,7 +138,7 @@ describe('basic tests', ()=>{
             });
 
             await getAccountFiltered(accountFilter, token).then((response:AxiosResponse)=>{
-                expect(Object.assign(new Account(), response.data)).toMatchObject(responseAccount);
+                expect(new Account(response.data)).toMatchObject(responseAccount);
             });
 
         });
@@ -173,8 +173,8 @@ describe('basic tests', ()=>{
             let expectedRequestAuthorization = "Bearer " + token;
             let name: string = "eventName";
             let reservable = Reservable.new({type: "Seat", id: "decf9766-f9ac-4ff5-a21e-36deb31b4104", reservations:[]});
-            let responseEvent: Event = new Event("a60ef10a-4ea1-4b94-be52-6ddad550abae", name, reservable);
-            let expectedRequest = new Event(undefined, name, reservable);
+            let responseEvent: Event = new Event({"id": "a60ef10a-4ea1-4b94-be52-6ddad550abae", "name": name, "reservable": reservable});
+            let expectedRequest = new Event({"name": name, "reservable": reservable});
 
             moxios.wait(() => {
                 let request = moxios.requests.mostRecent();
@@ -204,7 +204,7 @@ describe('basic tests', ()=>{
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let reservable = new Seat({"id": "reservable id"});
             let expectedRequestAuthorization = "Bearer " + token;
-            let responseEvent = new Event(id,undefined, reservable, []);
+            let responseEvent = new Event({"id": id ,"reservable": reservable, "reservations": []});
 
             moxios.wait(()=>{
                 let request = moxios.requests.mostRecent();
@@ -227,7 +227,65 @@ describe('basic tests', ()=>{
 
         });
 
-        it('delete reservation', async (done)=>{
+        it('get all', async (done)=>{
+            let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
+            let token = "BZ3BL34T3FrSJJP0Pmm7O";
+            let reservable = new Seat({"id": "reservable id"});
+            let expectedRequestAuthorization = "Bearer " + token;
+            let responseEvents = [new Event({"id": id ,"reservable": reservable, "reservations": []})];
+
+            moxios.wait(()=>{
+                let request = moxios.requests.mostRecent();
+
+                let authorization = request.config.headers.Authorization;
+                expect(authorization).toBe(expectedRequestAuthorization);
+
+                expect(request.config.method).toBe("get");
+                expect(request.url).toContain("/api/event");
+
+                request.respondWith({
+                    status: 200,
+                    response: JSON.stringify(responseEvents)
+                }).finally(done());
+            });
+
+            await getAllEvents(token).then((response:AxiosResponse)=>{
+                expect(JSON.stringify(response.data)).toBe(JSON.stringify(responseEvents));
+            });
+
+        });
+
+        it('edit', async (done)=>{
+            let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
+            let token = "BZ3BL34T3FrSJJP0Pmm7O";
+            let expectedRequestAuthorization = "Bearer " + token;
+            let reservable = new Seat({"id": "reservable id"});
+            let updateMap = new Event({"id": id, "name": "other event name"});
+            let updatedEvent = new Event({"id": id ,"reservable": reservable, "name": "other event name","reservations": []});
+
+            moxios.wait(()=>{
+                let request = moxios.requests.mostRecent();
+
+                let authorization = request.config.headers.Authorization;
+                expect(authorization).toBe(expectedRequestAuthorization);
+
+                expect(request.config.method).toBe("put");
+                expect(request.url).toContain("/api/event/"+id);
+
+                request.respondWith({
+                    status: 200,
+                    response: JSON.stringify(updatedEvent)
+                }).finally(done());
+            });
+
+            await updateEvent(updateMap, token).then((response:AxiosResponse)=>{
+                expect(JSON.stringify(response.data)).toBe(JSON.stringify(updatedEvent));
+            });
+
+        });
+
+
+        it('delete', async (done)=>{
             let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let expectedRequestAuthorization = "Bearer " + token;
@@ -349,7 +407,7 @@ describe('basic tests', ()=>{
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let expectedRequestAuthorization = "Bearer " + token;
             let reservable = new Seat( {"id":"reservable id"});
-            let reservation = new Reservation("5fb49a04-572a-4714-9809-88c0e9d816a7", "account id", "event id", reservable);
+            let reservation = new Reservation({"id": "5fb49a04-572a-4714-9809-88c0e9d816a7", "account": "account id", "event": "event id", "reservable": reservable});
             let responseData = {
                 "id": "5fb49a04-572a-4714-9809-88c0e9d816a7",
                 "account": "account id",
@@ -386,7 +444,7 @@ describe('basic tests', ()=>{
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let reservable = new Seat({"id": "reservable id"});
             let expectedRequestAuthorization = "Bearer " + token;
-            let responseReservation = new Reservation(id,"account id", "event id", reservable);
+            let responseReservation = new Reservation({"id": id,"account": "account id", "event": "event id", "reservable": reservable});
 
             moxios.wait(()=>{
                 let request = moxios.requests.mostRecent();
@@ -414,8 +472,8 @@ describe('basic tests', ()=>{
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let expectedRequestAuthorization = "Bearer " + token;
             let reservable = new Seat({"id": "reservable id"});
-            let updateMap = new Reservation(id, undefined,"other event id");
-            let updatedReservation = new Reservation(id, "account id", "other event id", reservable);
+            let updateMap = new Reservation({"id": id, "event": "other event id"});
+            let updatedReservation = new Reservation({"id": id, "account": "account id", "event": "other event id", "reservable": reservable});
 
             moxios.wait(()=>{
                 let request = moxios.requests.mostRecent();
@@ -467,42 +525,48 @@ it('functional basic test', async (done)=>{
     jest.setTimeout(10000);
     //add admin, if not added, then add
 
-    let adminAccount: Account = new Account(undefined, "admin", "admin", undefined, ["ROLE_ADMIN"]);
+    let adminAccount: Account = new Account({"login": "admin", "password": "admin", "roles": ["ROLE_ADMIN"]});
 
     await addAccount(adminAccount).catch(async (reason: any)=> {
         if (reason.errno === "ECONNREFUSED") done.fail(reason.message);
     });
 
-    let adminToken = await getTokenForAccount(new Account(undefined, "admin", "admin"))
+    let adminToken = await getTokenFromApi(new Account({"login": "admin","password": "admin"}))
             .then((response: AxiosResponse)=>{
             return response.data.token;
         });
 
     //add user, if had added, then delete and add
-    let accountToDelete: Account|undefined = await getAccountFiltered(new Account(undefined, "user"), adminToken).then((response: AxiosResponse) => Object.assign(new Account(), response.data[0]));
+    let accountToDelete: Account|undefined = await getAccountFiltered(new Account({"login": "user"}), adminToken)
+        .then((response: AxiosResponse) => new Account(response.data[0]));
 
     if( accountToDelete !== undefined)
         await deleteAccountById((accountToDelete.id as string), adminToken);
 
-    await addAccount(new Account(undefined, "user", "user"));
-    let [userToken, userId] = await getTokenForAccount(new Account(undefined, "user", "user")).then((response: AxiosResponse) =>{
+    await addAccount(new Account({"login": "user", "password": "user"}));
+    let [userToken, userId] = await getTokenFromApi(new Account({"login": "user", "password": "user"})).then((response: AxiosResponse) =>{
         return [response.data.token, response.data.account];
     });
+
         //add seat
-    let seat = await addReservable(new Seat({"name": "mySeat"}), adminToken).catch((reason: any)=>done.fail(reason)).then((response: AxiosResponse) => {
-        return Object.assign(new Seat({}), response.data);
-    });
+    let seat = await addReservable(new Seat({"name": "mySeat"}), adminToken)
+        .catch((reason: any)=>done.fail(reason))
+        .then((response: AxiosResponse) => new Seat(response.data));
 
     //add event
-    let event = await addEvent(new Event(undefined, "event1", seat), adminToken).catch((reason: any)=>done.fail(reason)).then((response: AxiosResponse) =>
-        Object.assign(new Event(), response.data));
+    let event = await addEvent(new Event({"name": "event1", "reservable": seat}), adminToken)
+        .catch((reason: any)=>done.fail(reason))
+        .then((response: AxiosResponse) => new Event(response.data));
 
     //add reservation
-    let reservation = await addReservation(new Reservation(undefined, userId, event.id, seat), userToken).catch((reason: any)=>done.fail(reason)).then((response: AxiosResponse)=>
-        Object.assign(new Reservation(), response.data));
+    let reservation = await addReservation(new Reservation({"account": userId, "event": event.id, "reservable": seat}), userToken)
+        .catch((reason: any)=>done.fail(reason))
+        .then((response: AxiosResponse)=> new Reservation(response.data));
 
     //get user reservations from account
-    let userAccount = await getAccountById(userId, userToken).catch((reason: any)=>done.fail(reason)).then((response: AxiosResponse)=>Object.assign(new Account(), response.data));
+    let userAccount = await getAccountById(userId, userToken)
+        .catch((reason: any)=>done.fail(reason))
+        .then((response: AxiosResponse)=>new Account(response.data));
 
     expect(userAccount.reservations).toHaveLength(1);
     expect(userAccount.reservations[0]).toBe(reservation.id);

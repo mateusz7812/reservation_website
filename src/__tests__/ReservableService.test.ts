@@ -1,6 +1,8 @@
 import {Reservable, Seat, Space} from "../dataModels/Reservable";
 import ReservableService from "../services/ReservableService";
 
+const axios = require('axios').default;
+
 it('type test', ()=>{
     let space = new Space({"reservables": ["id nr 1"]});
     expect(space.reservables).toMatchObject(["id nr 1"]);
@@ -17,7 +19,7 @@ describe('add one', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(addedSeat)
+                data: addedSeat
             })
         });
         // @ts-ignore
@@ -39,12 +41,26 @@ describe('get by id', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(gottenSeat)
+                data: gottenSeat
             })
         });
         // @ts-ignore
         await ReservableService.getById("reservable id").then((result: Reservable|undefined)=>{
             expect(result).toMatchObject(gottenSeat);
+        })
+    });
+
+    it('not found',async ()=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        const apiService = require('../domain/ApiRequests');
+        apiService.getReservableById = jest.fn((id: string, token: string)=>
+        {
+            return Promise.reject({response: {status: 404, message: "not found"}});
+        });
+        // @ts-ignore
+        await ReservableService.getById("reservable id").then((result: Reservable|undefined)=>{
+            expect(result === undefined).toBeTruthy();
         })
     });
 });

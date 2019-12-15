@@ -1,45 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8c516cda-05ee-4681-b7c4-649db2904bc6" name="Default Changelist" comment="data models">
-      <change afterPath="$PROJECT_DIR$/src/__tests__/ApiRequests.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/__tests__/ReservableService.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/__tests__/ReservationService.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Event.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/EventList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/HomePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dataModels/Account.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dataModels/Event.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dataModels/Reservable.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dataModels/Reservation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/domain/ApiRequests.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/AccountService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/CookieService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/EventService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/ReservableService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/ReservationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/HP_Envy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/HP_Envy.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="8c516cda-05ee-4681-b7c4-649db2904bc6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/__tests__/App.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__tests__/ServicesFunctional.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/EventPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/HomePage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Reservable.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ReservablesTable.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PublicRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/PublicRoute.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ApiService.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/AccountService.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CookieService.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/EventService.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HomePage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrivateRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RegisterForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RegisterForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RegisterPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__tests__/ApiService.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__tests__/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/App.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__tests__/CookieService.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/CookieService.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/serviceWorker.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/serviceWorker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/AccountService.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/AccountService.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/ApiRequests.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/ApiRequests.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/EventService.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/EventService.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/ReservableService.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/ReservableService.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/ReservationService.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/ReservationService.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Event.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Event.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/EventList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/EventList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HomePage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RegisterPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dataModels/Event.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataModels/Event.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dataModels/Reservable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataModels/Reservable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/ApiRequests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/ApiRequests.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/AccountService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AccountService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/EventService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/EventService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ReservableService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ReservableService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ReservationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ReservationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,6 +40,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -92,58 +82,74 @@
       <recent name="C:\Git\reservation_website\src\views" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.ReservationService.test.ts">
-    <configuration name="AccountService.test.ts" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST_FILE" />
-      <test-file value="$PROJECT_DIR$/src/__tests__/AccountService.test.ts" />
-      <method v="2" />
-    </configuration>
-    <configuration name="EventService.test.ts" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST_FILE" />
-      <test-file value="$PROJECT_DIR$/src/__tests__/EventService.test.ts" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ReservableService.test.ts" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST_FILE" />
-      <test-file value="$PROJECT_DIR$/src/__tests__/ReservableService.test.ts" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ReservationService.test.ts" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST_FILE" />
-      <test-file value="$PROJECT_DIR$/src/__tests__/ReservationService.test.ts" />
-      <method v="2" />
-    </configuration>
-    <configuration name="add one.correct" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.eventPage.reservablesTable test">
+    <configuration name="eventPage.eventPage at /event/:id" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/__tests__/ReservationService.test.ts" />
+      <test-file value="$PROJECT_DIR$/src/__tests__/App.test.js" />
       <test-names>
-        <test-name value="add one" />
-        <test-name value="correct" />
+        <test-name value="eventPage" />
+        <test-name value="eventPage at /event/:id" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="eventPage.eventPage load event by id (1)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/__tests__/App.test.tsx" />
+      <test-names>
+        <test-name value="eventPage" />
+        <test-name value="eventPage load event by id" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="eventPage.eventPage load event by id" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/__tests__/App.test.js" />
+      <test-names>
+        <test-name value="eventPage" />
+        <test-name value="eventPage load event by id" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="eventPage.reservablesTable test" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/__tests__/App.test.tsx" />
+      <test-names>
+        <test-name value="eventPage" />
+        <test-name value="reservablesTable test" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="homePage.click Event view was redirecting to event page " type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/__tests__/App.test.js" />
+      <test-names>
+        <test-name value="homePage" />
+        <test-name value="click Event view was redirecting to event page " />
       </test-names>
       <method v="2" />
     </configuration>
@@ -162,20 +168,20 @@
     </configuration>
     <list>
       <item itemvalue="JavaScript Debug.Debug Application" />
-      <item itemvalue="Jest.ReservationService.test.ts" />
-      <item itemvalue="Jest.add one.correct" />
       <item itemvalue="npm.npm start" />
-      <item itemvalue="Jest.AccountService.test.ts" />
-      <item itemvalue="Jest.EventService.test.ts" />
-      <item itemvalue="Jest.ReservableService.test.ts" />
+      <item itemvalue="Jest.homePage.click Event view was redirecting to event page " />
+      <item itemvalue="Jest.eventPage.eventPage at /event/:id" />
+      <item itemvalue="Jest.eventPage.eventPage load event by id" />
+      <item itemvalue="Jest.eventPage.eventPage load event by id (1)" />
+      <item itemvalue="Jest.eventPage.reservablesTable test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.ReservationService.test.ts" />
-        <item itemvalue="Jest.ReservableService.test.ts" />
-        <item itemvalue="Jest.EventService.test.ts" />
-        <item itemvalue="Jest.AccountService.test.ts" />
-        <item itemvalue="Jest.add one.correct" />
+        <item itemvalue="Jest.eventPage.reservablesTable test" />
+        <item itemvalue="Jest.eventPage.eventPage load event by id (1)" />
+        <item itemvalue="Jest.eventPage.eventPage load event by id" />
+        <item itemvalue="Jest.eventPage.eventPage at /event/:id" />
+        <item itemvalue="Jest.homePage.click Event view was redirecting to event page " />
       </list>
     </recent_temporary>
   </component>
@@ -219,7 +225,10 @@
       <workItem from="1575967115520" duration="23447000" />
       <workItem from="1576051635490" duration="14574000" />
       <workItem from="1576087065191" duration="5986000" />
-      <workItem from="1576141917357" duration="2783000" />
+      <workItem from="1576141917357" duration="20895000" />
+      <workItem from="1576253477999" duration="3896000" />
+      <workItem from="1576264972703" duration="1877000" />
+      <workItem from="1576322987390" duration="28740000" />
     </task>
     <task id="LOCAL-00001" summary="homePage and loginPage created">
       <created>1575039324396</created>
@@ -249,7 +258,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575722341567</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="data models rewrite, api requests, data services">
+      <created>1576144836641</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1576144836641</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,13 +290,14 @@
     <MESSAGE value="apiService, registerPage functionality" />
     <MESSAGE value="login and register functionality, public and private routes" />
     <MESSAGE value="data models" />
-    <option name="LAST_COMMIT_MESSAGE" value="data models" />
+    <MESSAGE value="data models rewrite, api requests, data services" />
+    <option name="LAST_COMMIT_MESSAGE" value="data models rewrite, api requests, data services" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="361" y="90" key="#ESLint" timestamp="1575820854866">
+    <state x="361" y="90" key="#ESLint" timestamp="1576171334108">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="361" y="90" key="#ESLint/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1575820854866" />
+    <state x="361" y="90" key="#ESLint/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576171334108" />
     <state x="223" y="86" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575917213986">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -297,103 +314,103 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="516" y="297" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1575212156429" />
-    <state x="393" y="25" key="CommitChangelistDialog2" timestamp="1575845836434">
+    <state x="393" y="25" key="CommitChangelistDialog2" timestamp="1576144834661">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="393" y="25" key="CommitChangelistDialog2/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1575845836434" />
-    <state width="967" height="438" key="DebuggerActiveHint" timestamp="1576143664388">
+    <state x="393" y="25" key="CommitChangelistDialog2/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576144834661" />
+    <state width="1075" height="438" key="DebuggerActiveHint" timestamp="1576365320157">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="967" height="438" key="DebuggerActiveHint/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143664388" />
+    <state width="1075" height="438" key="DebuggerActiveHint/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576365320157" />
     <state width="1140" height="438" key="DebuggerActiveHint/0.0.1536.864@0.0.1536.864" timestamp="1575981365384" />
-    <state width="1537" height="805" key="GridCell.Tab.0.bottom" timestamp="1576144046184">
+    <state width="1537" height="775" key="GridCell.Tab.0.bottom" timestamp="1576368525838">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.0.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576144046184" />
+    <state width="1537" height="775" key="GridCell.Tab.0.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368525838" />
     <state width="1537" height="805" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1576072605015" />
-    <state width="1537" height="805" key="GridCell.Tab.0.center" timestamp="1576144046184">
+    <state width="1537" height="775" key="GridCell.Tab.0.center" timestamp="1576368525838">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.0.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576144046184" />
+    <state width="1537" height="775" key="GridCell.Tab.0.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368525838" />
     <state width="1537" height="805" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1576072605015" />
-    <state width="1537" height="805" key="GridCell.Tab.0.left" timestamp="1576144046184">
+    <state width="1537" height="775" key="GridCell.Tab.0.left" timestamp="1576368525838">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.0.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576144046184" />
+    <state width="1537" height="775" key="GridCell.Tab.0.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368525838" />
     <state width="1537" height="805" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1576072605014" />
-    <state width="1537" height="805" key="GridCell.Tab.0.right" timestamp="1576144046184">
+    <state width="1537" height="775" key="GridCell.Tab.0.right" timestamp="1576368525838">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.0.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576144046184" />
+    <state width="1537" height="775" key="GridCell.Tab.0.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368525838" />
     <state width="1537" height="805" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1576072605015" />
-    <state width="1537" height="805" key="GridCell.Tab.1.bottom" timestamp="1576143641914">
+    <state width="1537" height="805" key="GridCell.Tab.1.bottom" timestamp="1576368213653">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.1.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143641914" />
+    <state width="1537" height="805" key="GridCell.Tab.1.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368213653" />
     <state width="1537" height="805" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1575981309892" />
-    <state width="1537" height="805" key="GridCell.Tab.1.center" timestamp="1576143641914">
+    <state width="1537" height="805" key="GridCell.Tab.1.center" timestamp="1576368213653">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.1.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143641914" />
+    <state width="1537" height="805" key="GridCell.Tab.1.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368213653" />
     <state width="1537" height="805" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1575981309892" />
-    <state width="1537" height="805" key="GridCell.Tab.1.left" timestamp="1576143641913">
+    <state width="1537" height="805" key="GridCell.Tab.1.left" timestamp="1576368213653">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.1.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143641913" />
+    <state width="1537" height="805" key="GridCell.Tab.1.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368213653" />
     <state width="1537" height="805" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1575981309892" />
-    <state width="1537" height="805" key="GridCell.Tab.1.right" timestamp="1576143641914">
+    <state width="1537" height="805" key="GridCell.Tab.1.right" timestamp="1576368213653">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.1.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143641914" />
+    <state width="1537" height="805" key="GridCell.Tab.1.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368213653" />
     <state width="1537" height="805" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1575981309892" />
-    <state width="1537" height="805" key="GridCell.Tab.2.bottom" timestamp="1576143625321">
+    <state width="1537" height="805" key="GridCell.Tab.2.bottom" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.2.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625321" />
+    <state width="1537" height="805" key="GridCell.Tab.2.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.2.bottom/0.0.1536.864@0.0.1536.864" timestamp="1575981289931" />
-    <state width="1537" height="805" key="GridCell.Tab.2.center" timestamp="1576143625321">
+    <state width="1537" height="805" key="GridCell.Tab.2.center" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.2.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625321" />
+    <state width="1537" height="805" key="GridCell.Tab.2.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.2.center/0.0.1536.864@0.0.1536.864" timestamp="1575981289931" />
-    <state width="1537" height="805" key="GridCell.Tab.2.left" timestamp="1576143625321">
+    <state width="1537" height="805" key="GridCell.Tab.2.left" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.2.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625321" />
+    <state width="1537" height="805" key="GridCell.Tab.2.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.2.left/0.0.1536.864@0.0.1536.864" timestamp="1575981289931" />
-    <state width="1537" height="805" key="GridCell.Tab.2.right" timestamp="1576143625321">
+    <state width="1537" height="805" key="GridCell.Tab.2.right" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.2.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625321" />
+    <state width="1537" height="805" key="GridCell.Tab.2.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.2.right/0.0.1536.864@0.0.1536.864" timestamp="1575981289931" />
-    <state width="1537" height="805" key="GridCell.Tab.3.bottom" timestamp="1576143625322">
+    <state width="1537" height="805" key="GridCell.Tab.3.bottom" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.3.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625322" />
+    <state width="1537" height="805" key="GridCell.Tab.3.bottom/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.3.bottom/0.0.1536.864@0.0.1536.864" timestamp="1575981289932" />
-    <state width="1537" height="805" key="GridCell.Tab.3.center" timestamp="1576143625321">
+    <state width="1537" height="805" key="GridCell.Tab.3.center" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.3.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625321" />
+    <state width="1537" height="805" key="GridCell.Tab.3.center/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.3.center/0.0.1536.864@0.0.1536.864" timestamp="1575981289931" />
-    <state width="1537" height="805" key="GridCell.Tab.3.left" timestamp="1576143625321">
+    <state width="1537" height="805" key="GridCell.Tab.3.left" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.3.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625321" />
+    <state width="1537" height="805" key="GridCell.Tab.3.left/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.3.left/0.0.1536.864@0.0.1536.864" timestamp="1575981289931" />
-    <state width="1537" height="805" key="GridCell.Tab.3.right" timestamp="1576143625322">
+    <state width="1537" height="805" key="GridCell.Tab.3.right" timestamp="1576368189964">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1537" height="805" key="GridCell.Tab.3.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576143625322" />
+    <state width="1537" height="805" key="GridCell.Tab.3.right/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576368189964" />
     <state width="1537" height="805" key="GridCell.Tab.3.right/0.0.1536.864@0.0.1536.864" timestamp="1575981289932" />
-    <state x="361" y="164" key="Vcs.Push.Dialog.v2" timestamp="1575722344479">
+    <state x="361" y="164" key="Vcs.Push.Dialog.v2" timestamp="1576144860176">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="361" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1575722344479" />
-    <state width="775" height="439" key="XDebugger.FullValuePopup" timestamp="1576011218457">
+    <state x="361" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576144860176" />
+    <state width="775" height="439" key="XDebugger.FullValuePopup" timestamp="1576255724356">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="775" height="439" key="XDebugger.FullValuePopup/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576011218457" />
+    <state width="775" height="439" key="XDebugger.FullValuePopup/0.0.1536.864/1920.0.1920.1080@0.0.1536.864" timestamp="1576255724356" />
     <state x="93" y="93" width="1350" height="678" key="dock-window-1" timestamp="1575917214371">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -419,25 +436,24 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/services/ReservationService.ts</url>
           <line>23</line>
-          <option name="timeStamp" value="23" />
+          <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/services/ReservationService.ts</url>
-          <line>25</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/services/ReservationService.ts</url>
-          <line>28</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/services/EventService.ts</url>
-          <line>22</line>
+          <url>file://$PROJECT_DIR$/src/__tests__/EventService.test.ts</url>
+          <line>84</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="29" />
+          <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/EventPage.tsx</url>
+          <line>29</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="139" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/reservation_website$functional_test.info" NAME="functional test Coverage Results" MODIFIED="1576325839267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

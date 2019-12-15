@@ -1,30 +1,47 @@
 
 import Account from "../dataModels/Account";
-import {addAccount, deleteAccountById, getAccountById, getAccountFiltered} from "../domain/ApiRequests";
-import {AxiosResponse} from "axios";
+import {addAccount, getTokenFromApi, deleteAccountById, getAccountById, getAccountFiltered} from "../domain/ApiRequests";
+import {AxiosError, AxiosResponse} from "axios";
 import {getToken} from "./CookieService";
 
+function getTokenForAccount(account:Account): Promise<string|undefined>|undefined{
+    if (account.login === undefined || account.password === undefined) {
+        return undefined;
+    }
+    return getTokenFromApi(account).then((response: AxiosResponse) => {
+        if (response.status === 200) {
+            return response.data.token;
+        }
+        return undefined;
+    });
+}
+
 function addOne(account: Account): Promise<Account|undefined>|undefined{
-    if (!(account.login !== undefined && account.password !== undefined)) {
+    if (account.login === undefined || account.password === undefined) {
         return undefined;
     }
     return addAccount(account).then((response: AxiosResponse) => {
         if (response.status === 200) {
-            return Object.assign(new Account(), JSON.parse((response as any).response));
+            return new Account(response.data);
         }
         return undefined;
     });
 
 }
 
-function getFiltered(account: Account): Promise<Account|undefined>|undefined{
+function getFiltered(account: Account): Promise<Account[]|undefined>|undefined{
     let token = getToken();
     if( token === undefined){
         return undefined;
     }
     return getAccountFiltered(account, token).then((response: AxiosResponse) => {
+        let responseArray: Account[] = [];
         if (response.status === 200) {
-            return JSON.parse((response as any).response).map((dict: {})=> Object.assign(new Account(), dict))
+            if(response.data[0] !== null){
+                response.data.forEach((dict: {})=>
+                    responseArray.push(new Account(dict)))
+            }
+            return responseArray;
         }
         return undefined;
     });
@@ -37,9 +54,13 @@ function getById(id: string) {
     }
     return getAccountById(id, token).then((response: AxiosResponse) => {
         if (response.status === 200) {
-            return Object.assign(new Account(), JSON.parse((response as any).response));
+            return new Account(response.data);
         }
         return undefined;
+    }).catch((error: AxiosError)=>{
+        // @ts-ignore
+        if (error.response.status === 404){return undefined}
+        else{throw error}
     });
 }
 
@@ -57,6 +78,6 @@ function deleteById(id: string):boolean{
     });
 }
 
-const AccountService = {addOne, getFiltered, getById, editById, deleteById};
+const AccountService = {getTokenForAccount, addOne, getFiltered, getById, editById, deleteById};
 
 export default AccountService;

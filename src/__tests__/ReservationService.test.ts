@@ -16,7 +16,7 @@ describe('add one', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(addedReservation)
+                data: addedReservation
             })
         });
         // @ts-ignore
@@ -39,7 +39,7 @@ describe('get by id', ()=>{
         {
             return Promise.resolve({
                 status: 200,
-                response: JSON.stringify(reservation)
+                data: reservation
             })
         });
         // @ts-ignore
@@ -48,6 +48,46 @@ describe('get by id', ()=>{
         })
     });
 
+});
+
+describe('update one', ()=>{
+    it('correct', async ()=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        let id = "reservation id";
+        let reservable = new Seat({"id": "reservable id"});
+        let updateMap = new Reservation({"id": id, "event": "other event id"});
+        let updatedReservation = new Reservation({"id": id, "account": "account id", "event": "other event id", "reservable": reservable});
+
+        const apiService = require('../domain/ApiRequests');
+
+        apiService.updateReservation = jest.fn(()=>{
+            return Promise.resolve({
+                status: 200,
+                data: updatedReservation
+            })
+        });
+
+        // @ts-ignore
+        await ReservationService.updateOne(updateMap).then((result: Reservation|undefined)=>{
+            expect(result).toMatchObject(updatedReservation);
+        })
+    });
+
+    it('no id', async (done)=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        let updateMap = new Reservation({"event": "other event id"});
+        const apiService = require('../domain/ApiRequests');
+
+        apiService.updateReservation = jest.fn(()=>{
+            done.fail("request made")
+        });
+
+        // @ts-ignore
+        expect(await ReservationService.updateOne(updateMap) === undefined).toBeTruthy();
+        done();
+    });
 });
 
 describe('delete by id', ()=>{

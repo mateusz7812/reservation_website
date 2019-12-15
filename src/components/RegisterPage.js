@@ -1,13 +1,14 @@
 import React from "react";
 import RegisterForm from "./RegisterForm";
-import {addAccount} from "../domain/ApiRequests";
 import {Redirect} from "react-router-dom";
+import AccountService from "../services/AccountService";
+import Account from "../dataModels/Account";
 
 class RegisterPage extends React.Component{
 
     registerAccount(login, password){
-        return addAccount().then(r => {
-            if(r.status === 200){
+        return AccountService.addOne(new Account({"login": login, "password": password})).then(r => {
+            if(r !== undefined){
                 return <Redirect to='/login'/>;
             }
             else{

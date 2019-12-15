@@ -1,7 +1,7 @@
 import {Reservable} from "./Reservable";
 
 class Event{
-    private id: string|undefined;
+    id: string|undefined;
     name: string|undefined;
     reservable: Reservable|undefined;
     reservations: string[]|undefined;

@@ -1,7 +1,7 @@
 import {Reservable} from "../dataModels/Reservable";
 import {addReservable, deleteReservableById, getReservableById} from "../domain/ApiRequests";
 import {getToken} from "./CookieService";
-import {AxiosResponse} from "axios";
+import {AxiosError, AxiosResponse} from "axios";
 
 function addOne(reservable: Reservable): Promise<Reservable|undefined>|undefined{
     let token = getToken();
@@ -10,7 +10,7 @@ function addOne(reservable: Reservable): Promise<Reservable|undefined>|undefined
     }
     return addReservable(reservable, token).then((response: AxiosResponse)=>{
         if (response.status === 200) {
-            let reservableDict = JSON.parse((response as any).response);
+            let reservableDict = response.data;
             return Reservable.new(reservableDict);
         }
         return undefined;
@@ -22,13 +22,17 @@ function getById(id: string): Promise<Reservable|undefined>|undefined{
     if( token === undefined){
         return undefined;
     }
-    return getReservableById(id, token).then((response: AxiosResponse)=>{
-        if (response.status === 200) {
-            let reservableDict = JSON.parse((response as any).response);
-            return Reservable.new(reservableDict);
-        }
-        return undefined;
-    });
+    return getReservableById(id, token)
+        .then((response: AxiosResponse)=>{
+            if (response.status === 200) {
+                let reservableDict = response.data;
+                return Reservable.new(reservableDict);
+            }
+        }).catch((error: AxiosError)=>{
+                // @ts-ignore
+            if (error.response.status === 404){return undefined}
+                else{throw error}
+        });
 }
 
 function deleteById(id: string): boolean{
@@ -36,7 +40,7 @@ function deleteById(id: string): boolean{
     if( token === undefined){
         return false;
     }
-    return deleteReservableById(id, token);
+    return deleteReservableById(id, token)
 }
 
 const ReservableService = {addOne, getById, deleteById};
