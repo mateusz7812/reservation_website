@@ -9,6 +9,11 @@ const ReservableView = ({reservable}: {reservable: ReservableModel})=>{
     else if(reservable.type === "Space"){
         return <SpaceView spaceModel={reservable as SpaceModel}/>
     }
+    else {
+        return (<div>
+
+        </div>);
+    }
 };
 
 export default ReservableView;

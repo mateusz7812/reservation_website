@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../App';
-import {configure, mount, shallow} from "enzyme";
+import {configure, mount, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import LoginPage from "../components/LoginPage";
 import {MemoryRouter, Redirect, Route, Switch} from "react-router-dom";
@@ -13,7 +13,7 @@ import AccountModel from "../dataModels/AccountModel";
 import EventModel from "../dataModels/EventModel";
 import OneEventView from "../components/EventView" ;
 import EventPage from "../components/EventPage";
-import {ReservableModel, SeatModel, SpaceModel} from "../dataModels/ReservableModel";
+import {SeatModel, SpaceModel} from "../dataModels/ReservableModel";
 import ReservableView from "../components/ReservableView";
 import SeatView from "../components/SeatView";
 import SpaceView from "../components/SpaceView";
@@ -39,8 +39,8 @@ describe('loginPage', ()=>{
         const mockFunction = jest.fn();
 
         let wrapper = mount(<LoginForm loginFunction={mockFunction}/>);
-        wrapper.find({'id': 'loginInput'}).getDOMNode()["value"] = "name";
-        wrapper.find({'id': 'passwordInput'}).getDOMNode()["value"] = "password";
+        wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
+        wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
         wrapper.find({'id': "loginButton"}).simulate('click');
 
         expect(mockFunction.mock.calls.length).toEqual(1);
@@ -65,7 +65,7 @@ describe('loginPage', ()=>{
             return Promise.resolve(token);
         });
 
-        shallow(<LoginPage />).instance().loginAccount("user", "password").then(
+        (shallow(<LoginPage />).instance()as LoginPage).loginAccount("user", "password").then(
             r => {
                 expect(accountService.default.getTokenForAccount.mock.calls.length).toEqual(1);
                 expect(cookieService.addCookie.mock.calls.length).toEqual(1);
@@ -76,15 +76,13 @@ describe('loginPage', ()=>{
     });
 
     it('loginAccount on other than 200 status', (done)=> {
-        let response = undefined;
-
         const cookieService = require('../services/CookieService');
         cookieService.addCookie = jest.fn();
 
         const accountService = require("../services/AccountService");
-        accountService.default.getTokenForAccount = jest.fn(() => Promise.resolve(response));
+        accountService.default.getTokenForAccount = jest.fn(() => Promise.resolve(undefined));
 
-        let instance = shallow(<LoginPage />).instance();
+        let instance = shallow(<LoginPage />).instance() as LoginPage;
 
         instance.loginAccount("user", "password").then(
             () => {
@@ -143,8 +141,8 @@ describe('registerPage', ()=>{
         const mockFunction = jest.fn();
 
         let wrapper = mount(<RegisterForm registerFunction={mockFunction}/>);
-        wrapper.find({'id': 'loginInput'}).getDOMNode()["value"] = "name";
-        wrapper.find({'id': 'passwordInput'}).getDOMNode()["value"] = "password";
+        wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
+        wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
         wrapper.find({'id': "registerButton"}).simulate('click');
 
         expect(mockFunction.mock.calls.length).toEqual(1);
@@ -164,7 +162,7 @@ describe('registerPage', ()=>{
         const accountService = require("../services/AccountService");
         accountService.default.addOne = jest.fn(() => Promise.resolve(response));
 
-        shallow(<RegisterPage />).instance().registerAccount("user", "password").then(
+        (shallow(<RegisterPage />).instance() as RegisterPage).registerAccount("user", "password").then(
             r => {
                 expect(accountService.default.addOne.mock.calls.length).toEqual(1);
                 expect(accountService.default.addOne.mock.calls[0][0]).toMatchObject(new AccountModel({"login": "user", "password": 'password'}));
@@ -175,12 +173,10 @@ describe('registerPage', ()=>{
     });
 
     it('registerAccount when account not created', (done)=> {
-        let response = undefined;
-
         const accountService = require("../services/AccountService");
-        accountService.default.addOne = jest.fn(() => Promise.resolve(response));
+        accountService.default.addOne = jest.fn(() => Promise.resolve(undefined));
 
-        let instance = shallow(<RegisterPage />).instance();
+        let instance = shallow(<RegisterPage />).instance() as RegisterPage;
         instance.registerAccount("user", "password").then(
             () => {
                 expect(instance.state.message).toBe("error");
@@ -241,7 +237,7 @@ describe('homePage', ()=> {
                 <HomePage/>
             </MemoryRouter>
                 );
-        let instance = wrapper.find(HomePage).instance();
+        let instance = wrapper.find(HomePage).instance() as HomePage;
 
         setTimeout(() => {
             expect(instance.state.events).toBe(events);
@@ -329,16 +325,4 @@ describe('reservables', ()=>{
         expect(reservableView.length).toBe(1);
     });
 
-    it('reservables generation test', (done)=>{
-        let space = new SpaceModel({"id": "space1", "name": "space1", "reservables": [new SeatModel({"id": "seat1", "name": "seat1"})]});
-
-        // @ts-ignore
-        let wrapper = mount(<SpaceView spaceModel={space}/>);
-
-        setTimeout(()=>{
-            let reservableView = wrapper.find(SeatView);
-            expect(reservableView).toHaveLength(1);
-            done();
-        }, 1000);
-    });
 });

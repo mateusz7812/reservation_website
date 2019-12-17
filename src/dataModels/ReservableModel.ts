@@ -1,3 +1,7 @@
+import ReservationModel from "./ReservationModel";
+import ReservationService from "../services/ReservationService";
+import ReservableService from "../services/ReservableService";
+import EventService from "../services/EventService";
 
 type reservableTypes = "Space" | "Seat";
 
@@ -15,11 +19,24 @@ abstract class ReservableModel{
 
     static new(params: {}){
         if("type" in params){
-            // @ts-ignore
             let type = getType(params["type"]);
             return new type(params);
         }
         return undefined;
+    }
+
+    getSpace(){
+        if(this.space)
+            return ReservableService.getById(this.space);
+        return undefined;
+    }
+
+    getEvents(){
+        return this.events?.map((id: string)=>EventService.getById(id)) ?? [];
+    }
+
+    getReservations(): (Promise<ReservationModel | undefined> | undefined)[]{
+        return this.reservations?.map((id: string)=>ReservationService.getById(id)) ?? [];
     }
 
 }
@@ -32,11 +49,15 @@ class SeatModel extends ReservableModel{
 }
 
 class SpaceModel extends ReservableModel{
-    reservables: undefined|Promise<ReservableModel>[]|string[];
+    reservables: undefined|string[];
 
     constructor(params: {}) {
         super();
         Object.assign(this, params, {"type": "Space"});
+    }
+
+    getReservables(){
+        return this.reservables?.map((id: string)=>ReservableService.getById(id)) ?? [];
     }
 
 }

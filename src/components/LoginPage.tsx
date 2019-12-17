@@ -6,6 +6,7 @@ import AccountService from "../services/AccountService";
 import AccountModel from "../dataModels/AccountModel";
 
 class LoginPage extends React.Component{
+    state = {message: ""};
 
     loginAccount(login: string, password: string) {
         // @ts-ignore
