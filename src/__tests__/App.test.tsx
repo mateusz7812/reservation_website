@@ -8,25 +8,26 @@ import HomePage from "../components/HomePage";
 import RegisterForm from "../components/RegisterForm";
 import RegisterPage from "../components/RegisterPage";
 import LoginForm from "../components/LoginForm";
-import PrivateRoute from "../PrivateRoute";
 import EventList from "../components/EventList";
-import Account from "../dataModels/Account";
-import Event from "../dataModels/Event";
-import OneEventView from "../components/Event" ;
+import AccountModel from "../dataModels/AccountModel";
+import EventModel from "../dataModels/EventModel";
+import OneEventView from "../components/EventView" ;
 import EventPage from "../components/EventPage";
-import {Reservable, Seat} from "../dataModels/Reservable";
-import ReservablesTable from "../components/ReservablesTable";
-import OneReservableView from "../components/Reservable";
+import {ReservableModel, SeatModel, SpaceModel} from "../dataModels/ReservableModel";
+import ReservableView from "../components/ReservableView";
+import SeatView from "../components/SeatView";
+import SpaceView from "../components/SpaceView";
 
 configure({ adapter: new Adapter() });
 describe('loginPage', ()=>{
-    it('loginPage at /login', ()=>{
+    it('loginPage at /login', (done)=>{
         let wrapper = mount(
             <MemoryRouter initialEntries={[ '/login']}>
                 <App/>
             </MemoryRouter>
         );
         expect(wrapper.find(LoginPage)).toHaveLength(1);
+        done();
     });
 
     it('loginForm in loginPage', ()=>{
@@ -34,7 +35,7 @@ describe('loginPage', ()=>{
         expect(wrapper.find(LoginForm)).toHaveLength(1);
     });
 
-    it('loginForm call function', ()=>{
+    it('loginForm call function', (done)=>{
         const mockFunction = jest.fn();
 
         let wrapper = mount(<LoginForm loginFunction={mockFunction}/>);
@@ -45,7 +46,7 @@ describe('loginPage', ()=>{
         expect(mockFunction.mock.calls.length).toEqual(1);
         expect(mockFunction.mock.calls[0][0]).toEqual("name");
         expect(mockFunction.mock.calls[0][1]).toEqual("password");
-
+        done();
     });
 
     it('loginAccount on 200 status', (done)=>{
@@ -94,29 +95,43 @@ describe('loginPage', ()=>{
         );
     });
 
-    it('redirect to /home if cookie account exist', ()=>{
+    it('redirect to /home if cookie token exist', (done)=>{
         const cookieService = require('../services/CookieService');
         cookieService.getCookie = jest.fn(()=>  "BZ3BL34T3FrSJJP0Pmm7O" );
 
+        const eventService = require("../services/EventService");
+        eventService.default.getAll = jest.fn(()=>Promise.resolve([]));
+
         let wrapper = mount(
-            <MemoryRouter initialEntries={[ '/getTokenFromApi']}>
+            <MemoryRouter initialEntries={[ '/login']}>
                 <App/>
             </MemoryRouter>
         );
-        expect(wrapper.find(HomePage)).toHaveLength(1);
         expect(wrapper.find(LoginPage)).toHaveLength(0);
-
+        expect(wrapper.find(HomePage)).toHaveLength(1);
+        done();
     });
 });
 
 describe('registerPage', ()=>{
-    it('registerPage at /register', () => {
+    it('registerPage at /register', async (done) => {
+
+        const cookieService = require('../services/CookieService');
+        cookieService.getCookie = jest.fn((value)=>{
+            if(value === "token"){
+                return undefined;
+            }
+        });
+
         let wrapper = mount(
             <MemoryRouter initialEntries={[ '/register']}>
                 <App/>
             </MemoryRouter>
         );
-        expect(wrapper.find(RegisterPage)).toHaveLength(1);
+        setTimeout(()=>{
+            expect(wrapper.find(RegisterPage)).toHaveLength(1);
+            done();
+        }, 1000);
     });
 
     it('registerForm in registerPage', ()=>{
@@ -124,7 +139,7 @@ describe('registerPage', ()=>{
         expect(wrapper.find(RegisterForm)).toHaveLength(1);
     });
 
-    it('addAccount form', ()=>{
+    it('addAccount form', (done)=>{
         const mockFunction = jest.fn();
 
         let wrapper = mount(<RegisterForm registerFunction={mockFunction}/>);
@@ -135,10 +150,11 @@ describe('registerPage', ()=>{
         expect(mockFunction.mock.calls.length).toEqual(1);
         expect(mockFunction.mock.calls[0][0]).toEqual("name");
         expect(mockFunction.mock.calls[0][1]).toEqual("password");
+        done();
     });
 
     it('registerAccount when account created', (done)=> {
-        let response = new Account({
+        let response = new AccountModel({
             "id": "49241151-fb8c-4cb3-a551-85408cb4fe66",
             "reservations": [],
             "login": "user",
@@ -151,7 +167,7 @@ describe('registerPage', ()=>{
         shallow(<RegisterPage />).instance().registerAccount("user", "password").then(
             r => {
                 expect(accountService.default.addOne.mock.calls.length).toEqual(1);
-                expect(accountService.default.addOne.mock.calls[0][0]).toMatchObject(new Account({"login": "user", "password": 'password'}));
+                expect(accountService.default.addOne.mock.calls[0][0]).toMatchObject(new AccountModel({"login": "user", "password": 'password'}));
                 expect(r).toMatchObject(<Redirect to='/login'/>);
                 done();
             }
@@ -196,7 +212,7 @@ describe('homePage', ()=> {
     });
 
 
-    it('redirecting to /getTokenFromApi if account cookie dont exist', ()=>{
+    it('redirecting to /login if account cookie dont exist', (done)=>{
         const cookieService = require('../services/CookieService');
         cookieService.getCookie = jest.fn(()=> undefined );
 
@@ -207,6 +223,7 @@ describe('homePage', ()=> {
         );
         expect(wrapper.find(HomePage)).toHaveLength(0);
         expect(wrapper.find(LoginPage)).toHaveLength(1);
+        done();
     });
 
     it('eventList in homePage', ()=>{
@@ -214,98 +231,114 @@ describe('homePage', ()=> {
         expect(wrapper.find(EventList)).toHaveLength(1);
     });
 
-    it('homePage is loading events at start', ()=>{
+    it('homePage is loading events at start', (done)=>{
         let eventService = require("../services/EventService");
-        let events = [new Event({"id": "id1", "name": "event1"}), new Event({"id": "id2", "name": "event2"})];
+        let events = [new EventModel({"id": "id1", "name": "event1"}), new EventModel({"id": "id2", "name": "event2"})];
         eventService.default.getAll = jest.fn(()=> Promise.resolve(events));
 
-        let wrapper = mount(<HomePage/>);
-        let instance = wrapper.instance();
+        let wrapper = mount(
+            <MemoryRouter>
+                <HomePage/>
+            </MemoryRouter>
+                );
+        let instance = wrapper.find(HomePage).instance();
 
-        setTimeout(() => expect(instance.state.events).toBe(events), 10);
+        setTimeout(() => {
+            expect(instance.state.events).toBe(events);
+            done();
+        }, 10);
     });
 
-    it('eventList loadLists', ()=>{
-        let events = [new Event({"id": "id1", "name": "event1"}), new Event({"id": "id2", "name": "event2"})];
-        let wrapper = mount(<EventList events={events}/>);
-
-        expect(wrapper.find(OneEventView)).toHaveLength(2);
-    });
-
-    it('click Event view was redirecting to event page ',()=>{
-        let event = new Event({"id": "some id", "name": "event1"});
+    it('eventList loadLists', (done)=>{
+        let events = [new EventModel({"id": "id1", "name": "event1"}), new EventModel({"id": "id2", "name": "event2"})];
         let wrapper = mount(
             <MemoryRouter initialEntries={["/"]}>
                 <Switch>
-                    <Route path="/"><OneEventView event={event}/></Route>
-                    <Route path="/event/:id"><EventPage/></Route>
+                    <EventList events={events}/>
                 </Switch>
             </MemoryRouter>);
+
+        expect(wrapper.find(OneEventView)).toHaveLength(2);
+        done();
+    });
+
+    it('click EventView view was redirecting to event page ',async (done)=>{
+        let event = new EventModel({"id": "some_id", "name": "event1", "reservables": []});
+
+        const eventService = require("../services/EventService");
+        eventService.default.getById = jest.fn(()=> Promise.resolve(event));
+
+        let wrapper = mount(
+            <MemoryRouter initialEntries={["/"]}>
+                <Switch>
+                    <Route path="/event/:id" component={EventPage} />
+                    <Route path="/" component={()=><EventList events={[event]}/>} />
+                </Switch>
+            </MemoryRouter>
+        );
+
+        expect(wrapper.find(EventList)).toHaveLength(1);
         expect(wrapper.find(EventPage)).toHaveLength(0);
-        wrapper.simulate("click");
-        setTimeout(() => expect(wrapper.find(EventPage)).toHaveLength(1), 10);
+        let eventView = wrapper.find(OneEventView);
+        let div = eventView.find('div');
+        div.simulate('click');
+        setTimeout(() => {
+            let eventPageWrapper = wrapper.find(EventPage);
+            expect(eventPageWrapper).toHaveLength(1);
+            done();
+        }, 1000);
     });
 });
 
 describe('eventPage', ()=>{
-    it('eventPage at /event/:id', ()=>{
+    it('eventPage at /event/:id', (done)=>{
         const cookieService = require('../services/CookieService');
         cookieService.getCookie = jest.fn((value)=>{
             if(value === "token"){
                 return "BZ3BL34T3FrSJJP0Pmm7O";
             }
         });
-        let event = new Event({"id": "some id", "name": "event1"});
+        let event = new EventModel({"id": "some id", "name": "event1", "reservables": []});
+
+        const eventService = require("../services/EventService");
+        eventService.default.getById = jest.fn(()=> Promise.resolve(event));
+
         let wrapper = mount(
             <MemoryRouter initialEntries={[ '/event/'+event.id]}>
                 <App/>
             </MemoryRouter>
         );
         expect(wrapper.find(EventPage)).toHaveLength(1);
+        done();
     });
 
-    it('eventPage load event by id',(done)=>{
-        const cookieService = require('../services/CookieService');
-        cookieService.getCookie = jest.fn((value)=>{
-            if(value === "token"){
-                return "BZ3BL34T3FrSJJP0Pmm7O";
-            }
-        });
+});
 
-        let event = new Event({"id": "some id", "name": "event1", "reservables": ["id 1", "id 2", "id 3"]});
-        let reservables = [new Seat({"id": "id 1"}), new Seat({"id": "id 2"}), new Seat({"id": "id 3"})];
-
-        let eventService = require("../services/EventService");
-        eventService.default.getById = jest.fn(()=> Promise.resolve(event));
-
-        let reservableService = require("../services/ReservableService");
-        reservableService.default.getById = jest.fn((id: string)=> Promise.resolve(reservables.filter((x: Seat)=> x.id === id)[0]));
-
-        let wrapper = mount(
-            <MemoryRouter initialEntries={[ '/event/'+event.id]}>
-                <Switch>
-                    <Route path="/event/:id" component={EventPage}/>
-                </Switch>
-            </MemoryRouter>
-        );
-
-        setTimeout(() => expect(eventService.default.getById.mock.calls).toHaveLength(1), 1000);
-        expect(eventService.default.getById.mock.calls[0][0]).toBe(event.id);
-        setTimeout(() => expect(reservableService.default.getById.mock.calls.length).toEqual(3), 1000);
-
-        let instance = wrapper.find(EventPage).instance();
-
-        setTimeout(() => expect(instance.state.event).toMatchObject(event), 1000);
-        setTimeout(() => {expect(instance.state.reservables).toMatchObject(reservables); done()}, 1000);
+describe('reservables', ()=>{
+    it('reservableView return SeatView', ()=>{
+        let reservable = new SeatModel({"id": "id 1", "name": "seat1"});
+        let wrapper = mount(<ReservableView reservable={reservable}/>);
+        let reservableView = wrapper.find(SeatView);
+        expect(reservableView.length).toBe(1);
     });
 
-    it('reservablesTable test', ()=>{
-        let reservables = [new Seat({"id": "id 1", "name": "seat1"})];
-        let selections: Reservable[] = [];
-        const setSelections = jest.fn((newSelections)=>{selections=newSelections});
-        let wrapper = mount(<ReservablesTable reservables={reservables} selections={selections} setSelections={setSelections}/>);
-        let reservableView = wrapper.find(OneReservableView);
-        reservableView.simulate("click");
-        expect(selections).toMatchObject(reservables);
+    it('reservableView return SpaceView', ()=>{
+        let reservable = new SpaceModel({"id": "id 1", "name": "space1"});
+        let wrapper = mount(<ReservableView reservable={reservable}/>);
+        let reservableView = wrapper.find(SpaceView);
+        expect(reservableView.length).toBe(1);
+    });
+
+    it('reservables generation test', (done)=>{
+        let space = new SpaceModel({"id": "space1", "name": "space1", "reservables": [new SeatModel({"id": "seat1", "name": "seat1"})]});
+
+        // @ts-ignore
+        let wrapper = mount(<SpaceView spaceModel={space}/>);
+
+        setTimeout(()=>{
+            let reservableView = wrapper.find(SeatView);
+            expect(reservableView).toHaveLength(1);
+            done();
+        }, 1000);
     });
 });

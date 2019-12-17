@@ -40,11 +40,17 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^24.0.23",
     "@types/moxios": "^0.4.9",
     "@types/react-router-dom": "^5.1.3",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0"
-  }
+  },
+  "babel": {
+    "plugins": ["@babel/plugin-proposal-optional-chaining"]
+  },
+  "proxy": "http://localhost:4000"
 }

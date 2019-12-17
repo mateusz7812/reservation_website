@@ -1,5 +1,5 @@
-import Event from "../dataModels/Event";
-import {Reservable} from "../dataModels/Reservable";
+import EventModel from "../dataModels/EventModel";
+import {ReservableModel} from "../dataModels/ReservableModel";
 import {getToken} from "./CookieService";
 import {
     addEvent,
@@ -8,7 +8,7 @@ import {
 } from "../domain/ApiRequests";
 import {AxiosError, AxiosResponse} from "axios";
 
-function addOne(event: Event): Promise<Event|undefined>|undefined {
+function addOne(event: EventModel): Promise<EventModel|undefined>|undefined {
     let token = getToken();
     if( token === undefined){
         return undefined;
@@ -18,15 +18,15 @@ function addOne(event: Event): Promise<Event|undefined>|undefined {
 
             let eventDict = response.data;
             let reservableDict = eventDict.reservable;
-            let reservable = Reservable.new(reservableDict);
+            let reservable = ReservableModel.new(reservableDict);
             delete eventDict.reservable;
-            return Object.assign(new Event({"reservable": reservable}), eventDict)
+            return Object.assign(new EventModel({"reservable": reservable}), eventDict)
         }
         return undefined;
     });
 }
 
-function getById(id: string): Promise<Event|undefined>|undefined {
+function getById(id: string): Promise<EventModel|undefined>|undefined {
     let token = getToken();
     if( token === undefined){
         return undefined;
@@ -35,9 +35,9 @@ function getById(id: string): Promise<Event|undefined>|undefined {
         if (response.status === 200) {
             let reservationDict = response.data;
             let reservableDict = reservationDict.reservable;
-            let reservable = Reservable.new(reservableDict);
+            let reservable = ReservableModel.new(reservableDict);
             delete reservationDict.reservable;
-            let reservationFromResponse = new Event({"reservable": reservable});
+            let reservationFromResponse = new EventModel({"reservable": reservable});
             return Object.assign(reservationFromResponse, reservationDict);
         }
         return undefined;
@@ -48,7 +48,7 @@ function getById(id: string): Promise<Event|undefined>|undefined {
     });
 }
 
-function getAll(): Promise<Event[]|undefined>|undefined {
+function getAll(): Promise<EventModel[]|undefined>|undefined {
     let token = getToken();
     if( token === undefined){
         return undefined;
@@ -58,9 +58,9 @@ function getAll(): Promise<Event[]|undefined>|undefined {
             let reservationList: [] = response.data;
             return reservationList.map((reservationDict: any)=>{
                 let reservableDict = reservationDict.reservable;
-                let reservable = Reservable.new(reservableDict);
+                let reservable = ReservableModel.new(reservableDict);
                 delete reservationDict.reservable;
-                let reservationFromResponse = new Event({"reservable": reservable});
+                let reservationFromResponse = new EventModel({"reservable": reservable});
                 return Object.assign(reservationFromResponse, reservationDict);
             });
         }
@@ -68,7 +68,7 @@ function getAll(): Promise<Event[]|undefined>|undefined {
     });
 }
 
-function updateOne(eventMap: Event): Promise<Event|undefined>|undefined {
+function updateOne(eventMap: EventModel): Promise<EventModel|undefined>|undefined {
     let token = getToken();
     if( token === undefined){
         return undefined;
@@ -82,9 +82,9 @@ function updateOne(eventMap: Event): Promise<Event|undefined>|undefined {
         if (response.status === 200) {
             let reservationDict = response.data;
             let reservableDict = reservationDict.reservable;
-            let reservable = Reservable.new(reservableDict);
+            let reservable = ReservableModel.new(reservableDict);
             delete reservationDict.reservable;
-            let reservationFromResponse = new Event({"reservable": reservable});
+            let reservationFromResponse = new EventModel({"reservable": reservable});
             return Object.assign(reservationFromResponse, reservationDict);
         }
         return undefined;

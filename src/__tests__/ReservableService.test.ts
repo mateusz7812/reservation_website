@@ -1,10 +1,10 @@
-import {Reservable, Seat, Space} from "../dataModels/Reservable";
+import {ReservableModel, SeatModel, SpaceModel} from "../dataModels/ReservableModel";
 import ReservableService from "../services/ReservableService";
 
 const axios = require('axios').default;
 
 it('type test', ()=>{
-    let space = new Space({"reservables": ["id nr 1"]});
+    let space = new SpaceModel({"reservables": ["id nr 1"]});
     expect(space.reservables).toMatchObject(["id nr 1"]);
 });
 
@@ -13,9 +13,9 @@ describe('add one', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seatToAdd: Reservable = new Seat({});
-        let addedSeat = new Seat({"id": "reservable id"});
-        apiService.addReservable = jest.fn((reservable: Reservable, token: string)=>
+        let seatToAdd: ReservableModel = new SeatModel({});
+        let addedSeat = new SeatModel({"id": "reservable id"});
+        apiService.addReservable = jest.fn((reservable: ReservableModel, token: string)=>
         {
             return Promise.resolve({
                 status: 200,
@@ -23,7 +23,7 @@ describe('add one', ()=>{
             })
         });
         // @ts-ignore
-        await ReservableService.addOne(seatToAdd).then((result: Reservable|undefined)=>{
+        await ReservableService.addOne(seatToAdd).then((result: ReservableModel|undefined)=>{
             expect(result).toMatchObject(addedSeat);
         })
 
@@ -36,7 +36,7 @@ describe('get by id', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let gottenSeat = new Seat("reservable id");
+        let gottenSeat = new SeatModel("reservable id");
         apiService.getReservableById = jest.fn((id: string, token: string)=>
         {
             return Promise.resolve({
@@ -45,7 +45,7 @@ describe('get by id', ()=>{
             })
         });
         // @ts-ignore
-        await ReservableService.getById("reservable id").then((result: Reservable|undefined)=>{
+        await ReservableService.getById("reservable id").then((result: ReservableModel|undefined)=>{
             expect(result).toMatchObject(gottenSeat);
         })
     });
@@ -59,7 +59,7 @@ describe('get by id', ()=>{
             return Promise.reject({response: {status: 404, message: "not found"}});
         });
         // @ts-ignore
-        await ReservableService.getById("reservable id").then((result: Reservable|undefined)=>{
+        await ReservableService.getById("reservable id").then((result: ReservableModel|undefined)=>{
             expect(result === undefined).toBeTruthy();
         })
     });

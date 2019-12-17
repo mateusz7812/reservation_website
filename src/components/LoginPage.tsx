@@ -3,13 +3,13 @@ import {Redirect} from "react-router-dom";
 import {addCookie} from "../services/CookieService";
 import LoginForm from "./LoginForm";
 import AccountService from "../services/AccountService";
-import Account from "../dataModels/Account";
+import AccountModel from "../dataModels/AccountModel";
 
 class LoginPage extends React.Component{
 
     loginAccount(login: string, password: string) {
         // @ts-ignore
-        return AccountService.getTokenForAccount(new Account({"login": login, "password": password})).then(
+        return AccountService.getTokenForAccount(new AccountModel({"login": login, "password": password})).then(
              (token: string | undefined) => {
                  if (token !== undefined) {
                      addCookie("token", token);

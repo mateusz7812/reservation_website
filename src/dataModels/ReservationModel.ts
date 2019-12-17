@@ -1,14 +1,14 @@
-import {Reservable} from "./Reservable";
+import {ReservableModel} from "./ReservableModel";
 
-class Reservation{
+class ReservationModel{
     id: string|undefined;
     account: string|undefined;
     event: string|undefined;
-    reservable: Reservable|undefined;
+    reservable: ReservableModel|undefined;
 
     constructor(params: {}) {
         if("reservable" in Object.keys(params)){
-            this.reservable = Reservable.new((params as any)["reservable"]);
+            this.reservable = ReservableModel.new((params as any)["reservable"]);
             delete (params as any)["reservable"];
         }
         Object.assign(this, params);
@@ -16,4 +16,4 @@ class Reservation{
 
 }
 
-export default Reservation;
+export default ReservationModel;

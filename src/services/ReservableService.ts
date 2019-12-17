@@ -1,9 +1,9 @@
-import {Reservable} from "../dataModels/Reservable";
+import {ReservableModel} from "../dataModels/ReservableModel";
 import {addReservable, deleteReservableById, getReservableById} from "../domain/ApiRequests";
 import {getToken} from "./CookieService";
 import {AxiosError, AxiosResponse} from "axios";
 
-function addOne(reservable: Reservable): Promise<Reservable|undefined>|undefined{
+function addOne(reservable: ReservableModel): Promise<ReservableModel|undefined>|undefined{
     let token = getToken();
     if( token === undefined){
         return undefined;
@@ -11,13 +11,13 @@ function addOne(reservable: Reservable): Promise<Reservable|undefined>|undefined
     return addReservable(reservable, token).then((response: AxiosResponse)=>{
         if (response.status === 200) {
             let reservableDict = response.data;
-            return Reservable.new(reservableDict);
+            return ReservableModel.new(reservableDict);
         }
         return undefined;
     });
 }
 
-function getById(id: string): Promise<Reservable|undefined>|undefined{
+function getById(id: string): Promise<ReservableModel|undefined>|undefined{
     let token = getToken();
     if( token === undefined){
         return undefined;
@@ -26,7 +26,7 @@ function getById(id: string): Promise<Reservable|undefined>|undefined{
         .then((response: AxiosResponse)=>{
             if (response.status === 200) {
                 let reservableDict = response.data;
-                return Reservable.new(reservableDict);
+                return ReservableModel.new(reservableDict);
             }
         }).catch((error: AxiosError)=>{
                 // @ts-ignore

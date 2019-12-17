@@ -1,14 +1,14 @@
 import AccountService from "../services/AccountService";
-import Account from "../dataModels/Account";
+import AccountModel from "../dataModels/AccountModel";
 import EventService from "../services/EventService";
-import Event from "../dataModels/Event";
+import EventModel from "../dataModels/EventModel";
 
 describe('get token from api', ()=>{
     it('correct', async ()=>{
         const apiService = require('../domain/ApiRequests');
-        let account: Account = new Account({"login": "login", "password":"password"});
+        let account: AccountModel = new AccountModel({"login": "login", "password":"password"});
         let tokenObject = {"account": "account id", "id": "token id", "token": "token key"};
-        apiService.getTokenFromApi = jest.fn((account: Account)=>
+        apiService.getTokenFromApi = jest.fn((account: AccountModel)=>
         {
             return Promise.resolve({
                 status: 200,
@@ -16,7 +16,7 @@ describe('get token from api', ()=>{
             })
         });
         // @ts-ignore
-        await AccountService.getTokenForAccount(account).then((result: Account|undefined)=>{
+        await AccountService.getTokenForAccount(account).then((result: AccountModel|undefined)=>{
             expect(result).toBe("token key");
         })
     });
@@ -25,9 +25,9 @@ describe('get token from api', ()=>{
 describe('add account ', ()=>{
     it('correct',async ()=>{
         const apiService = require('../domain/ApiRequests');
-        let accountToAdd: Account = new Account({"login": "login", "password":"password"});
-        let addedAccount = new Account({"id": "account id","login": accountToAdd.login,"password": accountToAdd.password});
-        apiService.addAccount = jest.fn((account: Account)=>
+        let accountToAdd: AccountModel = new AccountModel({"login": "login", "password":"password"});
+        let addedAccount = new AccountModel({"id": "account id","login": accountToAdd.login,"password": accountToAdd.password});
+        apiService.addAccount = jest.fn((account: AccountModel)=>
         {
             return Promise.resolve({
                 status: 200,
@@ -35,14 +35,14 @@ describe('add account ', ()=>{
             })
         });
         // @ts-ignore
-        await AccountService.addOne(accountToAdd).then((result: Account|undefined)=>{
+        await AccountService.addOne(accountToAdd).then((result: AccountModel|undefined)=>{
             expect(result).toMatchObject(addedAccount);
         })
     });
 
     it('no login',async ()=>{
         const apiService = require('../domain/ApiRequests');
-        let accountToAdd: Account = new Account({"password":"password"});
+        let accountToAdd: AccountModel = new AccountModel({"password":"password"});
         apiService.addAccount = jest.fn();
         let result = AccountService.addOne(accountToAdd);
         expect(result===undefined).toBeTruthy();
@@ -51,7 +51,7 @@ describe('add account ', ()=>{
 
     it('no password',async ()=>{
         const apiService = require('../domain/ApiRequests');
-        let accountToAdd: Account = new Account({"login": "login"});
+        let accountToAdd: AccountModel = new AccountModel({"login": "login"});
         apiService.addAccount = jest.fn();
         let result = AccountService.addOne(accountToAdd);
         expect(result===undefined).toBeTruthy();
@@ -64,9 +64,9 @@ describe('get account filtered', ()=>{
     it('correct', async ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
-        let gottenAccounts = [new Account({"login": "login", "password":"password"})];
+        let gottenAccounts = [new AccountModel({"login": "login", "password":"password"})];
         const apiService = require('../domain/ApiRequests');
-        apiService.getAccountFiltered = jest.fn((account: Account, token)=>
+        apiService.getAccountFiltered = jest.fn((account: AccountModel, token)=>
         {
             return Promise.resolve({
                 status: 200,
@@ -74,7 +74,7 @@ describe('get account filtered', ()=>{
             })
         });
         // @ts-ignore
-        await AccountService.getFiltered(new Account({"login": "login"})).then((result: Account|undefined)=>{
+        await AccountService.getFiltered(new AccountModel({"login": "login"})).then((result: AccountModel|undefined)=>{
             expect(result).toMatchObject(gottenAccounts);
         })
     })
@@ -85,10 +85,10 @@ describe('get by id', ()=>{
     it('correct', async ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
-        let gottenAccount = new Account({"id": "account id","login": "login", "password":"password"});
+        let gottenAccount = new AccountModel({"id": "account id","login": "login", "password":"password"});
         const apiService = require('../domain/ApiRequests');
 
-        apiService.getAccountById=jest.fn((account: Account, token)=>
+        apiService.getAccountById=jest.fn((account: AccountModel, token)=>
         {
             return Promise.resolve({
                 status: 200,
@@ -97,7 +97,7 @@ describe('get by id', ()=>{
         });
 
         // @ts-ignore
-        await AccountService.getById("id").then((result: Account|undefined)=>{
+        await AccountService.getById("id").then((result: AccountModel|undefined)=>{
             expect(result).toMatchObject(gottenAccount);
         })
     });
@@ -107,12 +107,12 @@ describe('get by id', ()=>{
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
 
-        apiService.getAccountById=jest.fn((account: Account, token)=>
+        apiService.getAccountById=jest.fn((account: AccountModel, token)=>
         {
             return Promise.reject({response: {status: 404, message: "not found"}});
         });
         // @ts-ignore
-        await AccountService.getById("id").then((result: Account|undefined)=>{
+        await AccountService.getById("id").then((result: AccountModel|undefined)=>{
             expect(result === undefined).toBeTruthy();
         })
     });

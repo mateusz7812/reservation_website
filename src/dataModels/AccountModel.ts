@@ -1,5 +1,5 @@
 
-class Account{
+class AccountModel{
     id: string|undefined;
     login: string|undefined;
     password: string|undefined;
@@ -11,4 +11,4 @@ class Account{
     }
 }
 
-export default Account;
+export default AccountModel;

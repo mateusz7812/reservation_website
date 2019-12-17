@@ -2,10 +2,10 @@
 type reservableTypes = "Space" | "Seat";
 
 const getType = (typeName: reservableTypes)=> {
-    let types = {"Space": Space, "Seat": Seat};
+    let types = {"Space": SpaceModel, "Seat": SeatModel};
     return types[typeName]};
 
-abstract class Reservable{
+abstract class ReservableModel{
     type!: reservableTypes;
     id: string|undefined;
     name: string|undefined;
@@ -24,15 +24,15 @@ abstract class Reservable{
 
 }
 
-class Seat extends Reservable{
+class SeatModel extends ReservableModel{
     constructor(params: {}) {
         super();
         Object.assign(this, params, {"type": "Seat"});
     }
 }
 
-class Space extends Reservable{
-    reservables: string[]|undefined;
+class SpaceModel extends ReservableModel{
+    reservables: undefined|Promise<ReservableModel>[]|string[];
 
     constructor(params: {}) {
         super();
@@ -42,4 +42,4 @@ class Space extends Reservable{
 }
 
 
-export {Seat, Reservable, Space};
+export {SeatModel, ReservableModel, SpaceModel};

@@ -1,10 +1,10 @@
 
-import Account from "../dataModels/Account";
+import AccountModel from "../dataModels/AccountModel";
 import {addAccount, getTokenFromApi, deleteAccountById, getAccountById, getAccountFiltered} from "../domain/ApiRequests";
 import {AxiosError, AxiosResponse} from "axios";
 import {getToken} from "./CookieService";
 
-function getTokenForAccount(account:Account): Promise<string|undefined>|undefined{
+function getTokenForAccount(account:AccountModel): Promise<string|undefined>|undefined{
     if (account.login === undefined || account.password === undefined) {
         return undefined;
     }
@@ -16,30 +16,30 @@ function getTokenForAccount(account:Account): Promise<string|undefined>|undefine
     });
 }
 
-function addOne(account: Account): Promise<Account|undefined>|undefined{
+function addOne(account: AccountModel): Promise<AccountModel|undefined>|undefined{
     if (account.login === undefined || account.password === undefined) {
         return undefined;
     }
     return addAccount(account).then((response: AxiosResponse) => {
         if (response.status === 200) {
-            return new Account(response.data);
+            return new AccountModel(response.data);
         }
         return undefined;
     });
 
 }
 
-function getFiltered(account: Account): Promise<Account[]|undefined>|undefined{
+function getFiltered(account: AccountModel): Promise<AccountModel[]|undefined>|undefined{
     let token = getToken();
     if( token === undefined){
         return undefined;
     }
     return getAccountFiltered(account, token).then((response: AxiosResponse) => {
-        let responseArray: Account[] = [];
+        let responseArray: AccountModel[] = [];
         if (response.status === 200) {
             if(response.data[0] !== null){
                 response.data.forEach((dict: {})=>
-                    responseArray.push(new Account(dict)))
+                    responseArray.push(new AccountModel(dict)))
             }
             return responseArray;
         }
@@ -54,17 +54,16 @@ function getById(id: string) {
     }
     return getAccountById(id, token).then((response: AxiosResponse) => {
         if (response.status === 200) {
-            return new Account(response.data);
+            return new AccountModel(response.data);
         }
         return undefined;
     }).catch((error: AxiosError)=>{
-        // @ts-ignore
-        if (error.response.status === 404){return undefined}
+        if (error.response?.status === 404){return undefined}
         else{throw error}
     });
 }
 
-function editById(account: Account){
+function editById(account: AccountModel){
     return Promise.resolve();
 }
 

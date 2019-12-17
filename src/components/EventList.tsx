@@ -1,17 +1,26 @@
 import React from "react";
-import Event from "./Event";
-import EventModel from "../dataModels/Event";
+import EventView from "./EventView";
+import EventModel from "../dataModels/EventModel";
+import { withRouter, useHistory } from "react-router-dom";
 
 const EventList = ({events}:{events: EventModel[]})=>{
+
+    let history = useHistory();
+    const redirect = (eventId:string)=>{
+        history.push("/event/"+eventId);
+    };
+
     return(
         <div>
             {
                  events.map((event: EventModel)=> {
-                     return <Event key={event.id} event={event} />;
+                     // @ts-ignore
+                     return <EventView key={event.id} onClick={()=>redirect(event.id)} event={event} />;
                  })
             }
         </div>
     )
 };
 
-export default EventList;
+// @ts-ignore
+export default withRouter(EventList);

@@ -4,7 +4,7 @@ import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import RegisterPage from "./components/RegisterPage";
 import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "../PublicRoute";
+import PublicRoute from "./PublicRoute";
 import EventPage from "./components/EventPage";
 
 const App = () => {

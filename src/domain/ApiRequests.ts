@@ -1,17 +1,17 @@
-import Event from "../dataModels/Event";
-import {Reservable} from "../dataModels/Reservable";
-import Reservation from "../dataModels/Reservation";
-import Account from "../dataModels/Account";
+import EventModel from "../dataModels/EventModel";
+import {ReservableModel} from "../dataModels/ReservableModel";
+import ReservationModel from "../dataModels/ReservationModel";
+import AccountModel from "../dataModels/AccountModel";
 const axios = require('axios').default;
 
 const api_url = "http://localhost:8080";
 const tokenHeadersConfig = (token:string ) => {return {headers: {'Authorization': "Bearer " + token}}};
 
-function addAccount(account: Account) {
+function addAccount(account: AccountModel) {
     return axios.post(api_url+"/api/account", account);
 }
 
-function getTokenFromApi(account: Account){
+function getTokenFromApi(account: AccountModel){
     return axios.get(api_url+"/authenticate", {
         auth:
             {
@@ -26,7 +26,7 @@ function getAccountById(id:string, token:string){
     return axios.get(api_url+"/api/account/"+id, tokenHeadersConfig(token));
 }
 
-function getAccountFiltered(account: Account, token:string){
+function getAccountFiltered(account: AccountModel, token:string){
     let values = Object.assign({}, account);
 
     if(Object.values(values).filter(data => data!== undefined).length === 1 || values["login"] !== undefined ){
@@ -39,7 +39,7 @@ function deleteAccountById(id: string, token: string) {
     return axios.delete(api_url+"/api/account/"+id, tokenHeadersConfig(token));
 }
 
-function addEvent(event: Event, token: string) {
+function addEvent(event: EventModel, token: string) {
     return axios.post(api_url+"/api/event", event, tokenHeadersConfig(token));
 }
 
@@ -51,7 +51,7 @@ function getAllEvents(token:string){
     return axios.get(api_url+"/api/event", tokenHeadersConfig(token));
 }
 
-function updateEvent(eventMap: Event, token: string){
+function updateEvent(eventMap: EventModel, token: string){
     return axios.put(api_url+"/api/event/"+eventMap.id, eventMap, tokenHeadersConfig(token));
 }
 
@@ -59,7 +59,7 @@ function deleteEventById(id: string, token: string){
     return axios.delete(api_url+"/api/event/"+id, tokenHeadersConfig(token));
 }
 
-function addReservable(reservable: Reservable, token: string){
+function addReservable(reservable: ReservableModel, token: string){
     return axios.post(api_url+"/api/reservable", reservable, tokenHeadersConfig(token));
 }
 
@@ -71,7 +71,7 @@ function deleteReservableById(id: string, token: string){
     return axios.delete(api_url+"/api/reservable/"+id, tokenHeadersConfig(token));
 }
 
-function addReservation(reservation: Reservation, token: string){
+function addReservation(reservation: ReservationModel, token: string){
     return axios.post(api_url+"/api/reservation", reservation, tokenHeadersConfig(token));
 }
 
@@ -79,7 +79,7 @@ function getReservationById(id:string, token:string){
     return axios.get(api_url+"/api/reservation/"+id, tokenHeadersConfig(token));
 }
 
-function updateReservation(reservation: Reservation, token: string) {
+function updateReservation(reservation: ReservationModel, token: string) {
     return axios.put(api_url+"/api/reservation/"+reservation.id, reservation, tokenHeadersConfig(token));
 }
 
