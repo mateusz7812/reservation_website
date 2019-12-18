@@ -202,7 +202,7 @@ describe('basic tests', ()=>{
         it('get by id', async (done)=>{
             let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
-            let reservable = new SeatModel({"id": "reservable id"});
+            let reservable = new SeatModel({"id": "reservablePromise id"});
             let expectedRequestAuthorization = "Bearer " + token;
             let responseEvent = new EventModel({"id": id ,"reservable": reservable, "reservations": []});
 
@@ -230,7 +230,7 @@ describe('basic tests', ()=>{
         it('get all', async (done)=>{
             let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
-            let reservable = new SeatModel({"id": "reservable id"});
+            let reservable = new SeatModel({"id": "reservablePromise id"});
             let expectedRequestAuthorization = "Bearer " + token;
             let responseEvents = [new EventModel({"id": id ,"reservable": reservable, "reservations": []})];
 
@@ -259,7 +259,7 @@ describe('basic tests', ()=>{
             let id = "decf9766-f9ac-4ff5-a21e-36deb31b4104";
             let token = "BZ3BL34T3FrSJJP0Pmm7O";
             let expectedRequestAuthorization = "Bearer " + token;
-            let reservable = new SeatModel({"id": "reservable id"});
+            let reservable = new SeatModel({"id": "reservablePromise id"});
             let updateMap = new EventModel({"id": id, "name": "other event name"});
             let updatedEvent = new EventModel({"id": id ,"reservable": reservable, "name": "other event name","reservations": []});
 

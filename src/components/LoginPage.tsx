@@ -24,7 +24,10 @@ class LoginPage extends React.Component{
 
     render() {
         return(
-            <LoginForm loginFunction={this.loginAccount}/>
+            <div>
+                <LoginForm loginFunction={this.loginAccount}/>
+                <p>{this.state.message}</p>
+            </div>
         );
     }
 }

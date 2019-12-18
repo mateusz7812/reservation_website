@@ -7,12 +7,12 @@ const EventView = ({event, onClick}: {event: EventModel, onClick: ()=>undefined}
         <div onClick={onClick}>
             <p key={
                 // @ts-ignore
-                event.id.toString()+"name"
-            }>{event.name}</p>
+                event?.id?.toString()+"name"
+            }>{event?.name}</p>
             <p key={
                 // @ts-ignore
-                event.id.toString() +"startDate"
-            }>{event.startDate}</p>
+                event?.id?.toString() +"startDate"
+            }>{event?.startDate}</p>
         </div>
     );
 

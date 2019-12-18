@@ -1,16 +1,50 @@
 import React, {Component} from "react";
+import EventView from "./EventView";
+import ReservablesTable from "./ReservablesTable";
+import EventService from "../services/EventService";
+import EventModel from "../dataModels/EventModel";
+import {ReservableModel, SeatModel} from "../dataModels/ReservableModel";
+import ReservableService from "../services/ReservableService";
+
 
 class EventPage extends Component{
-    state = {event: undefined, reservable: [], selections: []};
-    event_id = "";
+    private event_id: string;
+    state:{event: EventModel|undefined} = {
+        event: undefined
+    };
+
+    constructor(props: any) {
+        super(props);
+        this.event_id = props.match.params.id;
+    }
 
     componentDidMount() {
-        this.event_id = this.props.match.params.id;
+        this.loadEvent();
+    }
+
+    loadEvent() {
+        // eslint-disable-next-line no-unused-expressions
+        EventService.getById(this.event_id)
+            ?.then((event)=>{
+                if(event !== undefined){
+                    this.setState({event: event});
+                }
+            })
     }
 
     render(){
+        const id = this.state.event?.reservable?.id as string;
+        console.log(id);
         return(
             <div>
+                {
+                    this.state.event === undefined ? null : <>
+                        <EventView event={this.state.event} onClick={() => undefined}/>
+
+                        <ReservablesTable
+                            // @ts-ignore
+                            reservablePromise={ReservableService.getById(id)} />
+                    </>}
             </div>
         );
     }

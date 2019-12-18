@@ -30,8 +30,14 @@ function getById(id: string): Promise<ReservableModel|undefined>|undefined{
             }
         }).catch((error: AxiosError)=>{
                 // @ts-ignore
-            if (error.response.status === 404){return undefined}
-                else{throw error}
+            console.log(error);
+            if(error.response !== undefined){
+                if("status" in error.response){
+                    if (error?.response?.status === 404){return undefined}
+
+                }
+            }
+            else{throw error}
         });
 }
 

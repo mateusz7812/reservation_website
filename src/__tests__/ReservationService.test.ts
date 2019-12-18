@@ -7,8 +7,8 @@ describe('add one', ()=>{
     it('correct',async ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
-        let reservableInAdding: ReservableModel = new SeatModel({ "id": "reservable id", "name": "reservable name"});
-        let reservableInAdded: ReservableModel = new SeatModel({"id": "reservable id"});
+        let reservableInAdding: ReservableModel = new SeatModel({ "id": "reservablePromise id", "name": "reservablePromise name"});
+        let reservableInAdded: ReservableModel = new SeatModel({"id": "reservablePromise id"});
         let reservationToAdd: ReservationModel = new ReservationModel({"account": "account id", "event": "event id", "reservable": reservableInAdding});
         let addedReservation: ReservationModel = new ReservationModel({"id": "reservation id", "account": "account id", "event": "event id", "reservable": reservableInAdded});
         const apiService = require('../domain/ApiRequests');
@@ -33,7 +33,7 @@ describe('get by id', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel("reservable id");
+        let seat = new SeatModel("reservablePromise id");
         let reservation = new ReservationModel({"id": "reservation id", "account": "account id", "event": "event id", "reservable": seat});
         apiService.getReservationById = jest.fn((id: string, token: string)=>
         {
@@ -55,7 +55,7 @@ describe('update one', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         let id = "reservation id";
-        let reservable = new SeatModel({"id": "reservable id"});
+        let reservable = new SeatModel({"id": "reservablePromise id"});
         let updateMap = new ReservationModel({"id": id, "event": "other event id"});
         let updatedReservation = new ReservationModel({"id": id, "account": "account id", "event": "other event id", "reservable": reservable});
 

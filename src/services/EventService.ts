@@ -4,7 +4,7 @@ import {getToken} from "./CookieService";
 import {
     addEvent,
     deleteEventById, getAllEvents,
-    getEventById, updateEvent, updateReservation
+    getEventById, updateEvent
 } from "../domain/ApiRequests";
 import {AxiosError, AxiosResponse} from "axios";
 

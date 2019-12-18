@@ -10,7 +10,7 @@ describe('add one', ()=> {
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel({"id": "reservable id"});
+        let seat = new SeatModel({"id": "reservablePromise id"});
         let eventToAdd = new EventModel({"reservable": seat, "reservations":[]});
         let addedEvent = new EventModel({"id": "event id","reservable": seat, "reservations":[]});
         apiService.addEvent = jest.fn((event: EventModel, token: string)=>
@@ -33,7 +33,7 @@ describe('get by id', ()=> {
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel({"id": " reservable id"});
+        let seat = new SeatModel({"id": " reservablePromise id"});
         let gottenEvent = new EventModel({"id": "event id", "name": "event1", "reservable": seat});
 
         apiService.getEventById = jest.fn((id: string, token: string)=>
@@ -70,7 +70,7 @@ describe("get all", ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel({"id": " reservable id"});
+        let seat = new SeatModel({"id": " reservablePromise id"});
         let gottenEvents = [new EventModel({"id": "event id", "name": "event1", "reservable": seat})];
 
         apiService.getAllEvents = jest.fn((id: string, token: string)=>
@@ -92,7 +92,7 @@ describe('update one', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         let id = "event id";
-        let reservable = new SeatModel({"id": "reservable id"});
+        let reservable = new SeatModel({"id": "reservablePromise id"});
         let updateMap = new EventModel({"id": id, "name": "other event name"});
         let updatedEvent = new EventModel({"id": "event id", "name": "other event name", "reservable": reservable});
 

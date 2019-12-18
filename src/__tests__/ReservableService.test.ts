@@ -14,7 +14,7 @@ describe('add one', ()=>{
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
         let seatToAdd: ReservableModel = new SeatModel({});
-        let addedSeat = new SeatModel({"id": "reservable id"});
+        let addedSeat = new SeatModel({"id": "reservablePromise id"});
         apiService.addReservable = jest.fn((reservable: ReservableModel, token: string)=>
         {
             return Promise.resolve({
@@ -36,7 +36,7 @@ describe('get by id', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let gottenSeat = new SeatModel("reservable id");
+        let gottenSeat = new SeatModel("reservablePromise id");
         apiService.getReservableById = jest.fn((id: string, token: string)=>
         {
             return Promise.resolve({
@@ -45,7 +45,7 @@ describe('get by id', ()=>{
             })
         });
         // @ts-ignore
-        await ReservableService.getById("reservable id").then((result: ReservableModel|undefined)=>{
+        await ReservableService.getById("reservablePromise id").then((result: ReservableModel|undefined)=>{
             expect(result).toMatchObject(gottenSeat);
         })
     });
@@ -59,7 +59,7 @@ describe('get by id', ()=>{
             return Promise.reject({response: {status: 404, message: "not found"}});
         });
         // @ts-ignore
-        await ReservableService.getById("reservable id").then((result: ReservableModel|undefined)=>{
+        await ReservableService.getById("reservablePromise id").then((result: ReservableModel|undefined)=>{
             expect(result === undefined).toBeTruthy();
         })
     });
