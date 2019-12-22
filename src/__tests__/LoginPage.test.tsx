@@ -13,21 +13,21 @@ it('loginPage at /login', (done)=>{
     let wrapper = mount(
         <MemoryRouter initialEntries={[ '/login']}>
             <App/>
-            </MemoryRouter>
+        </MemoryRouter>
     );
     expect(wrapper.find(LoginPage)).toHaveLength(1);
     done();
 });
 
 it('loginForm in loginPage', ()=>{
-    let wrapper = mount(<LoginPage/>);
+    let wrapper = mount(<MemoryRouter><LoginPage/></MemoryRouter>);
     expect(wrapper.find(LoginForm)).toHaveLength(1);
 });
 
 it('loginForm call function', (done)=>{
     const mockFunction = jest.fn();
 
-    let wrapper = mount(<LoginForm loginFunction={mockFunction}/>);
+    let wrapper = mount(<MemoryRouter><LoginForm loginFunction={mockFunction}/></MemoryRouter>);
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
     wrapper.find({'id': "loginButton"}).simulate('click');
@@ -42,6 +42,7 @@ it('loginAccount on 200 status', (done)=>{
     let token = "BZ3BL34T3FrSJJP0Pmm7O";
 
     const cookieService = require('../services/CookieService');
+    cookieService.getToken = jest.fn(()=>token);
     cookieService.addCookie = jest.fn((key, value)=>{
         expect(key).toBe("token");
         expect(value).toBe("BZ3BL34T3FrSJJP0Pmm7O");
@@ -54,13 +55,27 @@ it('loginAccount on 200 status', (done)=>{
         return Promise.resolve(token);
     });
 
-    (shallow(<LoginPage />).instance()as LoginPage).loginAccount("user", "password").then(
-        r => {
+    const homePage = require("../components/HomePage");
+    homePage.default = jest.fn(() => {return(<div></div>)});
+
+    const wrapper = mount(
+        <MemoryRouter initialEntries={[ '/login']}>
+            <App/>
+        </MemoryRouter>);
+
+    expect(wrapper.find(LoginPage)).toHaveLength(1);
+    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
+    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': "loginButton"}).simulate('click');
+
+    setTimeout(
+        () => {
+            wrapper.update();
             expect(accountService.default.getTokenForAccount.mock.calls.length).toEqual(1);
             expect(cookieService.addCookie.mock.calls.length).toEqual(1);
-            expect(r).toMatchObject(<Redirect to='/home'/>);
+            expect(wrapper.find(HomePage)).toHaveLength(1);
             done();
-        }
+        }, 1000
     );
 });
 
@@ -71,11 +86,20 @@ it('loginAccount on other than 200 status', (done)=> {
     const accountService = require("../services/AccountService");
     accountService.default.getTokenForAccount = jest.fn(() => Promise.resolve(undefined));
 
-    let instance = shallow(<LoginPage />).instance() as LoginPage;
 
-    instance.loginAccount("user", "password").then(
+    const wrapper = mount(
+        <MemoryRouter initialEntries={[ '/login']}>
+            <App/>
+        </MemoryRouter>);
+
+    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
+    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': "loginButton"}).simulate('click');
+
+    setTimeout(
         () => {
-            expect(instance.state.message).toBe("error");
+            wrapper.update();
+            expect(wrapper.find({"id": "errorLabel"}).text()).toBe("error");
             expect(cookieService.addCookie.mock.calls.length).toEqual(0);
             done();
         }

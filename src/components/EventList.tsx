@@ -11,7 +11,7 @@ const EventList = ({events}:{events: EventModel[]})=>{
     };
 
     return(
-        <div>
+        <div id="eventsList">
             {
                  events.map((event: EventModel)=> {
                      // @ts-ignore

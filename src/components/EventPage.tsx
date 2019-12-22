@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import EventView from "./EventView";
-import ReservablesTable from "./ReservablesTable";
+import ReservationManager from "./ReservationManager";
 import EventService from "../services/EventService";
 import EventModel from "../dataModels/EventModel";
 import {ReservableModel, SeatModel} from "../dataModels/ReservableModel";
 import ReservableService from "../services/ReservableService";
+import SelectedReservablesList from "./SelectedReservablesList";
 
 
 class EventPage extends Component{
@@ -33,17 +34,17 @@ class EventPage extends Component{
     }
 
     render(){
-        const id = this.state.event?.reservable?.id as string;
-        console.log(id);
+        const id = this.state.event?.reservable?.id;
         return(
             <div>
                 {
                     this.state.event === undefined ? null : <>
                         <EventView event={this.state.event} onClick={() => undefined}/>
 
-                        <ReservablesTable
+                        <ReservationManager
                             // @ts-ignore
                             reservablePromise={ReservableService.getById(id)} />
+
                     </>}
             </div>
         );

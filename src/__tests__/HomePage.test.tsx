@@ -15,11 +15,7 @@ configure({ adapter: new Adapter() });
 it('homePage at /', ()=>{
 
     const cookieService = require('../services/CookieService');
-    cookieService.getCookie = jest.fn((value)=>{
-        if(value === "token"){
-            return "BZ3BL34T3FrSJJP0Pmm7O";
-        }
-    });
+    cookieService.getToken = jest.fn(()=>"BZ3BL34T3FrSJJP0Pmm7O");
 
     let wrapper = mount(
         <MemoryRouter initialEntries={[ '/']}>
@@ -33,7 +29,7 @@ it('homePage at /', ()=>{
 
 it('redirecting to /login if account cookie dont exist', (done)=>{
     const cookieService = require('../services/CookieService');
-    cookieService.getCookie = jest.fn(()=> undefined );
+    cookieService.getToken = jest.fn(()=> undefined );
 
     let wrapper = mount(
         <MemoryRouter initialEntries={[ '/']}>
@@ -82,10 +78,17 @@ it('eventList loadLists', (done)=>{
 });
 
 it('click EventView view was redirecting to event page ',async (done)=>{
-    let event = new EventModel({"id": "some_id", "name": "event1", "reservables": []});
+    const cookieService = require('../services/CookieService');
+    cookieService.getToken = jest.fn(()=>"BZ3BL34T3FrSJJP0Pmm7O");
+
+    let event = new EventModel({"id": "some_id", "name": "event1", "reservable": undefined});
 
     const eventService = require("../services/EventService");
     eventService.default.getById = jest.fn(()=> Promise.resolve(event));
+    eventService.default.getAll = jest.fn(()=> Promise.resolve([]));
+
+    const reservableService = require("../services/ReservableService");
+    reservableService.default.getById = jest.fn();
 
     let wrapper = mount(
         <MemoryRouter initialEntries={["/"]}>

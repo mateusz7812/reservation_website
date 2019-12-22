@@ -18,4 +18,6 @@ function getToken(): string| undefined{
     return undefined;
 }
 
-export {addCookie, getCookie, getToken}
+const CookieService = {addCookie, getCookie, getToken};
+export {addCookie, getCookie, getToken};
+export default CookieService;

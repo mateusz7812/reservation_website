@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {addCookie} from "../services/CookieService";
 import LoginForm from "./LoginForm";
 import AccountService from "../services/AccountService";
@@ -8,27 +8,35 @@ import AccountModel from "../dataModels/AccountModel";
 class LoginPage extends React.Component{
     state = {message: ""};
 
-    loginAccount(login: string, password: string) {
+    redirect = (path:string)=>{
+        // @ts-ignore
+        this.props.history.push(path);
+    };
+
+    loginAccount = (login: string, password: string) => {
         // @ts-ignore
         return AccountService.getTokenForAccount(new AccountModel({"login": login, "password": password})).then(
              (token: string | undefined) => {
                  if (token !== undefined) {
                      addCookie("token", token);
-                     return <Redirect to="/home"/>;
+                     this.redirect('/');
                  } else {
                      this.setState({"message": "error"})
                  }
              }
          );
-    }
+    };
 
-    render() {
+    render = ()=>{
         return(
             <div>
                 <LoginForm loginFunction={this.loginAccount}/>
-                <p>{this.state.message}</p>
+                <p id={"errorLabel"}>{this.state.message}</p>
+                <input type="button" id="registerButton" onClick={()=>this.redirect("/register")}/>
             </div>
         );
     }
 }
-export default LoginPage
+
+// @ts-ignore
+export default withRouter(LoginPage)
