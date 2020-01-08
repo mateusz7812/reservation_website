@@ -1,15 +1,14 @@
 import React, {Component} from "react";
-import EventView from "./EventView";
-import ReservationManager from "./ReservationManager";
+import EventView from "./itemView/EventView";
+import ReservationManager from "./reservationManager/UserAddReservationManager";
 import EventService from "../services/EventService";
 import EventModel from "../dataModels/EventModel";
-import {ReservableModel, SeatModel} from "../dataModels/ReservableModel";
 import ReservableService from "../services/ReservableService";
-import SelectedReservablesList from "./SelectedReservablesList";
+import UserAddReservationManager from "./reservationManager/UserAddReservationManager";
 
 
 class EventPage extends Component{
-    private event_id: string;
+    private readonly event_id: string;
     state:{event: EventModel|undefined} = {
         event: undefined
     };
@@ -34,16 +33,13 @@ class EventPage extends Component{
     }
 
     render(){
-        const id = this.state.event?.reservable?.id;
         return(
             <div>
                 {
                     this.state.event === undefined ? null : <>
                         <EventView event={this.state.event} onClick={() => undefined}/>
 
-                        <ReservationManager
-                            // @ts-ignore
-                            reservablePromise={ReservableService.getById(id)} />
+                        <UserAddReservationManager eventId={this.event_id}/>
 
                     </>}
             </div>

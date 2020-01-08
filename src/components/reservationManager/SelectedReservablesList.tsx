@@ -1,11 +1,11 @@
 import React from "react";
-import {ReservableModel} from "../dataModels/ReservableModel";
-import ReservableView from "./ReservableView";
+import {ReservableModel} from "../../dataModels/ReservableModel";
+import ReservableLabel from "../itemView/ReservableLabel";
 
 const SelectedReservablesList = ({selectedReservablesIds, allReservables, selectionChanger}:
                                      {selectedReservablesIds: string[], allReservables: {[id: string]:ReservableModel}, selectionChanger: (reservableId: string)=>void})=>{
     return(<div id="selectedReservablesList">
-        {selectedReservablesIds.map((reservableId)=> <ReservableView key={reservableId+"selection"} selectionChanger={selectionChanger} reservableId={reservableId} allReservables={allReservables}/>)}
+        {selectedReservablesIds.map((reservableId)=> <ReservableLabel key={reservableId+"selection"} selectionChanger={selectionChanger} reservableModel={allReservables[reservableId]}/>)}
     </div>)
 };
 

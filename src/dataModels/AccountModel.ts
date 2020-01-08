@@ -15,6 +15,10 @@ class AccountModel{
     constructor(params : {}){
         Object.assign(this, params);
     }
+
+    isAdmin() {
+        return this.roles?.includes("ROLE_ADMIN") ?? false;
+    }
 }
 
 export default AccountModel;

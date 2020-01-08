@@ -1,6 +1,13 @@
 
 import AccountModel from "../dataModels/AccountModel";
-import {addAccount, getTokenFromApi, deleteAccountById, getAccountById, getAccountFiltered} from "../domain/ApiRequests";
+import {
+    addAccount,
+    getTokenFromApi,
+    deleteAccountById,
+    getAccountById,
+    getAccountFiltered,
+    getAllAccounts
+} from "../domain/ApiRequests";
 import {AxiosError, AxiosResponse} from "axios";
 import {getToken} from "./CookieService";
 
@@ -10,7 +17,8 @@ function getTokenForAccount(account:AccountModel): Promise<string|undefined>|und
     }
     return getTokenFromApi(account).then((response: AxiosResponse) => {
         if (response.status === 200) {
-            return response.data.token;
+            delete response.data["id"];
+            return response.data;
         }
         return undefined;
     });
@@ -27,6 +35,24 @@ function addOne(account: AccountModel): Promise<AccountModel|undefined>|undefine
         return undefined;
     });
 
+}
+
+function getAll() {
+    let token = getToken();
+    if( token === undefined){
+        return undefined;
+    }
+    return getAllAccounts(token).then((response: AxiosResponse) => {
+        let responseArray: AccountModel[] = [];
+        if (response.status === 200) {
+            if(response.data[0] !== null){
+                response.data.forEach((dict: {})=>
+                    responseArray.push(new AccountModel(dict)))
+            }
+            return responseArray;
+        }
+        return undefined;
+    });
 }
 
 function getFiltered(account: AccountModel): Promise<AccountModel[]|undefined>|undefined{
@@ -77,6 +103,7 @@ function deleteById(id: string):boolean{
     });
 }
 
-const AccountService = {getTokenForAccount, addOne, getFiltered, getById, editById, deleteById};
+
+const AccountService = {getTokenForAccount: getTokenForAccount, addOne, getFiltered, getById, editById, deleteById, getAll};
 
 export default AccountService;

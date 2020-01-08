@@ -3,10 +3,11 @@ import RegisterForm from "./RegisterForm";
 import AccountService from "../services/AccountService";
 import AccountModel from "../dataModels/AccountModel";
 import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
 class RegisterPage extends React.Component{
 
-    redirect = (path:string)=>{
+    redirect(path:string){
         // @ts-ignore
         this.props.history.push(path);
     };
@@ -24,13 +25,22 @@ class RegisterPage extends React.Component{
     };
 
     render = ()=>{
+
+        const RegisterDiv = styled.div`
+            width: 300px;
+            height: 300px;
+            border-radius: 30px;
+            background-color: lightgray;
+            padding: 30px;
+        `;
+
         return (
-            <div>
+            <RegisterDiv>
                 <RegisterForm registerFunction={this.registerAccount}/>
                 <p id="messageLabel">{
                     // @ts-ignore
                     this?.state?.message}</p>
-            </div>
+            </RegisterDiv>
         )
     }
 }

@@ -53,8 +53,10 @@ module.exports = function() {
     // https://github.com/facebook/create-react-app/issues/1065
     watchOptions: {
       ignored: ignoredFiles(paths.appSrc),
-    }
-
+    },
+    historyApiFallback: true,
+    contentBase: './',
+    hot: true
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
 
   };

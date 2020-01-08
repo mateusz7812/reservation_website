@@ -29,12 +29,9 @@ function getById(id: string): Promise<ReservableModel|undefined>|undefined{
                 return ReservableModel.new(reservableDict);
             }
         }).catch((error: AxiosError)=>{
-                // @ts-ignore
-            console.log(error);
             if(error.response !== undefined){
                 if("status" in error.response){
                     if (error?.response?.status === 404){return undefined}
-
                 }
             }
             else{throw error}

@@ -6,7 +6,7 @@ import HomePage from "../components/HomePage";
 import LoginPage from "../components/LoginPage";
 import EventList from "../components/EventList";
 import EventModel from "../dataModels/EventModel";
-import OneEventView from "../components/EventView";
+import OneEventView from "../components/itemView/EventView";
 import EventPage from "../components/EventPage";
 import React from "react";
 
@@ -15,7 +15,7 @@ configure({ adapter: new Adapter() });
 it('homePage at /', ()=>{
 
     const cookieService = require('../services/CookieService');
-    cookieService.getToken = jest.fn(()=>"BZ3BL34T3FrSJJP0Pmm7O");
+    cookieService.default.isLogged = jest.fn(()=>true);
 
     let wrapper = mount(
         <MemoryRouter initialEntries={[ '/']}>
@@ -29,7 +29,7 @@ it('homePage at /', ()=>{
 
 it('redirecting to /login if account cookie dont exist', (done)=>{
     const cookieService = require('../services/CookieService');
-    cookieService.getToken = jest.fn(()=> undefined );
+    cookieService.default.isLogged = jest.fn(()=>false);
 
     let wrapper = mount(
         <MemoryRouter initialEntries={[ '/']}>
@@ -51,6 +51,9 @@ it('homePage is loading events at start', (done)=>{
     let events = [new EventModel({"id": "id1", "name": "event1"}), new EventModel({"id": "id2", "name": "event2"})];
     eventService.default.getAll = jest.fn(()=> Promise.resolve(events));
 
+    let eventsDict: {[key: string]: EventModel} = {};
+    events.forEach((event)=>eventsDict[event.id as string] = event);
+
     let wrapper = mount(
         <MemoryRouter>
             <HomePage/>
@@ -59,17 +62,20 @@ it('homePage is loading events at start', (done)=>{
     let instance = wrapper.find(HomePage).instance() as HomePage;
 
     setTimeout(() => {
-        expect(instance.state.events).toBe(events);
+        expect(instance.state.events).toMatchObject(eventsDict);
         done();
     }, 10);
 });
 
 it('eventList loadLists', (done)=>{
     let events = [new EventModel({"id": "id1", "name": "event1"}), new EventModel({"id": "id2", "name": "event2"})];
+    let eventsDict: {[key: string]: EventModel} = {};
+    events.forEach((event)=>eventsDict[event.id as string] = event);
+
     let wrapper = mount(
         <MemoryRouter initialEntries={["/"]}>
             <Switch>
-                <EventList events={events}/>
+                <EventList events={eventsDict} callWithId={(_)=>{}}/>
             </Switch>
         </MemoryRouter>);
 
@@ -79,13 +85,17 @@ it('eventList loadLists', (done)=>{
 
 it('click EventView view was redirecting to event page ',async (done)=>{
     const cookieService = require('../services/CookieService');
-    cookieService.getToken = jest.fn(()=>"BZ3BL34T3FrSJJP0Pmm7O");
+    cookieService.default.isLogged = jest.fn(()=>true);
 
     let event = new EventModel({"id": "some_id", "name": "event1", "reservable": undefined});
+    let eventsDict: {[key: string]: EventModel} = {};
+    eventsDict[event.id as string] = event;
 
     const eventService = require("../services/EventService");
     eventService.default.getById = jest.fn(()=> Promise.resolve(event));
     eventService.default.getAll = jest.fn(()=> Promise.resolve([]));
+
+    let mockRedirectToEventPage = jest.fn();
 
     const reservableService = require("../services/ReservableService");
     reservableService.default.getById = jest.fn();
@@ -94,7 +104,7 @@ it('click EventView view was redirecting to event page ',async (done)=>{
         <MemoryRouter initialEntries={["/"]}>
             <Switch>
                 <Route path="/event/:id" component={EventPage} />
-                <Route path="/" component={()=><EventList events={[event]}/>} />
+                <Route path="/" component={()=><EventList events={eventsDict} callWithId={mockRedirectToEventPage}/>} />
             </Switch>
         </MemoryRouter>
     );
@@ -105,8 +115,7 @@ it('click EventView view was redirecting to event page ',async (done)=>{
     let div = eventView.find('div');
     div.simulate('click');
     setTimeout(() => {
-        let eventPageWrapper = wrapper.find(EventPage);
-        expect(eventPageWrapper).toHaveLength(1);
+        expect(mockRedirectToEventPage).toHaveBeenCalledWith("some_id");
         done();
     }, 1000);
 });

@@ -12,9 +12,10 @@ it('test',async (done)=>{
     const By = webdriver.By;
     const browser = new Builder().forBrowser("firefox").build();
 
-    let token = await AccountService.getTokenForAccount(new AccountModel({"login":"admin", "password": "admin"}));
-    expect(token !== undefined).toBeTruthy();
-    CookieService.addCookie("token", token as string);
+    let tokenObject = await AccountService.getTokenForAccount(new AccountModel({"login":"admin", "password": "admin"}));
+    expect(tokenObject !== undefined).toBeTruthy();
+    // @ts-ignore
+    CookieService.addCookie("token", tokenObject.token);
 
     let accountToDelete = await AccountService.getFiltered(new AccountModel({"login": "user"}));
     if(accountToDelete?.length === 1){
@@ -92,7 +93,7 @@ it('test',async (done)=>{
 
     // check if seat is in selected list
         .then(()=> browser.findElement(By.css("#selectedReservablesList")))
-        .then((selectedList)=> selectedList.findElements(By.css(".seatView")))
+        .then((selectedList)=> selectedList.findElements(By.css(".seatLabel")))
         .then((seatViews)=> expect(seatViews).toHaveLength(1))
 
     // click reserve button
@@ -102,13 +103,132 @@ it('test',async (done)=>{
     // check if /reserve_successful
         .then(()=> sleep(1000))
         .then(()=> browser.getCurrentUrl())
-        .then((currentUrl)=> expect(currentUrl).toContain("/reserve_successful"))
+        .then((currentUrl)=> expect(currentUrl).toContain("/reserving"))
 
     // check if reservationView exist
-        .then(()=> browser.findElement(By.css(".seatView")))
+        .then(()=> browser.findElement(By.css(".seatLabel")))
 
         .then(()=>done())
         .finally(()=>browser.close())
 
+
+});
+
+it('admin test',async (done)=> {
+    jest.setTimeout(30000);
+    const By = webdriver.By;
+    const Keys = webdriver.Key;
+    const browser = new Builder().forBrowser("firefox").build();
+
+    // open /login
+    browser.get("http://localhost:3000")
+        .then(()=> browser.getCurrentUrl())
+        .then((currentUrl)=> expect(currentUrl).toContain("/login"))
+
+    // login
+        .then(()=> browser.findElement(By.css("#loginInput")))
+        .then((element)=>element.sendKeys("user"))
+        .then(()=> browser.findElement(By.css("#passwordInput")))
+        .then((element)=>element.sendKeys("password"))
+        .then(()=> browser.findElement(By.css("#loginButton")))
+        .then((element)=>element.click())
+
+    // check if /admin
+        .then(()=> sleep(1000))
+        .then(()=> browser.getCurrentUrl())
+        .then((currentUrl)=> expect(currentUrl).toContain("/admin"))
+
+    // check if all menu sections exists
+        .then(()=> browser.findElement(By.css("#eventsButton")))
+        .then(()=> browser.findElement(By.css("#reservablesButton")))
+        .then(()=> browser.findElement(By.css("#accountsButton")))
+        .then(()=> browser.findElement(By.css("#reservationsButton")))
+
+    // go to /admin/event
+        .then(()=> browser.findElement(By.css("#eventsButton")))
+        .then((element)=>element.click())
+
+    // check if /admin/event
+        .then(()=> sleep(1000))
+        .then(()=> browser.getCurrentUrl())
+        .then((currentUrl)=> expect(currentUrl).toContain("/admin/event"))
+
+    // click add button
+        .then(()=> browser.findElement(By.css("#addButton")))
+        .then((element)=>element.click())
+
+    // check if /admin/event/add
+        .then(()=> sleep(1000))
+        .then(()=> browser.getCurrentUrl())
+        .then((currentUrl)=> expect(currentUrl).toContain("/admin/event/add"))
+
+    // add one
+        .then(()=> browser.findElement(By.css("#nameInput")))
+        .then((element)=>element.sendKeys("event1"))
+        .then(()=> browser.findElement(By.css("#startDateInput")))
+        .then((element)=>{element.sendKeys("01012020"); return element;})
+        .then((element)=>{element.sendKeys(Keys.TAB); return element;})
+        .then((element)=>element.sendKeys("0245PM"))
+
+    // check if added
+
+    // go to /admin/reservable
+
+    // click add button
+
+    // add one
+
+    // check if added
+
+    // go to /admin/account
+
+    // click add button
+
+    // add two
+
+    // check if added
+
+    // go to /admin/reservations
+        .then(()=> browser.findElement(By.css("#reservationsButton")))
+        .then((element)=>element.click())
+
+    // click add button
+        .then(()=> browser.findElement(By.css("#addButton")))
+        .then((element)=>element.click())
+
+    // check if /admin/event/add
+        .then(()=> sleep(1000))
+        .then(()=> browser.getCurrentUrl())
+        .then((currentUrl)=> expect(currentUrl).toContain("/admin/reservations/add"))
+
+    // add one
+
+    // check if added
+
+    // edit added reservations
+
+    // check if edited
+
+    // delete added reservations
+
+    // check if deleted
+
+    // go to /admin/account
+
+    // delete added reservables
+
+    // check if deleted
+
+    // go to /admin/reservable
+
+    // delete added reservable
+
+    // check if deleted
+
+    // go to /admin/event
+
+    // delete added event
+
+    // check if deleted
 
 });

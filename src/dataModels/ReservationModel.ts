@@ -29,6 +29,9 @@ class ReservationModel{
         return ReservableService.getById(this.reservable?.id as string);
     }
 
+    added() {
+        return this.id !== undefined;
+    }
 }
 
 export default ReservationModel;

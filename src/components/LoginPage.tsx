@@ -1,9 +1,12 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
-import {addCookie} from "../services/CookieService";
+import CookieService from "../services/CookieService";
 import LoginForm from "./LoginForm";
 import AccountService from "../services/AccountService";
 import AccountModel from "../dataModels/AccountModel";
+import styled from "styled-components";
+import {StyledInput} from "./StyledComponents";
+
 
 class LoginPage extends React.Component{
     state = {message: ""};
@@ -16,10 +19,21 @@ class LoginPage extends React.Component{
     loginAccount = (login: string, password: string) => {
         // @ts-ignore
         return AccountService.getTokenForAccount(new AccountModel({"login": login, "password": password})).then(
-             (token: string | undefined) => {
-                 if (token !== undefined) {
-                     addCookie("token", token);
-                     this.redirect('/');
+             (tokenObject: {} | undefined) => {
+                 if (tokenObject !== undefined) {
+                     // @ts-ignore
+                     CookieService.setToken(tokenObject["token"]);
+                     // @ts-ignore
+                     return AccountService.getById(tokenObject["account"])
+                         .then((account: AccountModel)=>{
+                             CookieService.setAccount(account);
+                             return account;
+                         }).then((account: AccountModel)=>{
+                             if(account.isAdmin())
+                                 this.redirect("/admin");
+                             else
+                                 this.redirect('/');
+                         }).catch(()=>CookieService.setToken(""));
                  } else {
                      this.setState({"message": "error"})
                  }
@@ -28,12 +42,21 @@ class LoginPage extends React.Component{
     };
 
     render = ()=>{
+
+        const StyledDiv = styled.div`
+            width: 300px;
+            height: 300px;
+            background-color: lightgray;
+            border-radius:20px;
+            padding: 20px;
+            `;
+
         return(
-            <div>
+            <StyledDiv>
                 <LoginForm loginFunction={this.loginAccount}/>
                 <p id={"errorLabel"}>{this.state.message}</p>
-                <input type="button" id="registerButton" onClick={()=>this.redirect("/register")}/>
-            </div>
+                <StyledInput value="Go Register" type="button" id="registerButton" onClick={()=>this.redirect("/register")}/>
+            </StyledDiv>
         );
     }
 }

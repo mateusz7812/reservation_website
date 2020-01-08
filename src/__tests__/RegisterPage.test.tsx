@@ -41,7 +41,7 @@ it('addAccount form', (done)=>{
     let wrapper = mount(<RegisterForm registerFunction={mockFunction}/>);
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
-    wrapper.find({'id': "registerButton"}).simulate('click');
+    wrapper.find({'id': "registerButton"}).last().simulate('click');
 
     expect(mockFunction.mock.calls.length).toEqual(1);
     expect(mockFunction.mock.calls[0][0]).toEqual("name");
@@ -64,7 +64,7 @@ it('registerAccount when account created', (done)=> {
     expect(wrapper.find(RegisterPage)).toHaveLength(1);
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
-    wrapper.find({'id': "registerButton"}).simulate('click');
+    wrapper.find({'id': "registerButton"}).last().simulate('click');
 
     setTimeout(()=>{
         wrapper.update();
@@ -83,7 +83,7 @@ it('registerAccount when account not created', (done)=> {
 
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
-    wrapper.find({'id': "registerButton"}).simulate('click');
+    wrapper.find({'id': "registerButton"}).last().simulate('click');
 
     setTimeout(() => {
         wrapper.update();

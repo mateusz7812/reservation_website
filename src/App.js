@@ -3,16 +3,21 @@ import {Switch} from 'react-router-dom';
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import RegisterPage from "./components/RegisterPage";
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
+import PrivateRoute from "./components/route/PrivateRoute";
+import PublicRoute from "./components/route/PublicRoute";
 import EventPage from "./components/EventPage";
+import ReservingPage from "./components/ReservingPage";
+import AdminRoute from "./components/route/AdminRoute";
+import AdminPage from "./components/adminPage/AdminPage";
 
 const App = () => {
   return (
         <Switch>
             <PublicRoute path="/login" component={LoginPage}/>
             <PublicRoute path="/register" component={RegisterPage}/>
+            <PrivateRoute path="/reserving" component={ReservingPage}/>
             <PrivateRoute path="/event/:id" component={EventPage}/>
+            <AdminRoute path="/admin" component={AdminPage}/>
             <PrivateRoute path="/" component={HomePage}/>
         </Switch>
   )

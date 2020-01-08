@@ -15,7 +15,7 @@ describe('get token from api', ()=>{
         });
         
         await AccountService.getTokenForAccount(account)?.then((result: string|undefined)=>{
-            expect(result).toBe("token key");
+            expect(result).toMatchObject({"token": "token key", "account": "account id"});
         })
     });
 });
@@ -73,6 +73,26 @@ describe('get account filtered', ()=>{
         });
         
         await AccountService.getFiltered(new AccountModel({"login": "login"}))?.then((result: AccountModel[]|undefined)=>{
+            expect(result).toMatchObject(gottenAccounts);
+        })
+    })
+});
+
+describe('get all accounts', ()=>{
+    it('correct', async ()=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        let gottenAccounts = [new AccountModel({"login": "login", "password":"password"})];
+        const apiService = require('../domain/ApiRequests');
+        apiService.getAllAccounts = jest.fn(()=>
+        {
+            return Promise.resolve({
+                status: 200,
+                data: gottenAccounts
+            })
+        });
+
+        await AccountService.getAll()?.then((result: AccountModel[]|undefined)=>{
             expect(result).toMatchObject(gottenAccounts);
         })
     })

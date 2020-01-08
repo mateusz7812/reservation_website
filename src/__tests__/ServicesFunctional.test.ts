@@ -15,7 +15,8 @@ function setToken(token: string){
 it('functional test', async () => {
     jest.setTimeout(30000);
     let adminAccount = new AccountModel({"login":"admin", "password": "admin"});
-    let adminToken = await AccountService.getTokenForAccount(adminAccount as AccountModel);
+    // @ts-ignore
+    let adminToken = (await AccountService.getTokenForAccount(adminAccount as AccountModel))?.token;
 
     setToken(adminToken as string);
 
@@ -27,7 +28,8 @@ it('functional test', async () => {
     }
     let user1 = await AccountService.addOne(new AccountModel({"login": "user1", "password": "password"})) as AccountModel;
     user1.password = "password";
-    let user1Token = await AccountService.getTokenForAccount(user1);
+    // @ts-ignore
+    let user1Token = (await AccountService.getTokenForAccount(user1))?.token;
 
     let user2Accounts = await AccountService.getFiltered(new AccountModel({"login": "user2"}));
     // @ts-ignore
@@ -37,7 +39,8 @@ it('functional test', async () => {
     }
     let user2 = await AccountService.addOne(new AccountModel({"login": "user2", "password": "password"})) as AccountModel;
     user2.password = "password";
-    let user2Token = await AccountService.getTokenForAccount(user2);
+    // @ts-ignore
+    let user2Token = (await AccountService.getTokenForAccount(user2))?.token;
 
     user1.login = "login";
     await AccountService.editById(user1);
