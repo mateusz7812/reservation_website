@@ -2,7 +2,7 @@ import React from "react";
 import EventModel from "../../dataModels/EventModel";
 import styled from "styled-components";
 
-const EventView = ({event, onClick}: {event: EventModel, onClick: ()=>void})=>{
+const EventView = ({event, onClick}: {event: EventModel, onClick?: ()=>void})=>{
 
     const EventDiv = styled.div`
         width: 100px;

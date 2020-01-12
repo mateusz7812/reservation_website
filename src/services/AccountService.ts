@@ -6,104 +6,91 @@ import {
     deleteAccountById,
     getAccountById,
     getAccountFiltered,
-    getAllAccounts
+    getAllAccounts, updateEvent, updateAccount
 } from "../domain/ApiRequests";
 import {AxiosError, AxiosResponse} from "axios";
 import {getToken} from "./CookieService";
+import EventModel from "../dataModels/EventModel";
 
 function getTokenForAccount(account:AccountModel): Promise<string|undefined>|undefined{
-    if (account.login === undefined || account.password === undefined) {
-        return undefined;
-    }
+    if (account.login === undefined || account.password === undefined) return undefined;
+
     return getTokenFromApi(account).then((response: AxiosResponse) => {
-        if (response.status === 200) {
-            delete response.data["id"];
-            return response.data;
-        }
-        return undefined;
+        return response.status === 200
+            ? response.data
+            : undefined;
     });
 }
 
 function addOne(account: AccountModel): Promise<AccountModel|undefined>|undefined{
-    if (account.login === undefined || account.password === undefined) {
-        return undefined;
-    }
+    if (account.login === undefined || account.password === undefined) return undefined;
+
     return addAccount(account).then((response: AxiosResponse) => {
-        if (response.status === 200) {
-            return new AccountModel(response.data);
-        }
-        return undefined;
+        return response.status === 200
+            ? new AccountModel(response.data)
+            : undefined;
     });
 
 }
 
 function getAll() {
     let token = getToken();
-    if( token === undefined){
-        return undefined;
-    }
+    if( token === undefined) return undefined;
+
     return getAllAccounts(token).then((response: AxiosResponse) => {
-        let responseArray: AccountModel[] = [];
-        if (response.status === 200) {
-            if(response.data[0] !== null){
-                response.data.forEach((dict: {})=>
-                    responseArray.push(new AccountModel(dict)))
-            }
-            return responseArray;
-        }
-        return undefined;
+        return response.status === 200
+            ? response.data.map((dict: {}) => new AccountModel(dict))
+            : undefined;
     });
 }
 
 function getFiltered(account: AccountModel): Promise<AccountModel[]|undefined>|undefined{
     let token = getToken();
-    if( token === undefined){
-        return undefined;
-    }
+    if( token === undefined) return undefined;
+
     return getAccountFiltered(account, token).then((response: AxiosResponse) => {
-        let responseArray: AccountModel[] = [];
-        if (response.status === 200) {
-            if(response.data[0] !== null){
-                response.data.forEach((dict: {})=>
-                    responseArray.push(new AccountModel(dict)))
-            }
-            return responseArray;
-        }
-        return undefined;
+        return response.status === 200
+            ? response.data.map((dict: {}) => new AccountModel(dict))
+            : undefined;
     });
 }
 
 function getById(id: string) {
     let token = getToken();
-    if( token === undefined){
-        return undefined;
-    }
+    if( token === undefined) return undefined;
+
     return getAccountById(id, token).then((response: AxiosResponse) => {
-        if (response.status === 200) {
-            return new AccountModel(response.data);
-        }
-        return undefined;
+        return response.status === 200
+            ? new AccountModel(response.data)
+            : undefined;
     }).catch((error: AxiosError)=>{
-        if (error.response?.status === 404){return undefined}
-        else{throw error}
+        if (error.response?.status === 404) return undefined;
+        throw error;
     });
 }
 
-function editById(account: AccountModel){
-    return Promise.resolve();
+function updateOne(accountMap: AccountModel){
+    let token = getToken();
+    if( token === undefined) return undefined;
+
+    if(accountMap.id === undefined) return undefined;
+
+    return updateAccount(accountMap, token).then((response: AxiosResponse)=>{
+        return response.status === 200
+            ? new AccountModel(response.data)
+            : undefined;
+    });
+
 }
 
 function deleteById(id: string):boolean{
     let token = getToken();
-    if( token === undefined){
-        return false;
-    }
-    return deleteAccountById(id, token).then((response: AxiosResponse) => {
-        return response.status === 200;
-    });
+    if( token === undefined) return false;
+
+    return deleteAccountById(id, token).then((response: AxiosResponse) => response.status === 200);
 }
 
 
-const AccountService = {getTokenForAccount: getTokenForAccount, addOne, getFiltered, getById, editById, deleteById, getAll};
+const AccountService = {getTokenForAccount, addOne, getFiltered, getById, updateOne, deleteById, getAll};
 
 export default AccountService;

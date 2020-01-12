@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import AdminMenu from "./AdminMenu";
-import {withRouter, Route} from "react-router-dom";
+import {withRouter, Route, Switch, Redirect} from "react-router-dom";
 import EventAdminPage from "./EventAdminPage";
 import AccountAdminPage from "./AccountAdminPage";
 import ReservableAdminPage from "./ReservableAdminPage";
@@ -38,12 +38,13 @@ class AdminPage extends Component{
        return(
            <AdminPageDiv>
                 <AdminMenu redirectTo={this.redirectTo}/>
-                <>
+                <Switch>
                     <Route path="/admin/event" component={EventAdminPage}/>
                     <Route path="/admin/account" component={AccountAdminPage}/>
                     <Route path="/admin/reservable" component={ReservableAdminPage}/>
                     <Route path="/admin/reservation" component={ReservationAdminPage}/>
-                </>
+                    <Redirect to={"/admin/reservation"} />
+                </Switch>
            </AdminPageDiv>
        );
     }

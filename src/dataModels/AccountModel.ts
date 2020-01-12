@@ -1,19 +1,14 @@
-import ReservationService from "../services/ReservationService";
-import ReservationModel from "./ReservationModel";
+import DataModel from "./DataModel";
 
-class AccountModel{
-    id: string|undefined;
+class AccountModel extends DataModel{
     login: string|undefined;
     password: string|undefined;
     reservations: string[]|undefined;
     roles: string[]|undefined;
 
-    getReservations(): (Promise<ReservationModel | undefined> | undefined)[]{
-        return this.reservations?.map((id: string)=>ReservationService.getById(id)) ?? [];
-    }
-    
-    constructor(params : {}){
-        Object.assign(this, params);
+    constructor(params: {}) {
+        super();
+        super.assign(params);
     }
 
     isAdmin() {

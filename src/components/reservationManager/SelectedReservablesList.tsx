@@ -5,7 +5,7 @@ import ReservableLabel from "../itemView/ReservableLabel";
 const SelectedReservablesList = ({selectedReservablesIds, allReservables, selectionChanger}:
                                      {selectedReservablesIds: string[], allReservables: {[id: string]:ReservableModel}, selectionChanger: (reservableId: string)=>void})=>{
     return(<div id="selectedReservablesList">
-        {selectedReservablesIds.map((reservableId)=> <ReservableLabel key={reservableId+"selection"} selectionChanger={selectionChanger} reservableModel={allReservables[reservableId]}/>)}
+        {selectedReservablesIds.map((reservableId)=> <ReservableLabel key={reservableId+"selection"} onClick={selectionChanger} reservableModel={allReservables[reservableId]}/>)}
     </div>)
 };
 

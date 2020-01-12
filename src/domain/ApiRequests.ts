@@ -22,6 +22,10 @@ function getTokenFromApi(account: AccountModel){
     );
 }
 
+function updateAccount(accountMap: AccountModel, token: string){
+    return axios.put(api_url+"/api/account/"+accountMap.id, accountMap, tokenHeadersConfig(token));
+}
+
 function getAccountById(id:string, token:string){
     return axios.get(api_url+"/api/account/"+id, tokenHeadersConfig(token));
 }
@@ -71,6 +75,10 @@ function getReservableById(id: string, token: string){
     return axios.get(api_url+"/api/reservable/"+id, tokenHeadersConfig(token));
 }
 
+function getAllReservables(token: string){
+    return axios.get(api_url+"/api/reservable", tokenHeadersConfig(token));
+}
+
 function deleteReservableById(id: string, token: string){
     return axios.delete(api_url+"/api/reservable/"+id, tokenHeadersConfig(token));
 }
@@ -96,8 +104,8 @@ function deleteReservationById(id: string, token: string){
 }
 
 export {
-    addAccount, getTokenFromApi, getAccountById, getAllAccounts, getAccountFiltered, deleteAccountById,
+    addAccount, getTokenFromApi, getAccountById, getAllAccounts, updateAccount, getAccountFiltered, deleteAccountById,
     addEvent, getEventById, getAllEvents, updateEvent, deleteEventById,
-    addReservable, getReservableById, deleteReservableById,
+    addReservable, getReservableById, getAllReservables, deleteReservableById,
     addReservation, getReservationById, getAllReservations, updateReservation, deleteReservationById
 }

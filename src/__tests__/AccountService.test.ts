@@ -1,5 +1,8 @@
 import AccountService from "../services/AccountService";
 import AccountModel from "../dataModels/AccountModel";
+import EventModel from "../dataModels/EventModel";
+import EventService from "../services/EventService";
+import ReservationModel from "../dataModels/ReservationModel";
 
 describe('get token from api', ()=>{
     it('correct', async ()=>{
@@ -78,7 +81,7 @@ describe('get account filtered', ()=>{
     })
 });
 
-describe('get all accounts', ()=>{
+describe('get all reservables', ()=>{
     it('correct', async ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
@@ -133,6 +136,45 @@ describe('get by id', ()=>{
         await AccountService.getById("id").then((result: AccountModel|undefined)=>{
             expect(result === undefined).toBeTruthy();
         })
+    });
+});
+
+describe('update one', ()=>{
+    it('correct', async ()=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        let id = "account id";
+        let updateMap = new AccountModel({"id": id, "name": "other account name"});
+        let updatedAccount = new AccountModel({"id": id, "name": "other account name"});
+
+        const apiService = require('../domain/ApiRequests');
+
+        apiService.updateAccount = jest.fn(()=>{
+            return Promise.resolve({
+                status: 200,
+                data: updatedAccount
+            })
+        });
+
+        // @ts-ignore
+        await AccountService.updateOne(updateMap).then((result: AccountModel|undefined)=>{
+            expect(result).toMatchObject(updatedAccount);
+        })
+    });
+
+    it('no id', async (done)=>{
+        const cookiesService = require("../services/CookieService");
+        cookiesService.getToken = jest.fn(()=>"token");
+        let updateMap = new AccountModel({"name": "other name"});
+        const apiService = require('../domain/ApiRequests');
+
+        apiService.updateAccount = jest.fn(()=>{
+            done.fail("request made")
+        });
+
+        // @ts-ignore
+        expect(await AccountService.updateOne(updateMap) === undefined).toBeTruthy();
+        done();
     });
 });
 

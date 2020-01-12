@@ -87,7 +87,7 @@ it('click EventView view was redirecting to event page ',async (done)=>{
     const cookieService = require('../services/CookieService');
     cookieService.default.isLogged = jest.fn(()=>true);
 
-    let event = new EventModel({"id": "some_id", "name": "event1", "reservable": undefined});
+    let event = new EventModel({"id": "some_id", "name": "event1"});
     let eventsDict: {[key: string]: EventModel} = {};
     eventsDict[event.id as string] = event;
 

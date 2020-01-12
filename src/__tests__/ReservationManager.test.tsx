@@ -8,7 +8,7 @@ import SelectedReservablesList from "../components/reservationManager/SelectedRe
 import SpaceView from "../components/itemView/SpaceView";
 import ReservationModel from "../dataModels/ReservationModel";
 import { MemoryRouter, Switch, Route } from "react-router-dom";
-import ReservingPage from "../components/ReservingPage";
+import AddObjectPage from "../components/AddingObjectPage";
 import SeatLabel from "../components/itemView/SeatLabel";
 import SpaceLabel from "../components/itemView/SpaceLabel";
 import AccountModel from "../dataModels/AccountModel";
@@ -54,7 +54,7 @@ it('event choose if not in props',()=>{
 });
 
 it('loadEvent working', (done)=>{
-    let event = new EventModel({"id": "event1", "reservable": new SeatModel({"id": "seat1"})});
+    let event = new EventModel({"id": "event1", "reservable": "seat1"});
 
     const eventService = require('../services/EventService');
     eventService.default.getById = jest.fn(()=>Promise.resolve(event));
@@ -82,7 +82,7 @@ it('loadEvent working', (done)=>{
 it('reservables added to selected reservables list after click and removed after next', (done)=>{
     let seat = new SeatModel({"id": "seat1", "name": "seat1"});
     let account = new AccountModel({"id": "accountId"});
-    let event = new EventModel({"id": "event1", "reservable": seat});
+    let event = new EventModel({"id": "event1", "reservable": seat.id});
 
     const cookieService = require('../services/CookieService');
     cookieService.default.getAccount = jest.fn(()=>account);
@@ -129,7 +129,7 @@ it('reservables added to selected reservables list after click and removed after
 
 it('reservablesTable seat loading', (done)=>{
     let seat = new SeatModel({"id": "seat1", "name": "seat1"});
-    let event = new EventModel({"id": "event1", "reservable": seat});
+    let event = new EventModel({"id": "event1", "reservable": seat.id});
     let account = new AccountModel({"id": "accountId"});
 
     const cookieService = require('../services/CookieService');
@@ -182,7 +182,7 @@ it('reservableTable space loading', (done)=>{
         new SpaceModel({"id": "space1", "name": "space1", "reservables": ["space2", "seat1"]}),
         new SpaceModel({"id": "space2", "name": "space2", "reservables": ["seat2"]})];
 
-    let event = new EventModel({"id": "event1", "reservable": reservables[2]});
+    let event = new EventModel({"id": "event1", "reservable": reservables[2].id});
     let account = new AccountModel({"id": "accountId"});
 
     const cookieService = require('../services/CookieService');
@@ -212,7 +212,7 @@ it('reservableTable space loading', (done)=>{
 
 it('make reservations', (done)=>{
     let seat = new SeatModel({"id": "seat1", "name": "seat1"});
-    let event = new EventModel({"id": "event1", "reservable": seat});
+    let event = new EventModel({"id": "event1", "reservable": seat.id});
     let account = new AccountModel({"id": "account1"});
 
     const cookieService = require('../services/CookieService');
@@ -227,10 +227,13 @@ it('make reservations', (done)=>{
     const reservationService = require("../services/ReservationService");
     reservationService.default.addOne = jest.fn();
 
+    // @ts-ignore
+    const reservingPage = jest.fn(()=> <div/>);
+
     let wrapper = mount(
         <MemoryRouter initialEntries={["/"]}>
             <Switch>
-                <Route path="/reserving" component={ReservingPage}/>
+                <Route path="/reserving" component={reservingPage}/>
                 <Route path="/" component={(props: any)=><UserAddReservationManager {...props} eventId={"event1"}/>}/>
             </Switch>
         </MemoryRouter>);
@@ -248,18 +251,13 @@ it('make reservations', (done)=>{
 
         setTimeout(()=> {
             wrapper.update();
-            expect(wrapper.find(ReservingPage)).toHaveLength(1);
-            expect(reservationService.default.addOne).toHaveBeenCalled();
-            let calls = reservationService.default.addOne.mock.calls;
-            const callArg = calls[0][0];
-            expect(callArg instanceof ReservationModel).toBeTruthy();
-            expect((callArg as ReservationModel).account).toBe("account1");
-            expect((callArg as ReservationModel).event).toBe("event1");
-            expect((callArg as ReservationModel).reservable).toMatchObject({"id": "seat1", "type": "Seat"});
-            wrapper.update();
-            expect(wrapper.find(SeatLabel)).toHaveLength(1);
+            expect(wrapper.find(reservingPage)).toHaveLength(1);
+            // @ts-ignore
+            expect(reservingPage.mock.calls[0][0].location.state.reservationsToAdd[0]).toMatchObject(new ReservationModel({"account": "account1", "event": "event1", "reservable": "seat1"}));
+            // @ts-ignore
+            expect(reservingPage.mock.calls[0][0].location.state.allReservables).toMatchObject({"seat1": seat});
             done();
-        }, 3000);
+        }, 10);
 
     }, 10);
 });

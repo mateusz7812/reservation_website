@@ -16,11 +16,7 @@ function setToken(token: string) {
 }
 
 function getToken(): string| undefined{
-    let token = getCookie("token");
-    if(token !== undefined){
-        return token;
-    }
-    return undefined;
+    return getCookie("token");
 }
 
 
@@ -30,12 +26,9 @@ function setAccount(account: AccountModel){
 
 function getAccount(): AccountModel | undefined{
     let accountJson = getCookie("account");
-    if(accountJson === undefined)
-        return undefined;
-    else
-        {
-            return new AccountModel(accountJson);
-        }
+    return accountJson === undefined
+        ? undefined
+        : new AccountModel(accountJson);
 }
 
 function isLogged(){

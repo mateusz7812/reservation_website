@@ -1,7 +1,4 @@
-import ReservationModel from "./ReservationModel";
-import ReservationService from "../services/ReservationService";
-import ReservableService from "../services/ReservableService";
-import EventService from "../services/EventService";
+import DataModel from "./DataModel";
 
 type reservableTypes = "Space" | "Seat";
 
@@ -9,13 +6,16 @@ const getType = (typeName: reservableTypes)=> {
     let types = {"Space": SpaceModel, "Seat": SeatModel};
     return types[typeName]};
 
-abstract class ReservableModel{
+abstract class ReservableModel extends DataModel{
     type!: reservableTypes;
-    id: string|undefined;
     name: string|undefined;
     space: string|undefined;
     events: string[]|undefined;
     reservations: string[]|undefined;
+
+    assign(params: {}) {
+        super.assign(params);
+    }
 
     static new(params: {}){
         if("type" in params){
@@ -24,42 +24,24 @@ abstract class ReservableModel{
         }
         return undefined;
     }
-
-    getSpace(){
-        if(this.space)
-            return ReservableService.getById(this.space);
-        return undefined;
-    }
-
-    getEvents(){
-        return this.events?.map((id: string)=>EventService.getById(id)) ?? [];
-    }
-
-    getReservations(): (Promise<ReservationModel | undefined> | undefined)[]{
-        return this.reservations?.map((id: string)=>ReservationService.getById(id)) ?? [];
-    }
-
 }
 
 class SeatModel extends ReservableModel{
-    constructor(params: {}) {
+    constructor(params: {[key: string]: any}) {
         super();
-        Object.assign(this, params, {"type": "Seat"});
+        params["type"] = "Seat";
+        super.assign(params);
     }
 }
 
 class SpaceModel extends ReservableModel{
     reservables: undefined|string[];
 
-    constructor(params: {}) {
+    constructor(params: {[key: string]: any}) {
         super();
-        Object.assign(this, params, {"type": "Space"});
+        params["type"] = "Space";
+        super.assign(params);
     }
-
-    getReservables(){
-        return this.reservables?.map((id: string)=>ReservableService.getById(id)) ?? [];
-    }
-
 }
 
 

@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-const SeatView = ({seatId, allReservables, selectionChanger}:
-                      {seatId: string, allReservables: {}, selectionChanger:(reservableId: string)=>void})=>{
+
+type func = (reservableId: string)=>void;
+
+const SeatView = ({seatId, allReservables, onClick}:
+                      {seatId: string, allReservables: {}, onClick:func | undefined})=>{
 
     const StyledDiv = styled.div`
         clear: both;
@@ -12,7 +15,7 @@ const SeatView = ({seatId, allReservables, selectionChanger}:
         padding: 3px;
     `;
 
-    return(<StyledDiv className="seatView" onClick={()=>selectionChanger(seatId)}>
+    return(<StyledDiv className="seatView" onClick={()=>onClick?.(seatId)}>
         Seat
     </StyledDiv>);
 };

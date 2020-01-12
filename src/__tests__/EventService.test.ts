@@ -1,18 +1,14 @@
-import {ReservableModel, SeatModel} from "../dataModels/ReservableModel";
 import EventService from "../services/EventService";
 import EventModel from "../dataModels/EventModel";
 import ReservationModel from "../dataModels/ReservationModel";
-import ReservationService from "../services/ReservationService";
-import ReservableService from "../services/ReservableService";
 
 describe('add one', ()=> {
     it('correct', async () => {
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel({"id": "reservablePromise id"});
-        let eventToAdd = new EventModel({"reservable": seat, "reservations":[]});
-        let addedEvent = new EventModel({"id": "event id","reservable": seat, "reservations":[]});
+        let eventToAdd = new EventModel({"reservable": "reservable1", "reservations":[]});
+        let addedEvent = new EventModel({"id": "event id", "reservable": "reservable1", "reservations":[]});
         apiService.addEvent = jest.fn((event: EventModel, token: string)=>
         {
             return Promise.resolve({
@@ -33,8 +29,7 @@ describe('get by id', ()=> {
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel({"id": " reservablePromise id"});
-        let gottenEvent = new EventModel({"id": "event id", "name": "event1", "reservable": seat});
+        let gottenEvent = new EventModel({"id": "event id", "name": "event1", "reservable": "reservable1"});
 
         apiService.getEventById = jest.fn((id: string, token: string)=>
         {
@@ -70,8 +65,7 @@ describe("get all", ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel({"id": " reservablePromise id"});
-        let gottenEvents = [new EventModel({"id": "event id", "name": "event1", "reservable": seat})];
+        let gottenEvents = [new EventModel({"id": "event id", "name": "event1", "reservable": "reservable1"})];
 
         apiService.getAllEvents = jest.fn((id: string, token: string)=>
         {
@@ -92,9 +86,8 @@ describe('update one', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         let id = "event id";
-        let reservable = new SeatModel({"id": "reservablePromise id"});
         let updateMap = new EventModel({"id": id, "name": "other event name"});
-        let updatedEvent = new EventModel({"id": "event id", "name": "other event name", "reservable": reservable});
+        let updatedEvent = new EventModel({"id": "event id", "name": "other event name", "reservable": "reservable1"});
 
         const apiService = require('../domain/ApiRequests');
 

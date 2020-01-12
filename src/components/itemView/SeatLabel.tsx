@@ -1,9 +1,11 @@
 import React from "react";
 import {ReservableModel} from "../../dataModels/ReservableModel";
 
-const SeatLabel = ({reservableModel, selectionChanger }: {reservableModel: ReservableModel, selectionChanger: (reservableId: string)=>void})=>{
+type func = (reservableId: string)=>void;
+
+const SeatLabel = ({reservableModel, onClick }: {reservableModel: ReservableModel, onClick: func | undefined})=>{
     return(
-        <div className="seatLabel" onClick={()=>selectionChanger(reservableModel.id as string)}>
+        <div className="seatLabel" onClick={()=>onClick?.(reservableModel.id as string)}>
             {reservableModel.name}
         </div>
     );

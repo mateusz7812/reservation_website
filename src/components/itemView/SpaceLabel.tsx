@@ -1,9 +1,11 @@
 import React from "react";
 import {ReservableModel} from "../../dataModels/ReservableModel";
 
-const SpaceLabel = ({reservableModel, selectionChanger}: {reservableModel: ReservableModel, selectionChanger: (reservableId: string)=>void})=>{
+type func = (reservableId: string)=>void;
+
+const SpaceLabel = ({reservableModel, onClick}: {reservableModel: ReservableModel, onClick: func | undefined})=>{
     return(
-        <div onClick={()=>selectionChanger(reservableModel.id as string)}>
+        <div onClick={()=>onClick?.(reservableModel.id as string)}>
             {reservableModel.name}
         </div>
     );

@@ -15,7 +15,11 @@ import ReservationModel from "../dataModels/ReservationModel";
 import ReservationLabel from "../components/itemView/ReservationLabel";
 import ReservationList from "../components/ReservationList";
 import EventModel from "../dataModels/EventModel";
-import {SeatModel} from "../dataModels/ReservableModel";
+import {SeatModel, SpaceModel} from "../dataModels/ReservableModel";
+import EventList from "../components/EventList";
+import AdminAddEventManager from "../components/adminPage/AdminAddEventManager";
+import AccountList from "../components/AccountList";
+import ReservableList from "../components/ReservableList";
 
 configure({adapter: new Adapter()});
 
@@ -98,9 +102,101 @@ it('adminMenu buttons work', (done) => {
     }, 10);
 });
 
+it('accountPage reservables loading', (done)=>{
+    let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
+    let accounts = [new AccountModel({"id": "1", "login": "user1"})];
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(() => adminAccount);
+
+    let accountService = require("../services/AccountService");
+    accountService.default.getAll = jest.fn(()=>Promise.resolve(accounts));
+
+    let wrapper = mount(
+        <MemoryRouter initialEntries={["/admin/account"]}>
+            <AccountAdminPage/>
+        </MemoryRouter>
+    );
+
+    setTimeout(()=>{
+        expect(wrapper.find(AccountList)).toHaveLength(1);
+        expect(accountService.default.getAll).toHaveBeenCalled();
+        done();
+    }, 100);
+});
+
+it('ReservablePage reservables loading', (done)=>{
+    let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
+    let reservables = [new SeatModel({"id": "1", "name": "seat1"}), new SpaceModel({"id": "2", "name": "space1"})];
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(() => adminAccount);
+
+    let reservableService = require("../services/ReservableService");
+    reservableService.default.getAll = jest.fn(()=>Promise.resolve(reservables));
+
+    let wrapper = mount(
+        <MemoryRouter initialEntries={["/admin/reservable"]}>
+            <ReservableAdminPage/>
+        </MemoryRouter>
+    );
+
+    setTimeout(()=>{
+        expect(wrapper.find(ReservableList)).toHaveLength(1);
+        expect(reservableService.default.getAll).toHaveBeenCalled();
+        done();
+    }, 100);
+});
+
+it('eventPage events loading', (done)=>{
+    let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
+    let events = [new EventModel({"id": "event1"})];
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(() => adminAccount);
+
+    let eventService = require("../services/EventService");
+    eventService.default.getAll = jest.fn(()=>Promise.resolve(events));
+
+    let wrapper = mount(
+        <MemoryRouter initialEntries={["/admin/event"]}>
+            <EventAdminPage/>
+        </MemoryRouter>
+    );
+
+    setTimeout(()=>{
+        expect(wrapper.find(EventList)).toHaveLength(1);
+        expect(eventService.default.getAll).toHaveBeenCalled();
+        done();
+    }, 100);
+});
+
+it('eventPage event adding', (done)=>{
+    let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(() => adminAccount);
+
+    const adminAddEventManager = require("../components/adminPage/AdminAddEventManager");
+    adminAddEventManager.default = () => <div/>;
+
+    let wrapper = mount(
+        <MemoryRouter initialEntries={["/admin/event/add"]}>
+            <EventAdminPage/>
+        </MemoryRouter>
+    );
+
+    setTimeout(()=>{
+        wrapper.update();
+        expect(wrapper.find(EventList)).toHaveLength(0);
+        expect(wrapper.find(AdminAddEventManager)).toHaveLength(1);
+        done();
+    }, 100);
+});
+
 it('reservations page list loading', (done) => {
     let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
-    let reservations = [new ReservationModel({"id": "reservation1", "account": "account1", "event": "event1", "reservable": {"type": "Seat", "id": "seat1"}})];
+    let reservations = [new ReservationModel({"id": "reservation1", "account": "account1", "event": "event1", "reservable": "seat1"})];
     let reservationAccount = new AccountModel({"id": "account1"});
     let reservationEvent = new EventModel({"id": "event1"});
     let reservationSeat = new SeatModel({"id": "seat1"});

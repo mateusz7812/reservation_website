@@ -3,7 +3,7 @@ import {ReservableModel, SpaceModel} from "../../dataModels/ReservableModel";
 import ReservationModel from "../../dataModels/ReservationModel";
 import ReservableView from "../itemView/ReservableView";
 import SelectedReservablesList from "./SelectedReservablesList";
-import { withRouter } from "react-router-dom";
+import { withRouter} from "react-router-dom";
 import AccountList from "../AccountList";
 import EventList from "../EventList";
 import EventService from "../../services/EventService";
@@ -13,17 +13,33 @@ import AccountService from "../../services/AccountService";
 import AccountModel from "../../dataModels/AccountModel";
 
 class AddReservationManager extends Component{
-    state={loadedAccounts:{}, loadedEvents:{}, loadedReservables:{}, reservableId: undefined, selectedReservablesIds: Array<string>(), accountId: undefined, eventId: undefined};
+    state: {
+            loadedAccounts:{[key: string]: AccountModel}, loadedEvents:{[key: string]: EventModel}, loadedReservables:{[key:string]: ReservableModel},
+            reservableId: string|undefined, accountId: string|undefined, eventId: string|undefined,
+            selectedReservablesIds: string[]
+        }= {
+            loadedAccounts:{}, loadedEvents:{}, loadedReservables:{},
+            reservableId: undefined, accountId: undefined, eventId: undefined,
+            selectedReservablesIds: []
+        };
 
     constructor(props: any) {
         super(props);
         this.state.eventId = props.eventId;
         this.state.accountId = props.accountId;
-        if(this.state.accountId === undefined)
+        if (this.state.accountId === undefined)
             this.loadAccounts();
-        if(this.state.eventId === undefined)
+        if (this.state.eventId === undefined)
             this.loadEvents();
+        else {
+            this.loadEventAndReservables();
+        }
     }
+
+    loadEventAndReservables = ()=>{
+        // eslint-disable-next-line no-unused-expressions
+        this.loadEvent()?.then(() => this.loadReservables());
+    };
 
     loadReservables = ()=>{
         // @ts-ignore
@@ -40,10 +56,17 @@ class AddReservationManager extends Component{
                 this.state.loadedReservables[r.id] = r;
                 this.setState(this.state);
                 if(r.type === "Space"){
-                    (r as SpaceModel).getReservables().forEach(this._loadReservables);
+                    this.loadSpace(r);
                 }
             }
         });
+    };
+
+    private loadSpace = (r: ReservableModel) => {
+        // eslint-disable-next-line no-unused-expressions
+        (r as SpaceModel).reservables
+            ?.map((id: string)=> ReservableService.getById(id))
+            .forEach(this._loadReservables);
     };
 
     changeSelection = (reservableId: string)=> {
@@ -62,7 +85,7 @@ class AddReservationManager extends Component{
                 "account": this.state.accountId,
                 "event": this.state.eventId,
                 // @ts-ignore
-                "reservable": {"type": this.state.loadedReservables[reservableId].type, "id": reservableId}
+                "reservable": reservableId
             })
         );
         // @ts-ignore
@@ -70,8 +93,11 @@ class AddReservationManager extends Component{
     };
 
     loadEvent = () => {
-        // @ts-ignore
-        return EventService.getById(this.state.eventId)?.then((event: EventModel) => this.setState({"reservableId" : event.reservable?.id}));
+        if(this.state.eventId !== undefined) {
+            // @ts-ignore
+            return EventService.getById(this.state.eventId)?.then((event: EventModel | undefined) => this.setState({"reservableId": event?.reservable}));
+        }
+        return Promise.reject("eventiId undefined");
     };
 
     loadAccounts = ()=>{
@@ -93,52 +119,37 @@ class AddReservationManager extends Component{
     };
 
     setAccountId = (accountId: string)=>this.setState({"accountId": accountId});
-    setEventId = (eventId: string)=>this.setState({"eventId": eventId});
+
+    setEventId = (eventId: string)=>{
+        this.setState({"eventId": eventId}, this.loadEventAndReservables);
+    };
 
     render(){
-        if(this.state.accountId === undefined){
-            return(
-                <div id="reservationManager">
-                    <AccountList
-                        // @ts-ignore
-                        accounts={this.state.loadedAccounts} callWithId={this.setAccountId}/>
-                </div>
-            );
-        }
-        else if(this.state.eventId === undefined){
-            return(
-                <div id="reservationManager">
-                    <EventList
-                        // @ts-ignore
-                        events={this.state.loadedEvents} callWithId={this.setEventId}/>
-                </div>
-            );
-        }
-        else if(this.state.reservableId === undefined) {
-            // eslint-disable-next-line no-unused-expressions
-            this.loadEvent()?.then(()=> this.loadReservables());
-            return(
-                <div id="reservationManager">
-                    <p>loading</p>
-                </div>
-            )
-        }
-        else{
-            return(
-                <div id="reservationManager">
+        return (
+            <div id="reservationManager">
+            {
+                this.state.accountId === undefined
+                    ? <AccountList accounts={this.state.loadedAccounts} callWithId={this.setAccountId}/>
+                : this.state.eventId === undefined
+                    ? <EventList events={this.state.loadedEvents} callWithId={this.setEventId}/>
+                : <>
                     <div>
                         {
-                            // @ts-ignore
-                            <ReservableView reservableId={this.state.reservableId} allReservables={this.state.loadedReservables} callWithId={this.changeSelection}/>
+                            <ReservableView reservableId={this.state.reservableId as string}
+                                            allReservables={this.state.loadedReservables}
+                                            onClick={this.changeSelection}/>
                         }
                     </div>
-                    <SelectedReservablesList selectedReservablesIds={this.state.selectedReservablesIds} allReservables={this.state.loadedReservables} selectionChanger={this.changeSelection}/>
+                    <SelectedReservablesList selectedReservablesIds={this.state.selectedReservablesIds}
+                                             allReservables={this.state.loadedReservables}
+                                             selectionChanger={this.changeSelection}/>
                     <input id="reserveButton" type="button" onClick={this.makeReservation}/>
-                </div>
-            )
-        }
-
+                  </>
+            }
+            </div>
+        );
     }
+
 }
 
 // @ts-ignore

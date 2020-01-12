@@ -76,7 +76,7 @@ class ReservationAdminPage extends React.Component{
 
     loadReservables = () => {
         return Object.keys(this.state.reservations).forEach((reservationId: string)=> {
-            const reservableId = this.state.reservations[reservationId].reservable?.id;
+            const reservableId = this.state.reservations[reservationId].reservable;
             if(reservableId !== undefined){
                 // eslint-disable-next-line no-unused-expressions
                 ReservableService.getById(reservableId)?.then((reservable: ReservableModel | undefined)=>{
@@ -95,7 +95,7 @@ class ReservationAdminPage extends React.Component{
             <AdminSubpageDiv>
                 {
                     // @ts-ignore
-                    this.props.location.pathname.includes("/admin/reservations/add")
+                    this.props.location.pathname.includes("/admin/reservation/add")
                         ? null
                         : <input id="addButton" type="button" value="Add Reservation" onClick={() => this.redirect("/admin/reservation/add")}/>
                 }

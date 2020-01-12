@@ -17,8 +17,7 @@ class LoginPage extends React.Component{
     };
 
     loginAccount = (login: string, password: string) => {
-        // @ts-ignore
-        return AccountService.getTokenForAccount(new AccountModel({"login": login, "password": password})).then(
+        return AccountService.getTokenForAccount(new AccountModel({"login": login, "password": password}))?.then(
              (tokenObject: {} | undefined) => {
                  if (tokenObject !== undefined) {
                      // @ts-ignore

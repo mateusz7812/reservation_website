@@ -1,22 +1,23 @@
 import {ReservableModel} from "../../dataModels/ReservableModel";
-import React from "react";
+import React, {FunctionComponent} from "react";
 import SeatLabel from "./SeatLabel";
 import SpaceLabel from "./SpaceLabel";
 
-const ReservableLabel = ({reservableModel, selectionChanger}: {reservableModel: ReservableModel, selectionChanger: (reservableId: string)=>void})=>{
-    if(reservableModel?.type==="Seat"){
-        return <SeatLabel reservableModel={reservableModel} selectionChanger={selectionChanger}/>
-    }
+type func = (reservableId: string)=>void;
 
-    else if(reservableModel?.type === "Space"){
-        return <SpaceLabel reservableModel={reservableModel} selectionChanger={selectionChanger}/>
-    }
-
-    else {
-        return (<div>
-            unknown type
-        </div>);
-    }
+type propsTypes = {
+    reservableModel: ReservableModel,
+    onClick?: func | undefined
 };
+
+const ReservableLabel: FunctionComponent<propsTypes> =
+    ({reservableModel, onClick})=>{
+    return reservableModel?.type === "Seat"
+        ? <SeatLabel reservableModel={reservableModel} onClick={onClick}/>
+        : reservableModel?.type === "Space"
+            ? <SpaceLabel reservableModel={reservableModel} onClick={onClick}/>
+            : <div>unknown type</div>;
+};
+
 
 export default ReservableLabel;

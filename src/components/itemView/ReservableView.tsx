@@ -2,23 +2,18 @@
  import {ReservableModel} from "../../dataModels/ReservableModel";
  import SeatView from "./SeatView";
  import SpaceView from "./SpaceView";
- 
-const ReservableView = ({reservableId, allReservables, callWithId}:
-                            {reservableId: string, allReservables: {[id: string]:ReservableModel}, callWithId: (reservableId: string)=>void})=>{
+
+ type func = (reservableId: string)=>void;
+
+ const ReservableView = ({reservableId, allReservables, onClick}:
+                            {reservableId: string, allReservables: {[id: string]:ReservableModel}, onClick: func | undefined})=>{
     let reservable: ReservableModel = allReservables[reservableId];
 
-    if(reservable?.type==="Seat"){
-       return <SeatView seatId={reservableId} allReservables={allReservables} selectionChanger={callWithId}/>
-   }
-
-    else if(reservable?.type === "Space"){
-        return <SpaceView spaceId={reservable.id as string} allReservables={allReservables} selectionChanger={callWithId}/>
-    }
-    else {
-        return (<div>
-            unknown type
-        </div>);
-    }
-};
+     return reservable?.type === "Seat"
+         ? <SeatView seatId={reservableId} allReservables={allReservables} onClick={onClick}/>
+         : reservable?.type === "Space"
+            ? <SpaceView spaceId={reservableId} allReservables={allReservables} onClick={onClick}/>
+            : <div>loading</div>;
+ };
 
 export default ReservableView;

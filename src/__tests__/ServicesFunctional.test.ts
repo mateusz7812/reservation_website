@@ -42,40 +42,47 @@ it('functional test', async () => {
     // @ts-ignore
     let user2Token = (await AccountService.getTokenForAccount(user2))?.token;
 
-    user1.login = "login";
-    await AccountService.editById(user1);
+    let otherLoginAccounts = await AccountService.getFiltered(new AccountModel({"login": "other"}));
+    // @ts-ignore
+    if(otherLoginAccounts.length === 1){
+        // @ts-ignore
+        await AccountService.deleteById(otherLoginAccounts[0].id);
+    }
+
+    user1.login = "other";
+    await AccountService.updateOne(user1);
 
     user2.password = "other";
-    await AccountService.editById(user2);
+    await AccountService.updateOne(user2);
 
     let space1: SpaceModel = await ReservableService.addOne(new SpaceModel({"name": "space1"})) as SpaceModel;
     let space2: SpaceModel = await ReservableService.addOne(new SpaceModel({"name": "space2"})) as SpaceModel;
-    let space3: SpaceModel = await ReservableService.addOne(new SpaceModel({"name": "space3", "space": space1})) as SpaceModel;
-    let space4: SpaceModel = await ReservableService.addOne(new SpaceModel({"name": "space4", "space": space1})) as SpaceModel;
+    let space3: SpaceModel = await ReservableService.addOne(new SpaceModel({"name": "space3", "space": space1.id})) as SpaceModel;
+    let space4: SpaceModel = await ReservableService.addOne(new SpaceModel({"name": "space4", "space": space1.id})) as SpaceModel;
 
-    let seat1: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat1", "space": space1})) as SeatModel;
-    let seat2: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat2", "space": space2})) as SeatModel;
-    let seat3: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat3", "space": space2})) as SeatModel;
-    let seat4: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat4", "space": space3})) as SeatModel;
-    let seat5: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat5", "space": space3})) as SeatModel;
-    let seat6: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat6", "space": space3})) as SeatModel;
-    let seat7: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat7", "space": space3})) as SeatModel;
-    let seat8: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat8", "space": space4})) as SeatModel;
-    let seat9: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat9", "space": space4})) as SeatModel;
+    let seat1: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat1", "space": space1.id})) as SeatModel;
+    let seat2: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat2", "space": space2.id})) as SeatModel;
+    let seat3: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat3", "space": space2.id})) as SeatModel;
+    let seat4: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat4", "space": space3.id})) as SeatModel;
+    let seat5: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat5", "space": space3.id})) as SeatModel;
+    let seat6: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat6", "space": space3.id})) as SeatModel;
+    let seat7: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat7", "space": space3.id})) as SeatModel;
+    let seat8: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat8", "space": space4.id})) as SeatModel;
+    let seat9: SeatModel = await ReservableService.addOne(new SeatModel({"name": "seat9", "space": space4.id})) as SeatModel;
 
-    let event1: EventModel = await EventService.addOne(new EventModel({"reservable": space1, "name": "event1", "startDate": 1200, "endDate": 1400})) as EventModel;
-    let event2: EventModel = await EventService.addOne(new EventModel({"reservable": space2, "name": "event2", "startDate": 1300, "endDate": 1400})) as EventModel;
-    let event3: EventModel = await EventService.addOne(new EventModel({"reservable": space4, "name": "event3", "startDate": 1500, "endDate": 1800})) as EventModel;
+    let event1: EventModel = await EventService.addOne(new EventModel({"reservable": space1.id, "name": "event1", "startDate": 1200, "endDate": 1400})) as EventModel;
+    let event2: EventModel = await EventService.addOne(new EventModel({"reservable": space2.id, "name": "event2", "startDate": 1300, "endDate": 1400})) as EventModel;
+    let event3: EventModel = await EventService.addOne(new EventModel({"reservable": space4.id, "name": "event3", "startDate": 1500, "endDate": 1800})) as EventModel;
 
     setToken(user1Token as string);
 
-    let reservation1: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user1.id, "event": event3.id, "reservable":seat8})) as ReservationModel;
-    let reservation2: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user1.id, "event": event1.id, "reservable":seat5})) as ReservationModel;
+    let reservation1: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user1.id, "event": event3.id, "reservable":seat8.id})) as ReservationModel;
+    let reservation2: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user1.id, "event": event1.id, "reservable":seat5.id})) as ReservationModel;
 
     setToken(user2Token as string);
 
-    let reservation3: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user2.id, "event": event1.id, "reservable":seat8})) as ReservationModel;
-    let reservation4: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user2.id, "event": event2.id, "reservable":space2})) as ReservationModel;
+    let reservation3: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user2.id, "event": event1.id, "reservable":seat8.id})) as ReservationModel;
+    let reservation4: ReservationModel = await ReservationService.addOne(new ReservationModel({"account": user2.id, "event": event2.id, "reservable":space2.id})) as ReservationModel;
 
     // @ts-ignore
     await ReservationService.getById(reservation3.id as string).then((response)=>{
@@ -87,7 +94,7 @@ it('functional test', async () => {
 
     setToken(user1Token as string);
 
-    reservation1.reservable = seat9;
+    reservation1.reservable = seat9.id;
     reservation1 = await ReservationService.updateOne(reservation1) as ReservationModel;
 
     await ReservationService.deleteById(reservation1.id as string);
@@ -99,7 +106,7 @@ it('functional test', async () => {
 
     setToken(adminToken as string);
 
-    event1.reservable = space3;
+    event1.reservable = space3.id;
     await EventService.updateOne(event1);
 
     await EventService.deleteById(event1.id as string);

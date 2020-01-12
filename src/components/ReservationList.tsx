@@ -14,7 +14,7 @@ const ReservationList = (
 
     const generateLabelForId = (id: string) => {
         const reservation = reservations[id];
-        const reservable = reservables[reservation.reservable?.id as string];
+        const reservable = reservables[reservation.reservable as string];
         const event = events[reservation.event as string];
         const account = accounts[reservation.account as string];
         return <ReservationLabel key={"ReservationLabel_"+id} reservation={reservation} account={account} event={event} reservable={reservable}/>
