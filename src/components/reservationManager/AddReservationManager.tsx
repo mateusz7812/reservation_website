@@ -3,7 +3,7 @@ import {ReservableModel, SpaceModel} from "../../dataModels/ReservableModel";
 import ReservationModel from "../../dataModels/ReservationModel";
 import ReservableView from "../itemView/ReservableView";
 import SelectedReservablesList from "./SelectedReservablesList";
-import { withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import AccountList from "../AccountList";
 import EventList from "../EventList";
 import EventService from "../../services/EventService";
@@ -89,7 +89,7 @@ class AddReservationManager extends Component{
             })
         );
         // @ts-ignore
-        this.props.history.push("/reserving", {reservationsToAdd: reservationsToAdd, allReservables: this.state.loadedReservables, redirectPath: this.props.redirectPath});
+        this.props.history.push("/adding/reservation", {reservationsToAdd: reservationsToAdd, allReservables: this.state.loadedReservables, redirectPath: this.props.redirectPath});
     };
 
     loadEvent = () => {

@@ -1,9 +1,7 @@
 import React, {Component} from "react";
-import EventView from "./itemView/EventView";
-import ReservationManager from "./reservationManager/UserAddReservationManager";
+import EventLabel from "./itemView/EventLabel";
 import EventService from "../services/EventService";
 import EventModel from "../dataModels/EventModel";
-import ReservableService from "../services/ReservableService";
 import UserAddReservationManager from "./reservationManager/UserAddReservationManager";
 
 
@@ -37,7 +35,7 @@ class EventPage extends Component{
             <div>
                 {
                     this.state.event === undefined ? null : <>
-                        <EventView event={this.state.event} onClick={() => undefined}/>
+                        <EventLabel event={this.state.event} onClick={() => undefined}/>
 
                         <UserAddReservationManager eventId={this.event_id}/>
 

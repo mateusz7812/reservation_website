@@ -6,7 +6,7 @@ import HomePage from "../components/HomePage";
 import LoginPage from "../components/LoginPage";
 import EventList from "../components/EventList";
 import EventModel from "../dataModels/EventModel";
-import OneEventView from "../components/itemView/EventView";
+import OneEventView from "../components/itemView/EventLabel";
 import EventPage from "../components/EventPage";
 import React from "react";
 
@@ -83,7 +83,7 @@ it('eventList loadLists', (done)=>{
     done();
 });
 
-it('click EventView view was redirecting to event page ',async (done)=>{
+it('click EventLabel view was redirecting to event page ',async (done)=>{
     const cookieService = require('../services/CookieService');
     cookieService.default.isLogged = jest.fn(()=>true);
 

@@ -1,13 +1,10 @@
 import * as React from "react";
 import {AdminSubpageDiv} from "./AdminPage";
 import {Route, Switch, withRouter} from "react-router-dom";
-import AdminAddEventManager from "./AdminAddEventManager";
-import EventList from "../EventList";
 import AccountList from "../AccountList";
-import EventService from "../../services/EventService";
-import EventModel from "../../dataModels/EventModel";
 import AccountService from "../../services/AccountService";
 import AccountModel from "../../dataModels/AccountModel";
+import AdminAddAccountManager from "./AdminAddAccountManager";
 
 class AccountAdminPage extends React.Component {
     state: {accounts:{[key: string]: AccountModel}} = {accounts: {}};
@@ -37,7 +34,16 @@ class AccountAdminPage extends React.Component {
     render() {
         return (
             <AdminSubpageDiv>
-                <AccountList accounts={this.state.accounts} callWithId={this.redirect}/>
+                {
+                    // @ts-ignore
+                    this.props.location.pathname.includes("/admin/account/add")
+                        ? null
+                        : <input id="addButton" type="button" value="Add Account" onClick={() => this.redirect("/admin/account/add")}/>
+                }
+                <Switch>
+                    <Route path={"/admin/account/add"} component={AdminAddAccountManager}/>
+                    <Route path={"/admin/account"} component={(props:any)=><AccountList {...props} accounts={this.state.accounts} callWithId={this.redirect}/>}/>
+                </Switch>
             </AdminSubpageDiv>
         );
     }

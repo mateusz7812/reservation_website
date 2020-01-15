@@ -1,9 +1,10 @@
 import React from "react";
-import RegisterForm from "./RegisterForm";
 import AccountService from "../services/AccountService";
 import AccountModel from "../dataModels/AccountModel";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import styled from "styled-components";
+import UserAddAccountManager from "./UserAddAccountManager";
+import {StyledInput} from "./StyledComponents";
 
 class RegisterPage extends React.Component{
 
@@ -12,8 +13,8 @@ class RegisterPage extends React.Component{
         this.props.history.push(path);
     };
 
-    registerAccount = (login: string, password: string)=>{
-        return AccountService.addOne(new AccountModel({"login": login, "password": password}))
+    registerAccount = (account: AccountModel)=>{
+        return AccountService.addOne(account)
             ?.then(r => {
             if(r !== undefined){
                 this.redirect("/login");
@@ -36,10 +37,11 @@ class RegisterPage extends React.Component{
 
         return (
             <RegisterDiv>
-                <RegisterForm registerFunction={this.registerAccount}/>
+                <UserAddAccountManager addAccount={this.registerAccount}/>
                 <p id="messageLabel">{
                     // @ts-ignore
                     this?.state?.message}</p>
+                <StyledInput type={"button"} id={"backButton"} value={"Go Login"} onClick={()=>this.redirect("/login")}/>
             </RegisterDiv>
         )
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import EventView from "./itemView/EventView";
+import EventLabel from "./itemView/EventLabel";
 import EventModel from "../dataModels/EventModel";
 
 const EventList = ({events, callWithId}:{events: {[key:string]:EventModel}, callWithId:(_:string)=>void})=>{
@@ -7,7 +7,7 @@ const EventList = ({events, callWithId}:{events: {[key:string]:EventModel}, call
         <div id="eventsList">
             {
                  Object.keys(events).map((eventId: string)=> {
-                     return <EventView key={eventId} onClick={()=>callWithId(eventId)} event={events[eventId]} />;
+                     return <EventLabel key={eventId} onClick={()=>callWithId(eventId)} event={events[eventId]} />;
                  })
             }
         </div>

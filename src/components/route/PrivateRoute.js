@@ -4,11 +4,10 @@ import CookieService from "../../services/CookieService";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => {
-            if (CookieService.isLogged()) {
-                    return <Component {...props} />
-            } else {
-                    return <Redirect to='/login'/>
-            }
+        const logged = CookieService.isLogged();
+        return logged
+            ? <Component {...props} />
+            : <Redirect to='/login'/>;
     }} />
 );
 

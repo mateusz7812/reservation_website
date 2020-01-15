@@ -42,7 +42,7 @@ it('test',async (done)=>{
         .then((element)=>element.sendKeys("user"))
         .then(()=> browser.findElement(By.css("#passwordInput")))
         .then((element)=>element.sendKeys("password"))
-        .then(()=> browser.findElement(By.css("#registerButton")))
+        .then(()=> browser.findElement(By.css("#addButton")))
         .then((element)=>element.click())
 
     // check if /login
@@ -103,7 +103,7 @@ it('test',async (done)=>{
     // check if /reserve_successful
         .then(()=> sleep(1000))
         .then(()=> browser.getCurrentUrl())
-        .then((currentUrl)=> expect(currentUrl).toContain("/reserving"))
+        .then((currentUrl)=> expect(currentUrl).toContain("/adding/reservation"))
 
     // check if reservationView exist
         .then(()=> browser.findElement(By.css(".seatLabel")))
@@ -112,7 +112,7 @@ it('test',async (done)=>{
         .finally(()=>browser.close())
 
 });
-
+/*
 it('admin test',async (done)=> {
     jest.setTimeout(30000);
     const By = webdriver.By;
@@ -231,3 +231,4 @@ it('admin test',async (done)=> {
     // check if deleted
 
 });
+*/

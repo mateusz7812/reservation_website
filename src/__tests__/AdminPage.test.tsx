@@ -20,6 +20,8 @@ import EventList from "../components/EventList";
 import AdminAddEventManager from "../components/adminPage/AdminAddEventManager";
 import AccountList from "../components/AccountList";
 import ReservableList from "../components/ReservableList";
+import AdminAddAccountManager from "../components/adminPage/AdminAddAccountManager";
+import AdminAddReservableManager from "../components/adminPage/AdminAddReservableManager";
 
 configure({adapter: new Adapter()});
 
@@ -50,7 +52,7 @@ it('admin page contains menu', () => {
 
 it('admin menu contains buttons', () => {
     let wrapper = mount(
-        <AdminMenu redirectTo={(path) => {
+        <AdminMenu redirectTo={() => {
         }}/>
     );
 
@@ -190,6 +192,52 @@ it('eventPage event adding', (done)=>{
         wrapper.update();
         expect(wrapper.find(EventList)).toHaveLength(0);
         expect(wrapper.find(AdminAddEventManager)).toHaveLength(1);
+        done();
+    }, 100);
+});
+
+it('accountPage account adding', (done)=>{
+    let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(() => adminAccount);
+
+    const adminAddAccountManager = require("../components/adminPage/AdminAddAccountManager");
+    adminAddAccountManager.default = () => <div/>;
+
+    let wrapper = mount(
+        <MemoryRouter initialEntries={["/admin/account/add"]}>
+            <AccountAdminPage/>
+        </MemoryRouter>
+    );
+
+    setTimeout(()=>{
+        wrapper.update();
+        expect(wrapper.find(AccountList)).toHaveLength(0);
+        expect(wrapper.find(AdminAddAccountManager)).toHaveLength(1);
+        done();
+    }, 100);
+});
+
+it('reservablePage reservable adding', (done)=>{
+    let adminAccount = new AccountModel({"id": "admin", "login": "admin", "roles": ["ROLE_ADMIN"]});
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(() => adminAccount);
+
+    const adminAddReservableManager = require("../components/adminPage/AdminAddReservableManager");
+    adminAddReservableManager.default = () => <div/>;
+
+    let wrapper = mount(
+        <MemoryRouter initialEntries={["/admin/reservable/add"]}>
+            <ReservableAdminPage/>
+        </MemoryRouter>
+    );
+
+    setTimeout(()=>{
+        wrapper.update();
+        expect(wrapper.find(ReservableList)).toHaveLength(0);
+        expect(wrapper.find(AdminAddReservableManager)).toHaveLength(1);
         done();
     }, 100);
 });

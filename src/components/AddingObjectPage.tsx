@@ -1,16 +1,16 @@
 import React, {Component, FunctionComponent} from "react";
 import {AxiosError} from "axios";
 import DataModel from "../dataModels/DataModel";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 type addObjectFunc = (_: DataModel) => Promise<DataModel | undefined>;
-type renderObjectView = FunctionComponent<{object: DataModel, requiredData: {[key: string]:{}}, message: string}>;
+type renderObjectView = FunctionComponent<{object: DataModel, requiredData?: {[key: string]:{}}, message: string}>;
 
 class AddingObjectPage extends Component<{
-    objectsToAdd: DataModel[], requiredObjects: {}, createAddObjectPromise: addObjectFunc , objectView: renderObjectView, redirectPath: string | undefined
+    objectsToAdd: DataModel[], requiredObjects?: {}, createAddObjectPromise: addObjectFunc , objectView: renderObjectView, redirectPath: string | undefined
 }, {}> {
     state: {
-        objectsToAdd: DataModel[], requiredObjects: { [key: string]: {} },
+        objectsToAdd: DataModel[], requiredObjects?: { [key: string]: {} },
         messages: { [key: string]: string }, showExitButton: boolean
     } = {
         objectsToAdd: this.props.objectsToAdd, requiredObjects: this.props.requiredObjects,

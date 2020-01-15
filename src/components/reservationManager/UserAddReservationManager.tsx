@@ -4,7 +4,8 @@ import AddReservationManager from "./AddReservationManager";
 import AccountModel from "../../dataModels/AccountModel";
 
 const UserAddReservationManager =({eventId}: {eventId: string})=>{
-    let accountId = (CookieService.getAccount() as AccountModel)["id"];
+    const account = CookieService.getAccount() as AccountModel;
+    let accountId = (account)["id"];
 
     return(
         <AddReservationManager

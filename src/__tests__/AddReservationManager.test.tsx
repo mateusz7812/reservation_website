@@ -7,14 +7,13 @@ import SeatView from "../components/itemView/SeatView";
 import SelectedReservablesList from "../components/reservationManager/SelectedReservablesList";
 import SpaceView from "../components/itemView/SpaceView";
 import ReservationModel from "../dataModels/ReservationModel";
-import { MemoryRouter, Switch, Route } from "react-router-dom";
-import AddObjectPage from "../components/AddingObjectPage";
+import {MemoryRouter, Route, Switch} from "react-router-dom";
 import SeatLabel from "../components/itemView/SeatLabel";
 import SpaceLabel from "../components/itemView/SpaceLabel";
 import AccountModel from "../dataModels/AccountModel";
 import AddReservationManager from "../components/reservationManager/AddReservationManager";
 import AccountList from "../components/AccountList";
-import AccountView from "../components/itemView/AccountView";
+import AccountLabel from "../components/itemView/AccountLabel";
 import EventList from "../components/EventList";
 import EventModel from "../dataModels/EventModel";
 
@@ -26,7 +25,7 @@ it('accountList works', ()=>{
 
     let wrapper = mount(<AccountList accounts={accountsDict} callWithId={callWithId}/>);
 
-    const accountView = wrapper.find(AccountView);
+    const accountView = wrapper.find(AccountLabel);
     expect(accountView).toHaveLength(1);
 
     accountView.simulate('click');
@@ -233,7 +232,7 @@ it('make reservations', (done)=>{
     let wrapper = mount(
         <MemoryRouter initialEntries={["/"]}>
             <Switch>
-                <Route path="/reserving" component={reservingPage}/>
+                <Route path="/adding/reservation" component={reservingPage}/>
                 <Route path="/" component={(props: any)=><UserAddReservationManager {...props} eventId={"event1"}/>}/>
             </Switch>
         </MemoryRouter>);

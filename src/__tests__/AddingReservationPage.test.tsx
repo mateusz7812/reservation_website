@@ -1,5 +1,5 @@
 import {configure, mount} from "enzyme";
-import { MemoryRouter, Switch, Route } from "react-router-dom";
+import {MemoryRouter, Route, Switch} from "react-router-dom";
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import {SeatModel} from "../dataModels/ReservableModel";

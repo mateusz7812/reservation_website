@@ -1,36 +1,50 @@
 import EventModel from "../../dataModels/EventModel";
-import React, {useState} from "react";
+import React, {useRef} from "react";
 
 const AddEventForm = ({callWithNewEvent}: { callWithNewEvent: (_: EventModel) => void }) => {
-    let [name, setName] = useState("");
-    let [startDate, setStartDate] = useState("");
-    let [startTime, setStartTime] = useState("");
-    let [endDate, setEndDate] = useState("");
-    let [endTime, setEndTime] = useState("");
+    let nameRef = useRef(null);
+    let startDateRef = useRef(null);
+    let startTimeRef = useRef(null);
+    let endDateRef = useRef(null);
+    let endTimeRef = useRef(null);
+
+    const getCurrentDate = () => {
+        let today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = today.getFullYear();
+
+        return yyyy + '-' + mm + '-' + dd;
+    };
 
     const generateEvent = (): EventModel => {
-        const getTime = (dateString: string) => new Date(dateString).getTime();
+        const getTime = (dateString: string) => new Date(dateString).getTime() / 1000;
 
-        let startDateValue = getTime(startDate + "T" + startTime + "Z");
-        let endDateValue = getTime(endDate + "T" + endTime + "Z");
-        return new EventModel({"name": name, "startDate": startDateValue, "endDate": endDateValue});
+        // @ts-ignore
+        let startDateValue = getTime(startDateRef.current?.value + "T" + startTimeRef.current?.value + "Z");
+        // @ts-ignore
+        let endDateValue = getTime(endDateRef.current?.value + "T" + endTimeRef.current?.value + "Z");
+
+        // @ts-ignore
+        const nameValue = nameRef.current?.value;
+        return new EventModel({"name": nameValue, "startDate": startDateValue, "endDate": endDateValue});
     };
 
     return (
         <div>
             <label>
                 Name:
-                <input id="nameInput" type="text" onChange={(event) => setName(event.target.value)}/>
+                <input id="nameInput" type="text" ref={nameRef}/>
             </label>
             <label>
                 Start date:
-                <input id="startDateInput" type="date" onChange={(event) => setStartDate(event.target.value)}/>
-                <input id="startTimeInput" type="time" onChange={(event) => setStartTime(event.target.value)} value="00:00"/>
+                <input id="startDateInput" type="date" ref={startDateRef} defaultValue={getCurrentDate()}/>
+                <input id="startTimeInput" type="time" ref={startTimeRef} defaultValue="00:00"/>
             </label>
             <label>
                 End date:
-                <input id="endDateInput" type="date" onChange={(event) => setEndDate(event.target.value)}/>
-                <input id="endTimeInput" type="time" onChange={(event) => setEndTime(event.target.value)} value="23:59"/>
+                <input id="endDateInput" type="date" ref={endDateRef} defaultValue={getCurrentDate()}/>
+                <input id="endTimeInput" type="time" ref={endTimeRef} defaultValue="23:59"/>
             </label>
             <input id="saveButton" type="button" value="Next"
                    onClick={() => callWithNewEvent(generateEvent())}/>

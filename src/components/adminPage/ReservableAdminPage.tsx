@@ -1,10 +1,10 @@
 import * as React from "react";
 import {AdminSubpageDiv} from "./AdminPage";
-import AccountModel from "../../dataModels/AccountModel";
-import AccountService from "../../services/AccountService";
 import {ReservableModel} from "../../dataModels/ReservableModel";
 import ReservableService from "../../services/ReservableService";
 import ReservableList from "../ReservableList";
+import {Route, Switch, withRouter} from "react-router-dom";
+import AdminAddReservableManager from "./AdminAddReservableManager";
 
 class ReservableAdminPage extends React.Component {
     state: {reservables:{[key: string]: ReservableModel}} = {reservables: {}};
@@ -34,10 +34,20 @@ class ReservableAdminPage extends React.Component {
     render() {
         return (
             <AdminSubpageDiv>
-                <ReservableList reservables={this.state.reservables} callWithId={this.redirect}/>
+                {
+                    // @ts-ignore
+                    this.props.location.pathname.includes("/admin/reservable/add")
+                        ? null
+                        : <input id="addButton" type="button" value="Add Reservable" onClick={() => this.redirect("/admin/reservable/add")}/>
+                }
+                <Switch>
+                    <Route path={"/admin/reservable/add"} component={AdminAddReservableManager}/>
+                    <Route path={"/admin/reservable"} component={(props: any)=><ReservableList {...props} reservables={this.state.reservables} callWithId={this.redirect}/>}/>
+                </Switch>
             </AdminSubpageDiv>
         );
     }
 }
 
-export default ReservableAdminPage;
+// @ts-ignore
+export default withRouter(ReservableAdminPage);

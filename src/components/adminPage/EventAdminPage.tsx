@@ -3,7 +3,7 @@ import {AdminSubpageDiv} from "./AdminPage";
 import EventList from "../EventList";
 import EventService from "../../services/EventService";
 import EventModel from "../../dataModels/EventModel";
-import { Switch, Route } from "react-router-dom";
+import {Route, Switch, withRouter} from "react-router-dom";
 import AdminAddEventManager from "./AdminAddEventManager";
 
 class EventAdminPage extends React.Component {
@@ -49,4 +49,5 @@ class EventAdminPage extends React.Component {
     }
 }
 
-export default EventAdminPage;
+// @ts-ignore
+export default withRouter(EventAdminPage);

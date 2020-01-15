@@ -11,7 +11,7 @@ describe('add one', ()=>{
         let reservationToAdd: ReservationModel = new ReservationModel({"account": "account id", "event": "event id", "reservable": reservableInAdding.id});
         let addedReservation: ReservationModel = new ReservationModel({"id": "reservations id", "account": "account id", "event": "event id", "reservable": reservableInAdded.id});
         const apiService = require('../domain/ApiRequests');
-        apiService.addReservation = jest.fn((reservation: ReservationModel, token: string)=>
+        apiService.addReservation = jest.fn(()=>
         {
             return Promise.resolve({
                 status: 200,
@@ -32,9 +32,9 @@ describe('get by id', ()=>{
         const cookiesService = require("../services/CookieService");
         cookiesService.getToken = jest.fn(()=>"token");
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel("reservablePromise id");
+        let seat = new SeatModel({"id":"reservablePromise id"});
         let reservation = new ReservationModel({"id": "reservations id", "account": "account id", "event": "event id", "reservable": seat.id});
-        apiService.getReservationById = jest.fn((id: string, token: string)=>
+        apiService.getReservationById = jest.fn(()=>
         {
             return Promise.resolve({
                 status: 200,
@@ -55,10 +55,10 @@ describe('get all', ()=>{
         cookiesService.getToken = jest.fn(()=>"token");
 
         const apiService = require('../domain/ApiRequests');
-        let seat = new SeatModel("reservablePromise id");
+        let seat = new SeatModel({"id": "reservablePromise id"});
         let reservations = [new ReservationModel({"id": "reservations id", "account": "account id", "event": "event id", "reservable": seat.id})];
 
-        apiService.getAllReservations = jest.fn((token: string)=>
+        apiService.getAllReservations = jest.fn(()=>
         {
             return Promise.resolve({
                 status: 200,
@@ -120,7 +120,7 @@ describe('delete by id', ()=>{
 
         const apiService = require('../domain/ApiRequests');
 
-        apiService.deleteReservationById=jest.fn((id: string, token)=>
+        apiService.deleteReservationById=jest.fn(()=>
         {
             return Promise.resolve({
                 status: 200

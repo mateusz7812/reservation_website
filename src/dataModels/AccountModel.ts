@@ -6,9 +6,9 @@ class AccountModel extends DataModel{
     reservations: string[]|undefined;
     roles: string[]|undefined;
 
-    constructor(params: {}) {
+    constructor(params?: {}) {
         super();
-        super.assign(params);
+        if(params !== undefined) super.assign(params);
     }
 
     isAdmin() {

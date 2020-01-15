@@ -1,8 +1,8 @@
-import {configure, mount, shallow} from "enzyme";
-import {MemoryRouter, Redirect} from "react-router-dom";
+import {configure, mount} from "enzyme";
+import {MemoryRouter} from "react-router-dom";
 import App from "../App";
 import RegisterPage from "../components/RegisterPage";
-import RegisterForm from "../components/RegisterForm";
+import AddAccountForm from "../components/AddAccountForm";
 import AccountModel from "../dataModels/AccountModel";
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
@@ -32,20 +32,19 @@ it('registerPage at /register', async (done) => {
 
 it('registerForm in registerPage', ()=>{
     let wrapper = mount(<MemoryRouter><RegisterPage /></MemoryRouter>);
-    expect(wrapper.find(RegisterForm)).toHaveLength(1);
+    expect(wrapper.find(AddAccountForm)).toHaveLength(1);
 });
 
 it('addAccount form', (done)=>{
     const mockFunction = jest.fn();
 
-    let wrapper = mount(<RegisterForm registerFunction={mockFunction}/>);
+    let wrapper = mount(<AddAccountForm callWithNewAccount={mockFunction}/>);
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
-    wrapper.find({'id': "registerButton"}).last().simulate('click');
+    wrapper.find({'id': "addButton"}).last().simulate('click');
 
     expect(mockFunction.mock.calls.length).toEqual(1);
-    expect(mockFunction.mock.calls[0][0]).toEqual("name");
-    expect(mockFunction.mock.calls[0][1]).toEqual("password");
+    expect(mockFunction.mock.calls[0][0]).toMatchObject(new AccountModel({login: "name", password: "password", roles: []}));
     done();
 });
 
@@ -64,12 +63,12 @@ it('registerAccount when account created', (done)=> {
     expect(wrapper.find(RegisterPage)).toHaveLength(1);
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
-    wrapper.find({'id': "registerButton"}).last().simulate('click');
+    wrapper.find({'id': "addButton"}).last().simulate('click');
 
     setTimeout(()=>{
         wrapper.update();
         expect(accountService.default.addOne.mock.calls.length).toEqual(1);
-        expect(accountService.default.addOne.mock.calls[0][0]).toMatchObject(new AccountModel({"login": "user", "password": 'password'}));
+        expect(accountService.default.addOne.mock.calls[0][0]).toMatchObject(new AccountModel({login: "user", password: 'password', roles: []}));
         expect(wrapper.find(LoginPage)).toHaveLength(1);
         done();
         }, 2000);
@@ -83,7 +82,7 @@ it('registerAccount when account not created', (done)=> {
 
     wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
     wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
-    wrapper.find({'id': "registerButton"}).last().simulate('click');
+    wrapper.find({'id': "addButton"}).last().simulate('click');
 
     setTimeout(() => {
         wrapper.update();
