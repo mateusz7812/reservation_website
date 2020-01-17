@@ -6,7 +6,7 @@ import EventModel from "../../dataModels/EventModel";
 import {Route, Switch, withRouter} from "react-router-dom";
 import AdminAddEventManager from "./AdminAddEventManager";
 
-class EventAdminPage extends React.Component {
+class AdminEventPage extends React.Component {
     state: {events:{[key: string]: EventModel}} = {events:{}};
 
     componentDidMount(): void {
@@ -42,7 +42,7 @@ class EventAdminPage extends React.Component {
                 }
                 <Switch>
                     <Route path={"/admin/event/add"} component={AdminAddEventManager}/>
-                    <Route path={"/admin/event"} component={(props: any)=><EventList {...props} events={this.state.events} callWithId={this.redirect}/>}/>
+                    <Route path={"/admin/event"} component={(props: any)=><EventList {...props} events={this.state.events} callWithId={(id: string)=>this.redirect("/admin/event/"+id)}/>}/>
                 </Switch>
             </AdminSubpageDiv>
         );
@@ -50,4 +50,4 @@ class EventAdminPage extends React.Component {
 }
 
 // @ts-ignore
-export default withRouter(EventAdminPage);
+export default withRouter(AdminEventPage);

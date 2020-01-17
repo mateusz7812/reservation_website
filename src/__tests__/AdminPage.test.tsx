@@ -6,11 +6,10 @@ import AccountModel from "../dataModels/AccountModel";
 import AdminPage from "../components/adminPage/AdminPage";
 import Adapter from "enzyme-adapter-react-16";
 import AdminMenu from "../components/adminPage/AdminMenu";
-import EventAdminPage from "../components/adminPage/EventAdminPage";
+import EventAdminPage from "../components/adminPage/AdminEventPage";
 import AccountAdminPage from "../components/adminPage/AccountAdminPage";
-import ReservableAdminPage from "../components/adminPage/ReservableAdminPage";
-import ReservationAdminPage from "../components/adminPage/ReservationAdminPage";
-import AdminAddReservationManager from "../components/adminPage/AdminAddReservationManager";
+import ReservableAdminPage from "../components/adminPage/AdminReservablePage";
+import ReservationAdminPage from "../components/adminPage/AdminReservationPage";
 import ReservationModel from "../dataModels/ReservationModel";
 import ReservationLabel from "../components/itemView/ReservationLabel";
 import ReservationList from "../components/ReservationList";
@@ -283,7 +282,7 @@ it('reservations page list loading', (done) => {
     }, 100);
 
 });
-
+/*
 it('add reservations', (done) => {
     let wrapper = mount(
         <MemoryRouter initialEntries={["/admin/reservation"]}>
@@ -303,4 +302,4 @@ it('add reservations', (done) => {
         done();
     }, 10);
 
-});
+});*/

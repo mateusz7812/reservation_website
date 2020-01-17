@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 type func = (reservableId: string)=>void;
 
-const SeatView = ({seatId, allReservables, onClick}:
-                      {seatId: string, allReservables: {}, onClick:func | undefined})=>{
+const SeatView = ({selected, reserved, seatId, onClick}:
+                      {selected?: boolean, reserved?: boolean, seatId: string, onClick:func | undefined})=>{
 
     const StyledDiv = styled.div`
         clear: both;
@@ -15,9 +15,13 @@ const SeatView = ({seatId, allReservables, onClick}:
         padding: 3px;
     `;
 
-    return(<StyledDiv className="seatView" onClick={()=>onClick?.(seatId)}>
+    let ExtendedDiv = styled(StyledDiv)`
+        background-color: ${reserved ? "green": (selected ? "blue": "white")}
+    `;
+
+    return(<ExtendedDiv className="seatView" onClick={()=>onClick?.(seatId)}>
         Seat
-    </StyledDiv>);
+    </ExtendedDiv>);
 };
 
 export default SeatView;

@@ -1,4 +1,4 @@
-import {SeatModel, SpaceModel} from "../dataModels/ReservableModel";
+import {ReservableModel, SeatModel, SpaceModel} from "../dataModels/ReservableModel";
 import {configure, mount, ReactWrapper} from "enzyme";
 import React from "react";
 import UserAddReservationManager from "../components/reservationManager/UserAddReservationManager";
@@ -16,6 +16,8 @@ import AccountList from "../components/AccountList";
 import AccountLabel from "../components/itemView/AccountLabel";
 import EventList from "../components/EventList";
 import EventModel from "../dataModels/EventModel";
+import ReservableView from "../components/itemView/ReservableView";
+import {DataContext} from "../components/reservationManager/DataContext";
 
 configure({ adapter: new Adapter() });
 
@@ -109,20 +111,27 @@ it('reservables added to selected reservables list after click and removed after
         let seatView = seatsViews.first();
         seatView.simulate('click');
 
-        wrapper.update();
-        const selectedReservablesList: ReactWrapper<any, any> = wrapper.find(SelectedReservablesList);
-        expect(selectedReservablesList).toHaveLength(1);
-        let selectedSeats = selectedReservablesList.find(SeatLabel);
-        expect(selectedSeats).toHaveLength(1);
-        selectedSeats.first().simulate('click');
+        setTimeout(()=>{
 
-        wrapper.update();
-        const selectedReservablesList2: ReactWrapper<any, any> = wrapper.find(SelectedReservablesList);
-        expect(selectedReservablesList2).toHaveLength(1);
-        let selectedSeats2 = selectedReservablesList2.find(SeatLabel);
-        expect(selectedSeats2).toHaveLength(0);
-        done();
-    }, 10);
+            wrapper.update();
+            const selectedReservablesList: ReactWrapper<any, any> = wrapper.find(SelectedReservablesList);
+            expect(selectedReservablesList).toHaveLength(1);
+            let selectedSeats = selectedReservablesList.find(SeatLabel);
+            expect(selectedSeats).toHaveLength(1);
+            selectedSeats.first().simulate('click');
+
+            setTimeout(()=>{
+
+                wrapper.update();
+                const selectedReservablesList2: ReactWrapper<any, any> = wrapper.find(SelectedReservablesList);
+                expect(selectedReservablesList2).toHaveLength(1);
+                let selectedSeats2 = selectedReservablesList2.find(SeatLabel);
+                expect(selectedSeats2).toHaveLength(0);
+                done();
+
+            }, 1000);
+        }, 1000);
+    }, 1000);
 });
 
 
@@ -163,7 +172,14 @@ it('selectedReservablesList', (done)=>{
     const selectionChanger = jest.fn(()=>{});
     let seat = new SeatModel({"id": "seat1", "name": "seat1"});
     let space = new SpaceModel({"id": "space1", "name": "space1", "reservables": []});
-    let wrapper = mount(<SelectedReservablesList selectedReservablesIds={[seat.id as string, space.id as string]} allReservables={{"seat1": seat, "space1":space}} selectionChanger={selectionChanger} />);
+    const allReservables = new Map<string, ReservableModel>();
+    allReservables.set("seat1", seat);
+    allReservables.set("space1", space);
+    let wrapper = mount(
+        <DataContext.Provider value={{selectedReservablesIds: [seat.id as string, space.id as string], allReservables: allReservables, reservedReservablesIds: []}}>
+            <SelectedReservablesList selectionChanger={selectionChanger}/>
+        </DataContext.Provider>
+            );
     setTimeout(()=>{
         wrapper.update();
         expect(wrapper.find(SeatLabel)).toHaveLength(1);
@@ -176,12 +192,12 @@ it('selectedReservablesList', (done)=>{
 
 it('reservableTable space loading', (done)=>{
     let reservables = [
-        new SeatModel({"id": "seat1", "name": "seat1"}),
-        new SeatModel({"id": "seat2", "name": "seat2"}),
-        new SpaceModel({"id": "space1", "name": "space1", "reservables": ["space2", "seat1"]}),
-        new SpaceModel({"id": "space2", "name": "space2", "reservables": ["seat2"]})];
+        new SeatModel({"id": "seat1", "name": "seat1", reservations: []}),
+        new SeatModel({"id": "seat2", "name": "seat2", reservations: []}),
+        new SpaceModel({"id": "space1", "name": "space1", "reservables": ["space2", "seat1"], reservations: []}),
+        new SpaceModel({"id": "space2", "name": "space2", "reservables": ["seat2"], reservations: []})];
 
-    let event = new EventModel({"id": "event1", "reservable": reservables[2].id});
+    let event = new EventModel({"id": "event1", "reservable": reservables[2].id, reservations: []});
     let account = new AccountModel({"id": "accountId"});
 
     const cookieService = require('../services/CookieService');
@@ -259,4 +275,137 @@ it('make reservations', (done)=>{
         }, 10);
 
     }, 10);
+});
+
+
+it('select space when its seat is selected', (done)=>{
+    jest.setTimeout(6000);
+    let reservables = [
+        new SeatModel({id: "seat1", name: "seat1"}),
+        new SpaceModel({id: "space1", name: "space1", reservables: ["seat1"]})
+    ];
+
+    let event = new EventModel({"id": "event1", "reservable": "space1"});
+    let account = new AccountModel({"id": "accountId"});
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(()=>account);
+
+    const eventService = require("../services/EventService");
+    eventService.default.getById = jest.fn(()=>Promise.resolve(event));
+
+    const reservableService = require("../services/ReservableService");
+    reservableService.default.getById = jest.fn((id)=> Promise.resolve(reservables.filter(r=>r.id === id)[0]));
+
+    let wrapper = mount(
+        <MemoryRouter>
+            <UserAddReservationManager eventId={"event1"}/>
+        </MemoryRouter>);
+
+    setTimeout(()=> {
+        wrapper.update();
+        wrapper.find(ReservableView).find(SeatView).simulate('click');
+
+        setTimeout(()=>{
+            wrapper.update();
+            let selectedList = wrapper.find(SelectedReservablesList);
+            expect(selectedList.find(SeatLabel)).toHaveLength(1);
+            expect(selectedList.find(SpaceLabel)).toHaveLength(0);
+
+            wrapper.find(ReservableView).find(SpaceView).find(SpaceLabel).simulate('click');
+            setTimeout(()=>{
+                wrapper.update();
+                let selectedList = wrapper.find(SelectedReservablesList);
+                expect(selectedList.find(SpaceLabel)).toHaveLength(1);
+                expect(selectedList.find(SeatLabel)).toHaveLength(0);
+
+                wrapper.find(ReservableView).find(SeatView).simulate('click');
+                setTimeout(()=>{
+                    wrapper.update();
+                    let selectedList = wrapper.find(SelectedReservablesList);
+                    expect(selectedList.find(SpaceLabel)).toHaveLength(1);
+                    expect(selectedList.find(SeatLabel)).toHaveLength(0);
+                    done();
+                },1000);
+            },1000);
+        }, 1000);
+    }, 1000);
+
+});
+
+
+it('select reserved seat', (done)=>{
+    jest.setTimeout(6000);
+    let reservables = [
+        new SeatModel({id: "seat1", name: "seat1", reservations: ["reservation1"]}),
+        new SpaceModel({id: "space1", name: "space1", reservables: ["seat1"]})
+    ];
+
+    let event = new EventModel({"id": "event1", "reservable": "space1", "reservations": ["reservation1"]});
+    let account = new AccountModel({"id": "accountId"});
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(()=>account);
+
+    const eventService = require("../services/EventService");
+    eventService.default.getById = jest.fn(()=>Promise.resolve(event));
+
+    const reservableService = require("../services/ReservableService");
+    reservableService.default.getById = jest.fn((id)=> Promise.resolve(reservables.filter(r=>r.id === id)[0]));
+
+    let wrapper = mount(
+        <MemoryRouter>
+            <UserAddReservationManager eventId={"event1"}/>
+        </MemoryRouter>);
+
+    setTimeout(()=> {
+        wrapper.update();
+        wrapper.find(ReservableView).find(SeatView).simulate('click');
+
+        setTimeout(()=>{
+            wrapper.update();
+            let selectedList = wrapper.find(SelectedReservablesList);
+            expect(selectedList.find(SeatLabel)).toHaveLength(0);
+            done();
+        }, 1000);
+
+    }, 1000);
+});
+
+it('select reserved space', (done)=>{
+    jest.setTimeout(6000);
+    let reservables = [
+        new SeatModel({id: "seat1", name: "seat1"}),
+        new SpaceModel({id: "space1", name: "space1", reservables: ["seat1"], reservations: ["reservation1"]})
+    ];
+
+    let event = new EventModel({"id": "event1", "reservable": "space1", "reservations": ["reservation1"]});
+    let account = new AccountModel({"id": "accountId"});
+
+    const cookieService = require('../services/CookieService');
+    cookieService.default.getAccount = jest.fn(()=>account);
+
+    const eventService = require("../services/EventService");
+    eventService.default.getById = jest.fn(()=>Promise.resolve(event));
+
+    const reservableService = require("../services/ReservableService");
+    reservableService.default.getById = jest.fn((id)=> Promise.resolve(reservables.filter(r=>r.id === id)[0]));
+
+    let wrapper = mount(
+        <MemoryRouter>
+            <UserAddReservationManager eventId={"event1"}/>
+        </MemoryRouter>);
+
+    setTimeout(()=> {
+        wrapper.update();
+        wrapper.find(ReservableView).find(SeatView).simulate('click');
+
+        setTimeout(()=>{
+            wrapper.update();
+            let selectedList = wrapper.find(SelectedReservablesList);
+            expect(selectedList.find(SeatLabel)).toHaveLength(0);
+            done();
+        }, 1000);
+
+    }, 1000);
 });

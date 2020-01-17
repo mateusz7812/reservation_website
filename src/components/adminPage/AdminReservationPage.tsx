@@ -1,6 +1,6 @@
 import * as React from "react";
 import {AdminSubpageDiv} from "./AdminPage";
-import { Route, withRouter, Switch } from "react-router-dom";
+import {Route, Switch, withRouter} from "react-router-dom";
 import ReservationList from "../ReservationList";
 import AdminAddReservationManager from "./AdminAddReservationManager";
 import ReservationService from "../../services/ReservationService";
@@ -12,7 +12,7 @@ import EventModel from "../../dataModels/EventModel";
 import EventService from "../../services/EventService";
 import ReservableService from "../../services/ReservableService";
 
-class ReservationAdminPage extends React.Component{
+class AdminReservationPage extends React.Component{
     state:{reservations: {[key: string]: ReservationModel}, accounts: {[key: string]: AccountModel},
         events: {[key: string]: EventModel}, reservables: {[key: string]: ReservableModel}} =
         {reservations:{}, accounts:{}, events:{}, reservables:{}};
@@ -101,7 +101,7 @@ class ReservationAdminPage extends React.Component{
                 }
                 <Switch>
                     <Route path="/admin/reservation/add" component={AdminAddReservationManager}/>
-                    <Route path="/admin/reservation" component={()=> <ReservationList reservations={this.state.reservations} accounts={this.state.accounts} events={this.state.events} reservables={this.state.reservables}/>}/>
+                    <Route path="/admin/reservation" component={()=> <ReservationList reservations={this.state.reservations} accounts={this.state.accounts} events={this.state.events} reservables={this.state.reservables} callWithId={(id:string)=>this.redirect("/admin/reservation/"+id)}/>}/>
                 </Switch>
             </AdminSubpageDiv>
         );
@@ -110,4 +110,4 @@ class ReservationAdminPage extends React.Component{
 }
 
 // @ts-ignore
-export default withRouter(ReservationAdminPage);
+export default withRouter(AdminReservationPage);

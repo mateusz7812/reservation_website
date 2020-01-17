@@ -6,7 +6,7 @@ import ReservableList from "../ReservableList";
 import {Route, Switch, withRouter} from "react-router-dom";
 import AdminAddReservableManager from "./AdminAddReservableManager";
 
-class ReservableAdminPage extends React.Component {
+class AdminReservablePage extends React.Component {
     state: {reservables:{[key: string]: ReservableModel}} = {reservables: {}};
 
     componentDidMount(): void {
@@ -42,7 +42,7 @@ class ReservableAdminPage extends React.Component {
                 }
                 <Switch>
                     <Route path={"/admin/reservable/add"} component={AdminAddReservableManager}/>
-                    <Route path={"/admin/reservable"} component={(props: any)=><ReservableList {...props} reservables={this.state.reservables} callWithId={this.redirect}/>}/>
+                    <Route path={"/admin/reservable"} component={(props: any)=><ReservableList {...props} reservables={this.state.reservables} callWithId={(id: string)=> this.redirect("/admin/reservable/"+id)}/>}/>
                 </Switch>
             </AdminSubpageDiv>
         );
@@ -50,4 +50,4 @@ class ReservableAdminPage extends React.Component {
 }
 
 // @ts-ignore
-export default withRouter(ReservableAdminPage);
+export default withRouter(AdminReservablePage);

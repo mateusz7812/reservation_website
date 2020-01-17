@@ -42,7 +42,7 @@ class AccountAdminPage extends React.Component {
                 }
                 <Switch>
                     <Route path={"/admin/account/add"} component={AdminAddAccountManager}/>
-                    <Route path={"/admin/account"} component={(props:any)=><AccountList {...props} accounts={this.state.accounts} callWithId={this.redirect}/>}/>
+                    <Route path={"/admin/account"} component={(props:any)=><AccountList {...props} accounts={this.state.accounts} callWithId={(id: string)=> this.redirect("/admin/account/" + id)}/>}/>
                 </Switch>
             </AdminSubpageDiv>
         );
