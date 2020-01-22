@@ -34,35 +34,35 @@ it('event adding', (done)=>{
 
     const nameInput = wrapper.find({"id": "nameInput"});
     // @ts-ignore
-    nameInput.instance().value = 'eventName';
+    nameInput.last().instance().value = 'eventName';
 
     const startDateInput = wrapper.find({"id": "startDateInput"});
     // @ts-ignore
-    startDateInput.instance().value = '2016-07-19';
+    startDateInput.last().instance().value = '2016-07-19';
     const startTimeInput = wrapper.find({"id": "startTimeInput"});
     // @ts-ignore
-    startTimeInput.instance().value = '20:23:01';
+    startTimeInput.last().instance().value = '20:23:01';
 
     const endDateInput = wrapper.find({"id": "endDateInput"});
     // @ts-ignore
-    endDateInput.instance().value = '2016-07-20';
+    endDateInput.last().instance().value = '2016-07-20';
     const endTimeInput = wrapper.find({"id": "endTimeInput"});
     // @ts-ignore
-    endTimeInput.instance().value = '15:43:54';
+    endTimeInput.last().instance().value = '15:43:54';
 
     const saveButton = wrapper.find({"id": "saveButton"});
-    saveButton.simulate('click');
+    saveButton.last().simulate('click');
 
     setTimeout(()=>{
         wrapper.update();
 
         const seatLabel = wrapper.find(SeatLabel);
-        seatLabel.simulate('click');
+        seatLabel.last().simulate('click');
 
         setTimeout(()=>{
             wrapper.update();
             const addButton = wrapper.find({"id": "addButton"});
-            addButton.simulate('click');
+            addButton.last().simulate('click');
 
             setTimeout(()=>{
                 wrapper.update();

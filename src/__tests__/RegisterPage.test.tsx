@@ -2,7 +2,7 @@ import {configure, mount} from "enzyme";
 import {MemoryRouter} from "react-router-dom";
 import App from "../App";
 import RegisterPage from "../components/RegisterPage";
-import AddAccountForm from "../components/AddAccountForm";
+import AddAccountManager from "../components/AddAccountManager";
 import AccountModel from "../dataModels/AccountModel";
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
@@ -32,15 +32,15 @@ it('registerPage at /register', async (done) => {
 
 it('registerForm in registerPage', ()=>{
     let wrapper = mount(<MemoryRouter><RegisterPage /></MemoryRouter>);
-    expect(wrapper.find(AddAccountForm)).toHaveLength(1);
+    expect(wrapper.find(AddAccountManager)).toHaveLength(1);
 });
 
 it('addAccount form', (done)=>{
     const mockFunction = jest.fn();
 
-    let wrapper = mount(<AddAccountForm callWithNewAccount={mockFunction}/>);
-    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
-    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    let wrapper = mount(<AddAccountManager callWithNewAccount={mockFunction}/>);
+    wrapper.find({'id': 'loginInput'}).last().getDOMNode().setAttribute("value", "name");
+    wrapper.find({'id': 'passwordInput'}).last().getDOMNode().setAttribute("value", "password");
     wrapper.find({'id': "addButton"}).last().simulate('click');
 
     expect(mockFunction.mock.calls.length).toEqual(1);
@@ -61,8 +61,8 @@ it('registerAccount when account created', (done)=> {
 
     let wrapper = mount(<MemoryRouter initialEntries={["/register"]}><App/></MemoryRouter>);
     expect(wrapper.find(RegisterPage)).toHaveLength(1);
-    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
-    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': 'loginInput'}).last().getDOMNode().setAttribute("value", "user");
+    wrapper.find({'id': 'passwordInput'}).last().getDOMNode().setAttribute("value", "password");
     wrapper.find({'id': "addButton"}).last().simulate('click');
 
     setTimeout(()=>{
@@ -80,8 +80,8 @@ it('registerAccount when account not created', (done)=> {
 
     let wrapper = mount(<MemoryRouter><RegisterPage /></MemoryRouter>);
 
-    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
-    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': 'loginInput'}).last().getDOMNode().setAttribute("value", "user");
+    wrapper.find({'id': 'passwordInput'}).last().getDOMNode().setAttribute("value", "password");
     wrapper.find({'id': "addButton"}).last().simulate('click');
 
     setTimeout(() => {

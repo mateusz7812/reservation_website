@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import {StyledInput} from "../StyledComponents";
-import { MenuDiv } from "./AdminPage";
+import {StyledButtonInput} from "../StyledComponents";
+import {MenuDiv} from "./AdminPage";
 
 const AdminMenu = ({redirectTo}: {redirectTo: (path: string)=>void})=>{
 
-    let StyledMenuButton = styled(StyledInput)`
+    let StyledMenuButton = styled(StyledButtonInput)`
         width: 100%;
         float: left;
     `;
@@ -16,6 +16,7 @@ const AdminMenu = ({redirectTo}: {redirectTo: (path: string)=>void})=>{
             <StyledMenuButton type="button" value="Accounts" id="accountsButton" onClick={()=>redirectTo("/admin/account")}/>
             <StyledMenuButton type="button" value="Reservables" id="reservablesButton" onClick={()=>redirectTo("/admin/reservable")}/>
             <StyledMenuButton type="button" value="Reservations" id="reservationsButton" onClick={()=>redirectTo("/admin/reservation")}/>
+            <StyledMenuButton type={"button"} value={"Log out"} onClick={()=>redirectTo("/logout")}/>
        </MenuDiv>
    );
 };

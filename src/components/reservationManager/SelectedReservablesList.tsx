@@ -11,13 +11,11 @@ const SelectedReservablesList = ({
                                          //selectedReservablesIds: string[], allReservables: {[id: string]:ReservableModel},
                                          selectionChanger: (reservableId: string)=>void})=>{
     let SelectedReservablesDiv = styled.div`
-        border: 1px solid black;
+        min-height: 300px;
     `;
 
     return(
         <SelectedReservablesDiv id="selectedReservablesList">
-            Selected reservables:
-            <div>
                 <DataContext.Consumer>
                     {
                         (data)=><div>
@@ -29,7 +27,6 @@ const SelectedReservablesList = ({
                         </div>
                     }
                 </DataContext.Consumer>
-            </div>
         </SelectedReservablesDiv>
     )
 };

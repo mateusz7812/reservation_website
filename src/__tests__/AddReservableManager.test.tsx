@@ -37,10 +37,10 @@ it('add seat', (done)=>{
 
     const nameInput = form.find({"id": "nameInput"});
     // @ts-ignore
-    nameInput.instance().value = "reservableName";
+    nameInput.last().instance().value = "reservableName";
 
     const saveButton = form.find({"id": "saveButton"});
-    saveButton.simulate('click');
+    saveButton.last().simulate('click');
 
     setTimeout(()=>{
         wrapper.update();
@@ -55,7 +55,7 @@ it('add seat', (done)=>{
             wrapper.update();
 
             const addButton = wrapper.find({"id": "addButton"});
-            addButton.simulate('click');
+            addButton.last().simulate('click');
 
             setTimeout(()=>{
                 expect(reservableService.default.addOne.mock.calls[0][0]).toMatchObject(new SeatModel({"name": "reservableName", "space": "space1"}));

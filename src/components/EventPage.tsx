@@ -3,6 +3,8 @@ import EventLabel from "./itemView/EventLabel";
 import EventService from "../services/EventService";
 import EventModel from "../dataModels/EventModel";
 import UserAddReservationManager from "./reservationManager/UserAddReservationManager";
+import styled from "styled-components";
+import UserInterface from "./UserInterface";
 
 
 class EventPage extends Component{
@@ -30,17 +32,24 @@ class EventPage extends Component{
             })
     }
 
+
     render(){
+        const EventDiv = styled.div`
+            width: 20%;
+            margin: 20px auto;
+        `;
+
         return(
-            <div>
+            <UserInterface>
                 {
                     this.state.event === undefined ? null : <>
-                        <EventLabel event={this.state.event} onClick={() => undefined}/>
-
+                        <EventDiv>
+                            <EventLabel event={this.state.event} onClick={() => undefined}/>
+                        </EventDiv>
                         <UserAddReservationManager eventId={this.event_id}/>
 
                     </>}
-            </div>
+            </UserInterface>
         );
     }
 

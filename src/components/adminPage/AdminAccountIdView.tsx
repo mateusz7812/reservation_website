@@ -5,10 +5,9 @@ import AccountService from "../../services/AccountService";
 import ReservationService from "../../services/ReservationService";
 import AccountLabel from "../itemView/AccountLabel";
 import ReservationLabel from "../itemView/ReservationLabel";
-import {AdminSubpageDiv} from "./AdminPage";
 
-class AdminAccountIdPage extends Component<{}, {account: AccountModel|undefined, reservations: ReservationModel[]}> {
-    state={account: undefined, reservations: []};
+class AdminAccountIdView extends Component<{account?: AccountModel}, {account: AccountModel|undefined, reservations: ReservationModel[]}> {
+    state={account: this.props.account , reservations: []};
     account_id: string|undefined = undefined;
 
     constructor(props: any) {
@@ -17,10 +16,15 @@ class AdminAccountIdPage extends Component<{}, {account: AccountModel|undefined,
     }
 
     componentDidMount() {
-        this.loadAccount();
+        if( this.state.account === undefined) {
+            this.loadAccountAndReservations();
+        }
+        else{
+            this.loadReservations();
+        }
     }
 
-    loadAccount = () => {
+    loadAccountAndReservations = () => {
         if (this.account_id != null) {
             // eslint-disable-next-line no-unused-expressions
             AccountService.getById(this.account_id)?.then((account: AccountModel) => this.setState({account: account}, this.loadReservations))
@@ -45,7 +49,7 @@ class AdminAccountIdPage extends Component<{}, {account: AccountModel|undefined,
 
     render() {
         return (
-            <AdminSubpageDiv>
+            <div>
                 {
                     this.state.account === undefined
                         ? null
@@ -67,9 +71,9 @@ class AdminAccountIdPage extends Component<{}, {account: AccountModel|undefined,
                             </div>
                         </>
                 }
-            </AdminSubpageDiv>
+            </div>
         );
     }
 }
 
-export default AdminAccountIdPage;
+export default AdminAccountIdView;

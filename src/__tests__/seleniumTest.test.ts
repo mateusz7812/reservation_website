@@ -8,6 +8,7 @@ function sleep(ms: number) {
 }
 
 it('test',async (done)=>{
+
     jest.setTimeout(30000);
     const By = webdriver.By;
     const browser = new Builder().forBrowser("firefox").build();
@@ -70,10 +71,10 @@ it('test',async (done)=>{
     // check if events list exist
         .then(()=> sleep(3000))
         .then(()=> browser.findElement(By.css("#eventsList")))
-        .then((eventsList)=> eventsList.findElement(By.css(".eventView")))
+        .then((eventsList)=> eventsList.findElements(By.css(".eventView")))
 
     // click event view
-        .then((eventView)=>eventView.click())
+        .then((eventViews)=>eventViews.pop()?.click())
 
     // check if /event/:id
         .then(()=> sleep(1000))
@@ -101,7 +102,7 @@ it('test',async (done)=>{
         .then((reserveButton)=> reserveButton.click())
 
     // check if /reserve_successful
-        .then(()=> sleep(1000))
+        .then(()=> sleep(100))
         .then(()=> browser.getCurrentUrl())
         .then((currentUrl)=> expect(currentUrl).toContain("/adding/reservation"))
 

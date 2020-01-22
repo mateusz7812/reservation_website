@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import EventList from "./EventList";
 import EventService from "../services/EventService";
 import EventModel from "../dataModels/EventModel";
+import UserInterface from "./UserInterface";
 
 class HomePage extends Component{
     state: {events:{[key: string]: EventModel}} = {events:{}};
@@ -31,9 +32,9 @@ class HomePage extends Component{
 
     render() {
         return(
-            <div>
+            <UserInterface>
                 <EventList events={this.state.events} callWithId={this.redirectToEventPage}/>
-            </div>
+            </UserInterface>
         )
     };
 }

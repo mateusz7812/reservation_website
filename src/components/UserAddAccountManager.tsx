@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import AccountModel from "../dataModels/AccountModel";
 import AccountService from "../services/AccountService";
-import AddAccountForm from "./AddAccountForm";
+import AddAccountManager from "./AddAccountManager";
 
 type func = (_: AccountModel)=>void;
 
@@ -15,7 +15,7 @@ class UserAddAccountManager extends Component<{addAccount?: func}> {
     render(){
         return (
             <div>
-                <AddAccountForm account={new AccountModel({roles: []})} callWithNewAccount={this.addAccount}/>
+                <AddAccountManager account={new AccountModel({roles: []})} callWithNewAccount={this.addAccount}/>
             </div>
         );
     }

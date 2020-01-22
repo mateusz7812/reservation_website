@@ -5,6 +5,8 @@ import AccountList from "../AccountList";
 import AccountService from "../../services/AccountService";
 import AccountModel from "../../dataModels/AccountModel";
 import AdminAddAccountManager from "./AdminAddAccountManager";
+import AdminAccountIdView from "./AdminAccountIdView";
+import {StyledButtonInput} from "../StyledComponents";
 
 class AccountAdminPage extends React.Component {
     state: {accounts:{[key: string]: AccountModel}} = {accounts: {}};
@@ -38,11 +40,12 @@ class AccountAdminPage extends React.Component {
                     // @ts-ignore
                     this.props.location.pathname.includes("/admin/account/add")
                         ? null
-                        : <input id="addButton" type="button" value="Add Account" onClick={() => this.redirect("/admin/account/add")}/>
+                        : <StyledButtonInput id="addButton" type="button" value="Add Account" onClick={() => this.redirect("/admin/account/add")}/>
                 }
                 <Switch>
                     <Route path={"/admin/account/add"} component={AdminAddAccountManager}/>
-                    <Route path={"/admin/account"} component={(props:any)=><AccountList {...props} accounts={this.state.accounts} callWithId={(id: string)=> this.redirect("/admin/account/" + id)}/>}/>
+                    <Route path={"/admin/account/:id([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"} component={(props: any)=> <AdminAccountIdView {...props} account={this.state.accounts[props.match.params.id]} />}/>
+                    <Route path={"/admin/account/"} component={(props:any)=><AccountList {...props} accounts={this.state.accounts} callWithId={(id: string)=> this.redirect("/admin/account/" + id)}/>}/>
                 </Switch>
             </AdminSubpageDiv>
         );

@@ -1,5 +1,7 @@
 import EventModel from "../../dataModels/EventModel";
 import React, {useRef} from "react";
+import styled from "styled-components";
+import {StyledButtonInput, StyledLabel} from "../StyledComponents";
 
 const AddEventForm = ({callWithNewEvent}: { callWithNewEvent: (_: EventModel) => void }) => {
     let nameRef = useRef(null);
@@ -30,25 +32,52 @@ const AddEventForm = ({callWithNewEvent}: { callWithNewEvent: (_: EventModel) =>
         return new EventModel({"name": nameValue, "startDate": startDateValue, "endDate": endDateValue});
     };
 
+
+    const Input = styled.input`
+        float: right;
+    `;
+
+    const StyledDiv = styled.div`
+        margin: 20px 0;
+        clear: both;
+        width: 100%;
+        text-align:center;
+    `;
+
+    const Button = styled(StyledButtonInput)`
+        margin: 10px auto;
+    `;
+
+    let DivWrapper = styled.div`
+            width: 30%;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px 40px;
+            box-shadow: 0 0 5px black;
+        `;
+
     return (
-        <div>
-            <label>
+        <DivWrapper>
+            <h3>New Event</h3>
+            <StyledLabel>
                 Name:
-                <input id="nameInput" type="text" ref={nameRef}/>
-            </label>
-            <label>
+                <Input id="nameInput" type="text" ref={nameRef}/>
+            </StyledLabel>
+            <StyledLabel>
                 Start date:
-                <input id="startDateInput" type="date" ref={startDateRef} defaultValue={getCurrentDate()}/>
-                <input id="startTimeInput" type="time" ref={startTimeRef} defaultValue="00:00"/>
-            </label>
-            <label>
+                <Input id="startDateInput" type="date" ref={startDateRef} defaultValue={getCurrentDate()}/>
+                <Input id="startTimeInput" type="time" ref={startTimeRef} defaultValue="00:00"/>
+            </StyledLabel>
+            <StyledLabel>
                 End date:
-                <input id="endDateInput" type="date" ref={endDateRef} defaultValue={getCurrentDate()}/>
-                <input id="endTimeInput" type="time" ref={endTimeRef} defaultValue="23:59"/>
-            </label>
-            <input id="saveButton" type="button" value="Next"
+                <Input id="endDateInput" type="date" ref={endDateRef} defaultValue={getCurrentDate()}/>
+                <Input id="endTimeInput" type="time" ref={endTimeRef} defaultValue="23:59"/>
+            </StyledLabel>
+            <StyledDiv>
+                <Button id="saveButton" type="button" value="Next"
                    onClick={() => callWithNewEvent(generateEvent())}/>
-        </div>
+            </StyledDiv>
+        </DivWrapper>
     );
 
 };

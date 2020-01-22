@@ -1,16 +1,15 @@
-
 import AccountModel from "../dataModels/AccountModel";
 import {
     addAccount,
-    getTokenFromApi,
     deleteAccountById,
     getAccountById,
     getAccountFiltered,
-    getAllAccounts, updateEvent, updateAccount
+    getAllAccounts,
+    getTokenFromApi,
+    updateAccount
 } from "../domain/ApiRequests";
 import {AxiosError, AxiosResponse} from "axios";
 import {getToken} from "./CookieService";
-import EventModel from "../dataModels/EventModel";
 
 function getTokenForAccount(account:AccountModel): Promise<string|undefined>|undefined{
     if (account.login === undefined || account.password === undefined) return undefined;

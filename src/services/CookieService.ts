@@ -19,7 +19,6 @@ function getToken(): string| undefined{
     return getCookie("token");
 }
 
-
 function setAccount(account: AccountModel){
     addCookie("account", JSON.stringify(account));
 }
@@ -35,6 +34,11 @@ function isLogged(){
     return getAccount() !== undefined && getToken() !== undefined;
 }
 
-const CookieService = {addCookie, getToken, setToken, setAccount, getAccount, isLogged};
+function logOut(){
+    cookies.remove("account");
+    cookies.remove("token");
+}
+
+const CookieService = {addCookie, logOut, getToken, setToken, setAccount, getAccount, isLogged};
 export {addCookie, getCookie, getToken};
 export default CookieService;

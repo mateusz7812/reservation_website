@@ -4,17 +4,20 @@ import {ReservableModel} from "../../dataModels/ReservableModel";
 import ReservableService from "../../services/ReservableService";
 import ReservableList from "../ReservableList";
 import {withRouter} from "react-router-dom";
+import {StyledButtonInput} from "../StyledComponents";
+import styled from "styled-components";
+import ReservableLabel from "../itemView/ReservableLabel";
 
 class AdminAddReservableManager extends Component<{}, { reservable: undefined | ReservableModel, loadedSpaces: {[key: string]: ReservableModel}, skipReservableChoosing: boolean}> {
+    state = {reservable: undefined, loadedSpaces: {}, skipReservableChoosing: false};
+
+    componentDidMount(): void {
+        this.loadSpaces();
+    }
+
     setReservable = (reservable: ReservableModel) => {
         this.setState({"reservable": reservable})
     };
-
-    constructor(props: any) {
-        super(props);
-        this.state = {reservable: undefined, loadedSpaces: {}, skipReservableChoosing: false};
-        this.loadSpaces();
-    }
 
     loadSpaces = () => {
         // eslint-disable-next-line no-unused-expressions
@@ -32,6 +35,7 @@ class AdminAddReservableManager extends Component<{}, { reservable: undefined | 
 
     choseSpace = (id: string) => {
         if (this.state.reservable !== undefined) {
+            // @ts-ignore
             // eslint-disable-next-line react/no-direct-mutation-state
             this.state.reservable.space = id;
             this.setState({reservable: this.state.reservable});
@@ -51,17 +55,49 @@ class AdminAddReservableManager extends Component<{}, { reservable: undefined | 
     };
 
     render() {
+
+        const Button = styled(StyledButtonInput)`
+            margin: 10px auto;
+        `;
+
+        const StyledDiv = styled.div`
+            margin: 20px 0;
+            clear: both;
+            width: 100%;
+            text-align:center;
+        `;
+
+        let DivWrapper = styled.div`
+            width: 30%;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px 40px;
+            box-shadow: 0 0 5px black;
+        `;
+
         return (
             <div>
                 {
                     this.state?.reservable === undefined
                         ? <AddReservableForm callWithNewReservable={this.setReservable}/>
+                        // @ts-ignore
                         : this.state.reservable.space === undefined && !this.state.skipReservableChoosing
-                        ?<>
+                        ?<DivWrapper>
+                            <h3>Select Space</h3>
                             <ReservableList reservables={this.state.loadedSpaces} callWithId={this.choseSpace}/>
-                            <input type="button" id="skipButton" value="skip" onClick={this.skipReservableChoosing}/>
-                        </>
-                        :<input type="button" id="addButton" value="Add Reservable" onClick={this.saveReservable}/>
+                            <StyledDiv>
+                                <Button type="button" id="skipButton" value="Skip" onClick={this.skipReservableChoosing}/>
+                            </StyledDiv>
+                        </DivWrapper>
+                        :
+                        <DivWrapper>
+                            <StyledDiv>
+                                <ReservableLabel
+                                    // @ts-ignore
+                                    reservableModel={this.state.reservable}/>
+                                <Button type="button" id="addButton" value="Add Reservable" onClick={this.saveReservable}/>
+                            </StyledDiv>
+                        </DivWrapper>
                 }
             </div>
         );

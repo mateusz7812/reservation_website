@@ -1,5 +1,5 @@
-import {configure, mount, shallow} from "enzyme";
-import {MemoryRouter, Redirect} from "react-router-dom";
+import {configure, mount} from "enzyme";
+import {MemoryRouter} from "react-router-dom";
 import App from "../App";
 import LoginPage from "../components/LoginPage";
 import LoginForm from "../components/LoginForm";
@@ -29,8 +29,8 @@ it('loginForm call function', (done)=>{
     const mockFunction = jest.fn();
 
     let wrapper = mount(<MemoryRouter><LoginForm loginFunction={mockFunction}/></MemoryRouter>);
-    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "name");
-    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': 'loginInput'}).last().getDOMNode().setAttribute("value", "name");
+    wrapper.find({'id': 'passwordInput'}).last().getDOMNode().setAttribute("value", "password");
     wrapper.find({'id': "loginButton"}).last().simulate('click');
 
     expect(mockFunction.mock.calls.length).toEqual(1);
@@ -58,7 +58,7 @@ it('loginAccount on 200 status', (done)=>{
     accountService.default.getById = jest.fn(()=>Promise.resolve(accountObject));
 
     const homePage = require("../components/HomePage");
-    homePage.default = jest.fn(() => {return(<div></div>)});
+    homePage.default = jest.fn(() => {return(<div/>)});
 
     const wrapper = mount(
         <MemoryRouter initialEntries={[ '/login']}>
@@ -68,8 +68,8 @@ it('loginAccount on 200 status', (done)=>{
     wrapper.update();
 
     expect(wrapper.find(LoginPage)).toHaveLength(1);
-    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
-    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': 'loginInput'}).last().getDOMNode().setAttribute("value", "user");
+    wrapper.find({'id': 'passwordInput'}).last().getDOMNode().setAttribute("value", "password");
     const reactWrapper = wrapper.find({'id': "loginButton"}).last();
     reactWrapper.simulate('click');
 
@@ -102,8 +102,8 @@ it('loginAccount on other than 200 status', (done)=> {
             <App/>
         </MemoryRouter>);
 
-    wrapper.find({'id': 'loginInput'}).getDOMNode().setAttribute("value", "user");
-    wrapper.find({'id': 'passwordInput'}).getDOMNode().setAttribute("value", "password");
+    wrapper.find({'id': 'loginInput'}).last().getDOMNode().setAttribute("value", "user");
+    wrapper.find({'id': 'passwordInput'}).last().getDOMNode().setAttribute("value", "password");
     wrapper.find({'id': "loginButton"}).last().simulate('click');
 
     setTimeout(

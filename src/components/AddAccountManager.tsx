@@ -1,16 +1,13 @@
 import React, {useRef} from "react";
-import {StyledInput} from "./StyledComponents";
+import {StyledButtonInput} from "./StyledComponents";
 import styled from "styled-components";
 import AccountModel from "../dataModels/AccountModel";
 
-const AddAccountForm = ({account, callWithNewAccount}: {account?: AccountModel, callWithNewAccount: (account: AccountModel)=> void}) => {
+const AddAccountManager = ({account, callWithNewAccount}: {account?: AccountModel, callWithNewAccount: (account: AccountModel)=> void}) => {
     let login = useRef(null);
     let password = useRef(null);
     let roles = useRef(null);
 
-    const StyledLabel = styled.label`
-        white-space: nowrap;
-    `;
 
     function getAccountModel() {
         // @ts-ignore
@@ -45,29 +42,65 @@ const AddAccountForm = ({account, callWithNewAccount}: {account?: AccountModel, 
         return account;
     }
 
+    const StyledLabel = styled.label`
+        height: 30px;
+        display: block;
+        white-space: nowrap;
+        text-align: left;
+        margin: 3px 0;
+    `;
+
+    const Input = styled.input`
+        float: right;
+    `;
+
+    const Button = styled(StyledButtonInput)`
+        margin: 10px auto;
+    `;
+
+    const StyledDiv = styled.div`
+        margin: 20px 0;
+        clear: both;
+        width: 100%;
+        text-align:center;
+    `;
+
+    const StyledSelect = styled.select`
+        display: block;
+        height: 40px;
+        float: right;
+    `;
+
+    const StyledOption = styled.option`
+        width: 80px;
+        text-align: center;
+    `;
+
     return(
         <div>
             <StyledLabel>
                 Login:
-                <input type="text" id="loginInput" ref={login} />
-            </StyledLabel><br/>
+                <Input type="text" id="loginInput" ref={login} />
+            </StyledLabel>
             <StyledLabel>
                 Password:
-                <input type="password" id="passwordInput" ref={password}/>
+                <Input type="password" id="passwordInput" ref={password}/>
             </StyledLabel>
             {
                 account?.roles === undefined
                     ? <StyledLabel>
                             Roles:
-                            <select multiple={true} id={"roleInput"} ref={roles}>
-                                <option value={"ROLE_ADMIN"}>Admin</option>
-                            </select>
+                            <StyledSelect multiple={true} id={"roleInput"} ref={roles}>
+                                <StyledOption value={"ROLE_ADMIN"}>Admin</StyledOption>
+                            </StyledSelect>
                         </StyledLabel>
                     : null
             }
-            <StyledInput type="button" value="Add account" id="addButton" onClick={() => callWithNewAccount(getAccountModel())}/>
+            <StyledDiv>
+                <Button type="button" value="Add account" id="addButton" onClick={() => callWithNewAccount(getAccountModel())}/>
+            </StyledDiv>
         </div>
     )
 };
 
-export default AddAccountForm;
+export default AddAccountManager;

@@ -11,9 +11,16 @@ const SpaceView =({selected, reserved, spaceId, onClick}:
                       {selected?: boolean, reserved?: boolean, spaceId: string, onClick:func | undefined})=>{
     const StyledDiv = styled.div`
         clear: both;
-        border: 1px solid black;
-        border-radius: 5px;
         padding: 10px;
+    `;
+
+    let ReservablesViewsDiv = styled.div`
+        float: left;
+        width: 100%;
+    `;
+
+    let ClearDiv = styled.div`
+        clear: both;
     `;
 
     return(
@@ -29,11 +36,12 @@ const SpaceView =({selected, reserved, spaceId, onClick}:
                     return(
                         <StyledDiv>
                             <SpaceLabel reserved={reserved} selected={selected} reservableModel={space as SpaceModel} onClick={onClick}/>
-                            <div>
+                            <ReservablesViewsDiv>
                                 {
                                     reservablesViews
                                 }
-                            </div>
+                            </ReservablesViewsDiv>
+                            <ClearDiv/>
                         </StyledDiv>
                     );
                 }

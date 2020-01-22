@@ -6,30 +6,23 @@ import AccountAdminPage from "./AccountAdminPage";
 import ReservableAdminPage from "./AdminReservablePage";
 import ReservationAdminPage from "./AdminReservationPage";
 import styled from "styled-components";
-import AdminAccountIdPage from "./AdminAccountIdPage";
-import AdminEventIdPage from "./AdminEventIdPage";
-import AdminReservationIdPage from "./AdminReservationIdPage";
-import AdminReservableIdPage from "./AdminReservableIdPage";
 
 export let MenuDiv = styled.div`
     float: left;
-    border: 1px solid red;
     width: 20%;
     box-sizing: border-box;
 `;
 
 export let AdminSubpageDiv = styled.div`
-    float: left;
-    border: 1px solid blue;
-    width: 80%;
+    float: right;
+    width: 78%;
     box-sizing: border-box;
 `;
 
 let AdminPageDiv = styled.div`
-    width: 80%;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 70%;
+    min-width: 600px;
+    margin: 20px auto;
 `;
 
 class AdminPage extends Component{
@@ -43,13 +36,9 @@ class AdminPage extends Component{
            <AdminPageDiv>
                 <AdminMenu redirectTo={this.redirectTo}/>
                 <Switch>
-                    <Route path="/admin/event/:id" component={AdminEventIdPage}/>
                     <Route path="/admin/event" component={EventAdminPage}/>
-                    <Route path="/admin/account/:id" component={AdminAccountIdPage}/>
                     <Route path="/admin/account" component={AccountAdminPage}/>
-                    <Route path="/admin/reservable/:id" component={AdminReservableIdPage}/>
                     <Route path="/admin/reservable" component={ReservableAdminPage}/>
-                    <Route path="/admin/reservation/:id" component={AdminReservationIdPage}/>
                     <Route path="/admin/reservation" component={ReservationAdminPage}/>
                     <Redirect to={"/admin/reservation"} />
                 </Switch>

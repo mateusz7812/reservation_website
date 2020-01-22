@@ -10,7 +10,13 @@ const SpaceLabel = ({reserved, selected, reservableModel, onClick}: {reserved?: 
     if(selected === undefined) selected = false;
 
     let ExtendedDiv = styled(StyledDiv)`
-        background-color: ${reserved ? "green": (selected ? "blue": "white")}
+        ${reserved
+        ? "background-color: lightgrey;"
+        : (
+            selected
+                ? "box-shadow: 0 0 2px 2px black;"
+                : undefined
+        )}
     `;
 
     return(

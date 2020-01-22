@@ -4,7 +4,7 @@ import AccountModel from "../dataModels/AccountModel";
 import {withRouter} from "react-router-dom";
 import styled from "styled-components";
 import UserAddAccountManager from "./UserAddAccountManager";
-import {StyledInput} from "./StyledComponents";
+import {StyledButtonInput} from "./StyledComponents";
 
 class RegisterPage extends React.Component{
 
@@ -27,12 +27,21 @@ class RegisterPage extends React.Component{
 
     render = ()=>{
 
+        const Button = styled(StyledButtonInput)`
+        margin: 10px auto 30px auto;
+    `;
+
         const RegisterDiv = styled.div`
-            width: 300px;
-            height: 300px;
-            border-radius: 30px;
-            background-color: lightgray;
-            padding: 30px;
+            box-sizing: border-box;
+            width: 330px;
+            height: 240px;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0px 0px 5px black;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         `;
 
         return (
@@ -41,7 +50,7 @@ class RegisterPage extends React.Component{
                 <p id="messageLabel">{
                     // @ts-ignore
                     this?.state?.message}</p>
-                <StyledInput type={"button"} id={"backButton"} value={"Go Login"} onClick={()=>this.redirect("/login")}/>
+                <Button type={"button"} id={"backButton"} value={"Go Login"} onClick={()=>this.redirect("/login")}/>
             </RegisterDiv>
         )
     }

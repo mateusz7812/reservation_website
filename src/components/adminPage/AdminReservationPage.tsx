@@ -11,15 +11,16 @@ import AccountModel from "../../dataModels/AccountModel";
 import EventModel from "../../dataModels/EventModel";
 import EventService from "../../services/EventService";
 import ReservableService from "../../services/ReservableService";
+import AdminReservationIdView from "./AdminReservationIdView";
+import {StyledButtonInput} from "../StyledComponents";
 
 class AdminReservationPage extends React.Component{
     state:{reservations: {[key: string]: ReservationModel}, accounts: {[key: string]: AccountModel},
         events: {[key: string]: EventModel}, reservables: {[key: string]: ReservableModel}} =
         {reservations:{}, accounts:{}, events:{}, reservables:{}};
 
-    constructor(props: any) {
-        super(props);
-        // eslint-disable-next-line no-unused-expressions
+    componentDidMount(): void {
+    // eslint-disable-next-line no-unused-expressions
         this.loadReservations()
             ?.then(()=>{
                 this.loadAccounts();
@@ -97,11 +98,15 @@ class AdminReservationPage extends React.Component{
                     // @ts-ignore
                     this.props.location.pathname.includes("/admin/reservation/add")
                         ? null
-                        : <input id="addButton" type="button" value="Add Reservation" onClick={() => this.redirect("/admin/reservation/add")}/>
+                        : <StyledButtonInput id="addButton" type="button" value="Add Reservation" onClick={() => this.redirect("/admin/reservation/add")}/>
                 }
                 <Switch>
                     <Route path="/admin/reservation/add" component={AdminAddReservationManager}/>
-                    <Route path="/admin/reservation" component={()=> <ReservationList reservations={this.state.reservations} accounts={this.state.accounts} events={this.state.events} reservables={this.state.reservables} callWithId={(id:string)=>this.redirect("/admin/reservation/"+id)}/>}/>
+                    <Route path={"/admin/reservation/:id([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"} component={(props: any)=>
+                        <AdminReservationIdView {...props} reservation={this.state.reservations[props.match.params.id]} />}/>
+                    <Route path="/admin/reservation" component={()=>
+                        <ReservationList reservations={this.state.reservations} accounts={this.state.accounts} events={this.state.events}
+                                         reservables={this.state.reservables} callWithId={(id:string)=>this.redirect("/admin/reservation/"+id)}/>}/>
                 </Switch>
             </AdminSubpageDiv>
         );

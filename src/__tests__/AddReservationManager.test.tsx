@@ -262,7 +262,7 @@ it('make reservations', (done)=>{
 
         wrapper.update();
         let makeReservationButton = wrapper.find({"id":"reserveButton"});
-        makeReservationButton.simulate('click');
+        makeReservationButton.last().simulate('click');
 
         setTimeout(()=> {
             wrapper.update();

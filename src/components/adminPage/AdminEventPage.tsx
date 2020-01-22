@@ -5,6 +5,8 @@ import EventService from "../../services/EventService";
 import EventModel from "../../dataModels/EventModel";
 import {Route, Switch, withRouter} from "react-router-dom";
 import AdminAddEventManager from "./AdminAddEventManager";
+import EventLabel from "../itemView/EventLabel";
+import {StyledButtonInput} from "../StyledComponents";
 
 class AdminEventPage extends React.Component {
     state: {events:{[key: string]: EventModel}} = {events:{}};
@@ -38,11 +40,17 @@ class AdminEventPage extends React.Component {
                     // @ts-ignore
                     this.props.location.pathname.includes("/admin/event/add")
                         ? null
-                        : <input id="addButton" type="button" value="Add Event" onClick={() => this.redirect("/admin/event/add")}/>
+                        : <StyledButtonInput id="addButton" type="button" value="Add Event" onClick={() => this.redirect("/admin/event/add")}/>
                 }
                 <Switch>
                     <Route path={"/admin/event/add"} component={AdminAddEventManager}/>
-                    <Route path={"/admin/event"} component={(props: any)=><EventList {...props} events={this.state.events} callWithId={(id: string)=>this.redirect("/admin/event/"+id)}/>}/>
+                    <Route path={"/admin/event/:id([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"} component={(props: any)=>
+                        <EventLabel
+                            {...props}
+                            event={this.state.events[props.match.params.id]}/>
+                    }/>
+                    <Route path={"/admin/event/"} component={(props: any)=><EventList {...props} events={this.state.events} callWithId={(id: string)=>this.redirect("/admin/event/"+id)}/>}/>
+
                 </Switch>
             </AdminSubpageDiv>
         );

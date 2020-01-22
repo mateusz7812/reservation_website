@@ -5,7 +5,8 @@ import LoginForm from "./LoginForm";
 import AccountService from "../services/AccountService";
 import AccountModel from "../dataModels/AccountModel";
 import styled from "styled-components";
-import {StyledInput} from "./StyledComponents";
+import {StyledButtonInput} from "./StyledComponents";
+import {AxiosError} from "axios";
 
 
 class LoginPage extends React.Component{
@@ -37,24 +38,33 @@ class LoginPage extends React.Component{
                      this.setState({"message": "error"})
                  }
              }
-         );
+         )?.catch((error:AxiosError)=>this.setState({"message": error.message}));
     };
 
     render = ()=>{
 
         const StyledDiv = styled.div`
             width: 300px;
-            height: 300px;
-            background-color: lightgray;
-            border-radius:20px;
-            padding: 20px;
+            height: 220px;
+            padding: 10px;        
+            background-color: white;
+            box-shadow: 0 0 5px black;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
             `;
+
+        const Button = styled(StyledButtonInput)`
+        margin: 30px auto;
+    `;
 
         return(
             <StyledDiv>
                 <LoginForm loginFunction={this.loginAccount}/>
                 <p id={"errorLabel"}>{this.state.message}</p>
-                <StyledInput value="Go Register" type="button" id="registerButton" onClick={()=>this.redirect("/register")}/>
+                <Button value="Go Register" type="button" id="registerButton" onClick={()=>this.redirect("/register")}/>
             </StyledDiv>
         );
     }

@@ -1,16 +1,15 @@
 import React, {Component} from "react";
 import EventModel from "../../dataModels/EventModel";
-import {AdminSubpageDiv} from "./AdminPage";
 import {ReservableModel} from "../../dataModels/ReservableModel";
 import EventService from "../../services/EventService";
 import ReservableService from "../../services/ReservableService";
 import ReservableLabel from "../itemView/ReservableLabel";
 import EventLabel from "../itemView/EventLabel";
 
-class AdminReservableIdPage extends Component<{}, {
+class AdminReservableIdView extends Component<{reservable?: ReservableModel}, {
     events: EventModel[], reservable: ReservableModel|undefined
 }> {
-    state = {reservable: undefined, events: []};
+    state = {reservable: this.props.reservable, events: []};
     reservable_id: string|undefined = undefined;
 
     constructor(props: any) {
@@ -19,7 +18,12 @@ class AdminReservableIdPage extends Component<{}, {
     }
 
     componentDidMount() {
-        this.loadReservable();
+        if(this.state.reservable === undefined){
+            this.loadReservableAndEvents();
+        }
+        else{
+            this.loadEvents();
+        }
     }
 
     loadEvents = () => {
@@ -38,7 +42,7 @@ class AdminReservableIdPage extends Component<{}, {
         }
     };
 
-    loadReservable = () => {
+    loadReservableAndEvents = () => {
         if (this.reservable_id != null) {
             // eslint-disable-next-line no-unused-expressions
             ReservableService.getById(this.reservable_id)?.then((reservable: ReservableModel| undefined) => this.setState({reservable: reservable}, this.loadEvents))
@@ -47,7 +51,7 @@ class AdminReservableIdPage extends Component<{}, {
 
     render() {
         return (
-            <AdminSubpageDiv>
+            <div>
                 {
                     this.state.reservable === undefined
                         ? null
@@ -64,9 +68,9 @@ class AdminReservableIdPage extends Component<{}, {
                             }
                         </>
                 }
-            </AdminSubpageDiv>
+            </div>
         );
     }
 }
 
-export default AdminReservableIdPage;
+export default AdminReservableIdView;

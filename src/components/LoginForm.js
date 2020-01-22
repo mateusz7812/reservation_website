@@ -1,5 +1,5 @@
 import React, {useRef} from "react";
-import {StyledInput} from "./StyledComponents";
+import {StyledButtonInput} from "./StyledComponents";
 import styled from "styled-components";
 
 const LoginForm = ({loginFunction}) =>{
@@ -10,20 +10,35 @@ const LoginForm = ({loginFunction}) =>{
 
     const StyledDiv = styled.div`
         width: 80%;
-        margin: auto 50px;
+        margin: 30px auto;
+    `;
+
+    const Label = styled.label`
+        display: block;
+        text-align: left;
+        margin: 10px auto;
+    `;
+
+    const TextInput = styled.input`
+        float: right;
+    `;
+
+
+    const Button = styled(StyledButtonInput)`
+        margin: 30px auto;
     `;
 
     return(
         <StyledDiv>
-            <label>
+            <Label>
                 Login:
-                <input type="text" id="loginInput" ref={login} />
-            </label>
-            <label>
+                <TextInput type="text" id="loginInput" ref={login} />
+            </Label>
+            <Label>
                 Password:
-                <input type="password" id="passwordInput" ref={password}/>
-            </label>
-            <StyledInput type="button" value="Login" id="loginButton" onClick={() => loginFunction(login.current.value, password.current.value)}/>
+                <TextInput type="password" id="passwordInput" ref={password}/>
+            </Label>
+            <Button type="button" value="Login" id="loginButton" onClick={() => loginFunction(login.current.value, password.current.value)}/>
         </StyledDiv>
    )
 };

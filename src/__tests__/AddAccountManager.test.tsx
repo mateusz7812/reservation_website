@@ -2,7 +2,7 @@ import AdminAddAccountManager from "../components/adminPage/AdminAddAccountManag
 import {configure, mount} from "enzyme";
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import AddAccountForm from "../components/AddAccountForm";
+import AddAccountManager from "../components/AddAccountManager";
 import AccountModel from "../dataModels/AccountModel";
 import UserAddAccountManager from "../components/UserAddAccountManager";
 import {MemoryRouter, Route, Switch} from "react-router-dom";
@@ -23,14 +23,14 @@ it('add account',()=>{
     let accountService = require("../services/AccountService");
     accountService.default.addOne = jest.fn();
 
-    const accountForm = wrapper.find(AddAccountForm);
+    const accountForm = wrapper.find(AddAccountManager);
     expect(accountForm).toHaveLength(1);
 
     const loginInput = accountForm.find({"id": "loginInput"});
-    loginInput.simulate('change', { target: { value: 'login1' } });
+    loginInput.last().simulate('change', { target: { value: 'login1' } });
 
     const passwordInput = accountForm.find({"id": "passwordInput"});
-    passwordInput.simulate('change', { target: { value: 'password1' } });
+    passwordInput.last().simulate('change', { target: { value: 'password1' } });
 
     const roleInput = accountForm.find({"id": "roleInput"});
     const reactWrapper = roleInput.find('option');

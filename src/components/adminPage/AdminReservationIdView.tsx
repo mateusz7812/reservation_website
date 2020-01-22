@@ -5,15 +5,14 @@ import AccountService from "../../services/AccountService";
 import ReservationService from "../../services/ReservationService";
 import ReservationLabel from "../itemView/ReservationLabel";
 import EventModel from "../../dataModels/EventModel";
-import {AdminSubpageDiv} from "./AdminPage";
 import {ReservableModel} from "../../dataModels/ReservableModel";
 import EventService from "../../services/EventService";
 import ReservableService from "../../services/ReservableService";
 
-class AdminReservationIdPage extends Component<{}, {
+class AdminReservationIdView extends Component<{reservation?: ReservationModel}, {
     account: AccountModel|undefined, reservation: ReservationModel|undefined, event: EventModel|undefined, reservable: ReservableModel|undefined
 }> {
-    state={account: undefined, reservation: undefined, event: undefined, reservable: undefined};
+    state={account: undefined, reservation: this.props.reservation, event: undefined, reservable: undefined};
     reservation_id: string|undefined = undefined;
 
     constructor(props: any) {
@@ -22,7 +21,11 @@ class AdminReservationIdPage extends Component<{}, {
     }
 
     componentDidMount() {
-        this.loadReservation();
+        if(this.state.reservation === undefined) {
+            this.loadReservationAndDetails();
+        }else{
+            this.loadDetails();
+        }
     }
 
     loadAccount = () => {
@@ -49,36 +52,40 @@ class AdminReservationIdPage extends Component<{}, {
         }
     };
 
-    loadReservation = () => {
+    loadReservationAndDetails = () => {
         if (this.reservation_id != null) {
             // eslint-disable-next-line no-unused-expressions
             ReservationService.getById(this.reservation_id)?.then((reservation: ReservationModel | undefined) => {
                 if (reservation !== undefined) {
                     this.setState({reservation: reservation},()=>{
-                        this.loadReservable();
-                        this.loadAccount();
-                        this.loadEvent();
+                        this.loadDetails();
                     });
                 }
             })
         }
     };
 
+    private loadDetails() {
+        this.loadReservable();
+        this.loadAccount();
+        this.loadEvent();
+    }
+
     render() {
         return (
-            <AdminSubpageDiv>
+            <div>
                 {
                     this.state.reservation === undefined
                         ? null
-                        : <>
+                        :
                             <ReservationLabel
                                 // @ts-ignore
                                 reservation={this.state.reservation} account={this.state.account} event={this.state.event} reservable={this.state.reservable}/>
-                        </>
+
                 }
-            </AdminSubpageDiv>
+            </div>
         );
     }
 }
 
-export default AdminReservationIdPage;
+export default AdminReservationIdView;

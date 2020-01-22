@@ -13,7 +13,7 @@ import AccountModel from "../dataModels/AccountModel";
 configure({ adapter: new Adapter() });
 
 it('eventPage at /event/:id', (done)=>{
-    let account = new AccountModel({"id": "account1"});
+    let account = new AccountModel({"id": "account1", reservations:["reservation1"]});
 
     const cookieService = require('../services/CookieService');
     cookieService.default.isLogged = jest.fn(()=>true);

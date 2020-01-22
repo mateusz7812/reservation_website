@@ -18,7 +18,7 @@ const ReservationLabel: FunctionComponent<{
 
     return(
         <StyledDiv onClick={onClick}>
-            {reservation.id}  {account?.login} {event?.name} {reservable?.name}
+            {reservation?.id}  {account?.login} {event?.name} {reservable?.name}
         </StyledDiv>
     );
 };

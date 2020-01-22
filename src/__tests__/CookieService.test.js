@@ -14,3 +14,14 @@ it('account get set', ()=>{
     let accountFromCookies = CookieService.getAccount();
     expect(accountFromCookies).toMatchObject(account);
 });
+
+it('log out', ()=>{
+    let account = new AccountModel({"id": "account1", "login":"account1"});
+    CookieService.setAccount(account);
+    CookieService.setToken("token");
+
+    expect(CookieService.isLogged()).toBeTruthy();
+    CookieService.logOut();
+    expect(CookieService.isLogged()).toBeFalsy();
+
+});
